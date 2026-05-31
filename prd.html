@@ -172,7 +172,7 @@
         <div class="m"><span>Version</span><b>v1.0 — draft</b></div>
         <div class="m"><span>Submitted by</span><b>Aditi Mishra</b></div>
         <div class="m"><span>Primary customer</span><b>Large Indian hospital chains</b></div>
-        <div class="m"><span>Trigger</span><b>DPDP Act 2023 — enforceable in ~12–16 mo</b></div>
+        <div class="m"><span>Trigger</span><b>DPDP Rules 2025 — comply by ~May 2027</b></div>
       </div>
       <a class="backlink" href="index.html" style="color:#9FB0CE;margin-top:18px;">&larr; Back to the case study narrative</a>
     </div>
@@ -183,6 +183,14 @@
       <h2 class="prd-h">Healthcare has a permission execution problem, not a consent problem.</h2>
       <p class="prd-p">DPDP turns patient consent from an informal, paper-heavy ritual into an operational obligation: a hospital must show what notice was given, what consent was captured, for what purpose, whether it was withdrawn, and what it did about it. Today that lives in PDFs, shared inboxes and Excel — captured but never <em>executed</em> or <em>proven</em>. ABDM owns identity and record-sharing consent; EMR/HIS own the record; privacy suites own policy. Nobody owns the layer that <strong>acts on a permission and proves it across systems.</strong> That layer is the product.</p>
       <p class="prd-p">I assume "should we build it?" is yes, under one condition: by going <strong>deep on execution</strong> for a focused wedge (hospital chains first), not broad on a generic DPDP suite. The full narrative, market and positioning live in the <a href="index.html" style="color:var(--brand-deep);font-weight:600;">case study</a>; this document is the buildable spec.</p>
+
+      <h3 style="font-family:var(--font-display);margin:26px 0 12px;color:var(--ink);">Where the obligation actually bites — and the edge cases v1 must respect</h3>
+      <div class="prd-grid2">
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Who carries it &amp; the stakes</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">The hospital is the <strong>Data Fiduciary</strong>, the patient the <strong>Data Principal</strong>. The DPDP <strong>Rules were notified 13 Nov 2025</strong> with a phased rollout — full compliance by <strong>~May 2027</strong>. Penalties run up to <strong>₹250 cr</strong> (failure of reasonable security safeguards) and <strong>₹200 cr</strong> (failure to report a breach), and affected patients must be told within <strong>72 hours</strong>. This is what makes it a board-level, budgeted problem for the DPO.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Consent Managers — the rail we sit behind</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">DPDP <strong>Consent Managers</strong> (framework live <strong>Nov 2026</strong>) give patients one place to grant/withdraw consent across fiduciaries, and must keep consent trails for <strong>7 years</strong>. They <em>deliver the signal</em>; the Rules then require the Fiduciary to <strong>receive it and act &ldquo;without delay.&rdquo;</strong> That receive-execute-prove layer is exactly this product — we integrate with Consent Managers, not compete with them.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Consent isn&#x27;t always required (S7)</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">DPDP <strong>Section 7 legitimate uses</strong> let a hospital process without prior consent in a <strong>medical emergency</strong> or epidemic / threat-to-life. So the consent gate must never block care: the Hub&#x27;s <strong>break-glass</strong> path proceeds instantly, then logs the legal basis and the override — care is never blocked, but it&#x27;s always provable.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Withdraw &ne; delete (erasure vs retention)</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">A withdrawal must <em>stop use and sharing</em>, but clinical-record <strong>retention laws can legally block deletion</strong>. So Withdrawal Impact Analysis separates &ldquo;stop / notify&rdquo; (executed now) from &ldquo;purge&rdquo; (held where law requires) — the system never wrongly deletes a record it&#x27;s legally obliged to keep.</p></div>
+      </div>
     </section>
 
     <!-- MODULE DERIVATION -->
@@ -408,12 +416,13 @@
             <li><b>Hospital integration is slow</b> → start with capture + audit, which need the least integration.</li>
             <li><b>"Another login" rejection</b> → embed in HIS/portal, don't force a new tool.</li>
             <li><b>Consent capture is commoditized</b> → lead with execution + evidence, not signing.</li>
-            <li><b>Regulatory timing slips</b> → the audit/retrieval value lands even pre-enforcement.</li></ul></div>
+            <li><b>Adoption ahead of the May 2027 deadline</b> → lead with audit-prep savings + 30-second retrieval, which pay back immediately — not just compliance fear.</li></ul></div>
         <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Assumptions &amp; open questions</h4>
           <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.88rem;line-height:1.6;">
-            <li>DPDP enforceable within ~12–16 months; rules clarify SDF duties.</li>
-            <li>Large chains likely classed as Significant Data Fiduciaries.</li>
-            <li><b>Open:</b> Register as a DPDP Consent Manager later, or stay a processor for the Fiduciary?</li>
+            <li>DPDP Rules notified 13 Nov 2025; phased rollout, full compliance by ~May 2027; Consent Manager framework live Nov 2026.</li>
+            <li>Large chains likely classed as Significant Data Fiduciaries (DPO, DPIA and audit duties).</li>
+            <li>Consent Managers deliver the patient's consent/withdrawal <em>signal</em>; the Hub is the Fiduciary-side engine that receives, executes and proves it — so we integrate, not compete.</li>
+            <li><b>Open:</b> also register as a Consent Manager ourselves later, or stay purely Fiduciary-side?</li>
             <li><b>Open:</b> when do pharma/CRO clinical-trial flows earn their own track?</li></ul></div>
       </div>
     </section>

@@ -1361,6 +1361,7 @@
       <span class="s6-sumico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.3a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
       <p class="s6-tagline balance">Every entity. <b>Same four breakages.</b> <em>The permission was given &mdash; nothing executed it.</em></p>
     </div>
+    <p class="balance" data-reveal="up" data-delay="120" style="max-width:72ch;margin:18px auto 0;text-align:center;font-size:.9rem;line-height:1.6;color:inherit;opacity:.72;">The DPDP Rules are now final &mdash; notified Nov 2025, with hospitals required to comply by <b>~May 2027</b> and penalties up to <b>&#8377;250 crore</b>. The clock is running on closing these gaps.</p>
   </div>
 
   <script>
@@ -4237,7 +4238,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
     #s16b .s16b-actor{ display:inline-flex; align-items:center; gap:8px; }
 
     /* phone — proper proportions ~300 wide, ~1:1.9 */
-    #s16b .s16b-phone{ width:300px; max-width:100%; border-radius:34px; background:#0E1424; border:1px solid var(--line-strong); padding:10px; box-shadow:var(--sh-lg); }
+    #s16b .s16b-phone{ width:400px; max-width:100%; border-radius:34px; background:#0E1424; border:1px solid var(--line-strong); padding:10px; box-shadow:var(--sh-lg); }
     #s16b .s16b-notch{ width:104px; height:20px; background:#0E1424; border-radius:0 0 13px 13px; margin:0 auto 6px; }
     #s16b .s16b-pscreen{ border-radius:24px; overflow:hidden; background:#fff; color:var(--ink); }
     #s16b .s16b-statusbar{ display:flex; align-items:center; justify-content:space-between; padding:8px 18px 4px; font-family:var(--font-mono); font-size:.64rem; color:var(--ink-faint); background:#fff; }
@@ -4462,7 +4463,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
                 <div class="s16b-console">
                   <div class="s16b-conhead"><span class="s16b-condot"></span><span class="s16b-conurl">hub.aarogya.in/withdrawals/WD-2291</span></div>
                   <div class="s16b-sctitle">Where does this data live?</div>
-                  <div class="s16b-scsub">Mapping affected systems · 3 found</div>
+                  <div class="s16b-scsub">Mapping affected systems · 3 to action, 1 retained by law</div>
 
                   <div class="s16b-sys">
                     <span class="s16b-sico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
@@ -4478,6 +4479,11 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
                     <span class="s16b-sico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg></span>
                     <span class="s16b-sbody"><h6>Research dataset</h6><p>De-identified cohort store</p></span>
                     <span class="s16b-stag">PURGE ROWS</span>
+                  </div>
+                  <div class="s16b-sys">
+                    <span class="s16b-sico" style="color:var(--ink-faint)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7-7 9-4-2-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+                    <span class="s16b-sbody"><h6>Billing &amp; discharge record</h6><p>Retained under clinical-record law</p></span>
+                    <span class="s16b-stag" style="background:var(--bg-tint);color:var(--ink-faint);border:1px solid var(--line-light)">KEEP · NO PURGE</span>
                   </div>
                 </div>
               </div>
@@ -4779,13 +4785,13 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
           n: 'DPDP S6(5): withdrawal must be as easy as the consent was to give.'
         },
         2: {
-          t: 'The system finds every copy',
-          b: 'One consent touched three systems: the EMR flag, a third-party diagnostics lab over an API, and a research dataset. The hub maps all of them — you can’t revoke what you can’t see.',
-          n: 'DPDP S6(6): the data fiduciary must cause processors to stop too — not just itself.'
+          t: 'Every copy — and what must stay',
+          b: 'One consent touched four systems: an EMR flag, a third-party lab over an API, and a de-identified research set to purge. The fourth — the billing/discharge record — is kept: clinical-record retention law overrides erasure. Withdrawal stops use and sharing; it doesn’t force-delete records the hospital is legally required to hold.',
+          n: 'Withdraw ≠ delete: stop & purge what you can, retain what the law requires — and log why.'
         },
         3: {
           t: 'Three real tasks, three owners',
-          b: 'Each affected system gets its own task with a named owner and an SLA deadline. Right now all three are Pending — nothing is marked done yet.',
+          b: 'Each system that must change gets its own task with a named owner and an SLA deadline. The legally-retained record needs no action. Right now all three tasks are Pending — nothing is marked done yet.',
           n: 'A flag flip isn’t compliance. Routed, owned, deadlined work is.'
         },
         4: {
@@ -8197,7 +8203,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
         <div class="s19-tcard">
           <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--violet)"></span><span class="s19-tc-name">India DPDP &amp; consent managers</span><span class="s19-tc-who">Privy by IDfy · Perfios · Seqrite · Neokred · KavachOne</span></div>
           <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v">Consent lifecycle, CMP, audit-ready consent records.</span></div>
-          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">Records consent — doesn't run multi-party clinical authorization.</span></div>
+          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">Records consent — doesn't run multi-party clinical authorization, withdrawal execution or evidence &mdash; the Fiduciary-side &ldquo;act on it&rdquo; the Rules now mandate.</span></div>
         </div>
         <div class="s19-tcard">
           <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--teal)"></span><span class="s19-tc-name">Healthcare e-consent</span><span class="s19-tc-who">Naree · Clinion · Octalsoft · E-Consent.in · Kleeto · Redacto</span></div>
