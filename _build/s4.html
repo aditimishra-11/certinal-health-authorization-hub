@@ -1,0 +1,245 @@
+<section id="s4" class="scene scene--light" data-scene data-title="Comparison" aria-labelledby="s4-title">
+  <style>
+    #s4 .s4-head { max-width: 760px; }
+    #s4 .s4-card { padding: var(--sp-5); overflow: hidden; }
+    #s4 .s4-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--sp-2)); padding: 0 var(--sp-2); }
+    #s4 .ctable { min-width: 720px; }
+    #s4 .ctable th, #s4 .ctable td { border-bottom: 1px solid var(--line-light); white-space: nowrap; }
+    #s4 .ctable thead th { color: var(--ink-soft); font-size: .82rem; letter-spacing: .01em; padding-bottom: var(--sp-3); vertical-align: bottom; }
+    #s4 .ctable td:first-child, #s4 .ctable th:first-child { color: var(--ink); }
+    #s4 .ctable .none { color: var(--ink-faint); }
+
+    /* Player column header label */
+    #s4 .s4-col { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; font-family: var(--font-display); }
+    #s4 .s4-col em { font-style: normal; font-size: .68rem; font-family: var(--font-mono); letter-spacing: .08em; color: var(--ink-faint); text-transform: uppercase; }
+
+    /* Cell glyphs */
+    #s4 .s4-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: var(--r-pill); }
+    #s4 .s4-mark svg { display: block; }
+    #s4 .own.s4-mark  { background: rgba(47,215,155,.14); color: var(--ok); }
+    #s4 .part.s4-mark { background: rgba(244,169,59,.14); color: var(--warn); }
+    #s4 .none.s4-mark { background: rgba(138,149,173,.10); color: var(--ink-faint); }
+
+    /* Certinal highlighted column */
+    #s4 .ctable thead th.s4-cert,
+    #s4 .ctable td.s4-cert {
+      background: rgba(91,124,250,.06);
+      border-left: 1px solid rgba(91,124,250,.22);
+      border-right: 1px solid rgba(91,124,250,.22);
+    }
+    #s4 .ctable thead th.s4-cert { border-top: 1px solid rgba(91,124,250,.22); border-radius: var(--r-sm) var(--r-sm) 0 0; color: var(--brand-deep); }
+    #s4 .ctable tbody tr:last-child td.s4-cert { border-bottom: 1px solid rgba(91,124,250,.22); border-radius: 0 0 var(--r-sm) var(--r-sm); }
+    #s4 .s4-cert .own.s4-mark { background: rgba(91,124,250,.16); color: var(--brand-deep); }
+
+    /* Row interactivity */
+    #s4 .s4-row { cursor: pointer; transition: background .2s var(--ease); }
+    #s4 .s4-row > th, #s4 .s4-row > td { transition: background .2s var(--ease); }
+    #s4 .s4-row:hover > td:not(.s4-cert), #s4 .s4-row:hover > th { background: rgba(91,124,250,.04); }
+    #s4 .s4-row.is-active > th { color: var(--brand-deep); }
+    #s4 .s4-row.is-active > td:not(.s4-cert), #s4 .s4-row.is-active > th { background: rgba(91,124,250,.07); }
+    #s4 .s4-row.is-active > .s4-cert { background: rgba(91,124,250,.13); }
+    #s4 .s4-row:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+    #s4 .s4-rowlabel { display: inline-flex; align-items: center; gap: 10px; }
+    #s4 .s4-rowlabel::before { content: ""; width: 3px; height: 16px; border-radius: 2px; background: transparent; transition: background .2s var(--ease); }
+    #s4 .s4-row.is-active .s4-rowlabel::before { background: var(--grad-brand); }
+
+    /* Caption */
+    #s4 .s4-caption {
+      display: flex; align-items: flex-start; gap: var(--sp-4);
+      margin-top: var(--sp-5); padding: var(--sp-4) var(--sp-5);
+      background: var(--bg-tint); border: 1px solid var(--line-light);
+      border-radius: var(--r-md);
+    }
+    #s4 .s4-caption .s4-cap-ico { flex: none; width: 38px; height: 38px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--grad-brand); color: #fff; box-shadow: var(--sh-glow); }
+    #s4 .s4-cap-body { min-width: 0; }
+    #s4 .s4-cap-title { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); margin: 0 0 2px; }
+    #s4 .s4-cap-text { margin: 0; font-size: .96rem; color: var(--ink-soft); line-height: 1.5; }
+    #s4 .s4-cap-title .s4-tag { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--r-pill); margin-left: 8px; vertical-align: middle; }
+    #s4 .s4-tag--gap { background: rgba(251,111,132,.12); color: var(--danger); }
+    #s4 .s4-tag--own { background: rgba(47,215,155,.14); color: var(--ok); }
+
+    #s4 .s4-legend { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-4); font-size: .8rem; color: var(--ink-soft); }
+    #s4 .s4-legend span { display: inline-flex; align-items: center; gap: 7px; }
+    #s4 .s4-legend i { width: 16px; height: 16px; border-radius: 5px; display: inline-block; }
+    #s4 .s4-leg-own  { background: rgba(47,215,155,.18); }
+    #s4 .s4-leg-part { background: rgba(244,169,59,.18); }
+    #s4 .s4-leg-none { background: rgba(138,149,173,.14); }
+
+    #s4 .s4-scrollhint { display: none; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-faint); margin-bottom: var(--sp-3); letter-spacing: .04em; }
+    @media (max-width: 720px){ #s4 .s4-scrollhint { display: block; } }
+  </style>
+
+  <div class="container">
+    <div class="s4-head mb-6" data-reveal="up">
+      <span class="eyebrow">CAPABILITY MAP</span>
+      <span class="section-num" style="display:block;margin-top:8px">SECTION 04</span>
+      <h2 id="s4-title" class="h1 balance mt-3">What each player actually solves.</h2>
+      <p class="lead mt-4 balance">Records, consent, governance — the market covers them well. But <strong>Approvals</strong>, <strong>Evidence</strong> and <strong>Workflow Execution</strong> are nobody's home turf. That gap is the product.</p>
+    </div>
+
+    <div class="card s4-card" data-reveal="up" data-delay="120">
+      <p class="s4-scrollhint" aria-hidden="true">&#8594; swipe to compare columns</p>
+      <div class="s4-scroll">
+        <table class="ctable" id="s4-table" aria-describedby="s4-cap-text">
+          <caption class="small" style="caption-side:top;text-align:left;color:var(--ink-faint);padding-bottom:12px">Capability coverage by player. Select a row to read where the gap is.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Capability</th>
+              <th scope="col"><span class="s4-col">EMR<em>records</em></span></th>
+              <th scope="col"><span class="s4-col">ABDM<em>rails</em></span></th>
+              <th scope="col"><span class="s4-col">OneTrust<em>privacy</em></span></th>
+              <th scope="col"><span class="s4-col">Securiti<em>data gov</em></span></th>
+              <th scope="col" class="s4-cert"><span class="s4-col">Certinal<em>hub</em></span></th>
+            </tr>
+          </thead>
+          <tbody id="s4-body"></tbody>
+        </table>
+      </div>
+
+      <div class="s4-legend" aria-hidden="true">
+        <span><i class="s4-leg-own"></i> Owns it</span>
+        <span><i class="s4-leg-part"></i> Partial</span>
+        <span><i class="s4-leg-none"></i> Not its job</span>
+      </div>
+
+      <div class="s4-caption" role="status" aria-live="polite">
+        <span class="s4-cap-ico" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <div class="s4-cap-body">
+          <p class="s4-cap-title" id="s4-cap-title">The execution gap<span class="s4-tag s4-tag--gap" id="s4-cap-tag">Certinal-only</span></p>
+          <p class="s4-cap-text" id="s4-cap-text">Approvals, Evidence and Workflow Execution are the three rows only Certinal owns end-to-end. Pick any capability to see exactly who solves it — and who can't.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+    var root = document.getElementById("s4");
+    if (!root) return;
+    var body = root.querySelector("#s4-body");
+    var capTitle = root.querySelector("#s4-cap-title");
+    var capText  = root.querySelector("#s4-cap-text");
+    var capTag   = root.querySelector("#s4-cap-tag");
+    if (!body) return;
+
+    // marks: own | part | none — column order: EMR, ABDM, OneTrust, Securiti, Certinal
+    var ROWS = [
+      { cap: "Patient Records", marks: ["own","part","none","none","part"],
+        tag: "shared", title: "Patient Records",
+        text: "EMRs own the clinical record; ABDM links it across providers. Certinal references it — it doesn't try to replace the system of record." },
+      { cap: "Consent Capture", marks: ["part","own","part","part","own"],
+        tag: "shared", title: "Consent Capture",
+        text: "ABDM defines the consent artefact; privacy tools log preferences. Certinal captures permission with intent, scope and an identity-bound signature." },
+      { cap: "Governance / Policy", marks: ["none","part","own","own","part"],
+        tag: "shared", title: "Governance / Policy",
+        text: "OneTrust and Securiti are built for policy and data governance. Certinal consumes those policies to decide what an approval is allowed to do." },
+      { cap: "Approvals", marks: ["none","none","none","part","own"],
+        tag: "gap", title: "Approvals",
+        text: "No one runs the multi-party approval. Privacy tools track a status; none route a request through clinician, records team and patient with rules and SLAs." },
+      { cap: "Evidence", marks: ["part","part","part","part","own"],
+        tag: "gap", title: "Evidence",
+        text: "Everyone stores a record; nobody assembles court-ready evidence — who approved what, under which policy, with which signature, at which timestamp." },
+      { cap: "Audit", marks: ["part","part","own","own","own"],
+        tag: "shared", title: "Audit",
+        text: "Governance suites audit data access. Certinal audits the permission lifecycle itself — every state change in the authorization, tamper-evident." },
+      { cap: "Workflow Execution", marks: ["none","none","none","none","own"],
+        tag: "gap", title: "Workflow Execution",
+        text: "EMR / ABDM / privacy tools record state; none run the multi-party approval + evidence workflow. That orchestration layer is exactly what Certinal is." }
+    ];
+
+    var ICON = {
+      own:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>',
+      part: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 13c2.2-3.2 4-3.2 6 0s3.8 3.2 6 0"/></svg>',
+      none: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>'
+    };
+    var LABEL = { own: "Owns", part: "Partial", none: "Not its job" };
+    var DEFAULT = {
+      title: "The execution gap", tag: "Certinal-only", tagCls: "s4-tag--gap",
+      text: "Approvals, Evidence and Workflow Execution are the three rows only Certinal owns end-to-end. Pick any capability to see exactly who solves it — and who can't."
+    };
+
+    var rowEls = [];
+    var active = -1;
+
+    function render(i) {
+      var r = ROWS[i];
+      capTitle.firstChild.nodeValue = r.title;
+      capText.textContent = r.text;
+      if (r.tag === "gap") {
+        capTag.textContent = "Certinal-only";
+        capTag.className = "s4-tag s4-tag--gap";
+      } else {
+        capTag.textContent = "Shared";
+        capTag.className = "s4-tag s4-tag--own";
+      }
+    }
+    function reset() {
+      capTitle.firstChild.nodeValue = DEFAULT.title;
+      capTag.textContent = DEFAULT.tag;
+      capTag.className = "s4-tag " + DEFAULT.tagCls;
+      capText.textContent = DEFAULT.text;
+    }
+    function activate(i) {
+      if (active === i) return;
+      active = i;
+      rowEls.forEach(function (el, k) {
+        var on = k === i;
+        el.classList.toggle("is-active", on);
+        el.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      render(i);
+    }
+
+    ROWS.forEach(function (r, i) {
+      var tr = document.createElement("tr");
+      tr.className = "s4-row";
+      tr.setAttribute("tabindex", "0");
+      tr.setAttribute("role", "button");
+      tr.setAttribute("aria-pressed", "false");
+      tr.setAttribute("aria-label", r.cap + " capability coverage");
+
+      var th = document.createElement("th");
+      th.setAttribute("scope", "row");
+      th.innerHTML = '<span class="s4-rowlabel">' + r.cap + '</span>';
+      tr.appendChild(th);
+
+      r.marks.forEach(function (m, c) {
+        var td = document.createElement("td");
+        if (c === 4) td.className = "s4-cert";
+        var span = document.createElement("span");
+        span.className = m + " s4-mark";
+        span.innerHTML = ICON[m];
+        span.setAttribute("title", LABEL[m]);
+        span.setAttribute("aria-label", LABEL[m]);
+        span.setAttribute("role", "img");
+        td.appendChild(span);
+        tr.appendChild(td);
+      });
+
+      tr.addEventListener("mouseenter", function () { activate(i); });
+      tr.addEventListener("click", function () { activate(i); });
+      tr.addEventListener("focus", function () { activate(i); });
+      tr.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(i); }
+        else if (e.key === "ArrowDown") { e.preventDefault(); var n = rowEls[(i + 1) % rowEls.length]; n.focus(); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); var p = rowEls[(i - 1 + rowEls.length) % rowEls.length]; p.focus(); }
+      });
+
+      body.appendChild(tr);
+      rowEls.push(tr);
+    });
+
+    // Pre-select the headline gap row so the narrative lands immediately.
+    var WFE = ROWS.length - 1;
+    activate(WFE);
+    // On mouse-leave of the table, fall back to the WFE gap (keep the punchline).
+    var tableWrap = root.querySelector("#s4-table");
+    if (tableWrap) {
+      tableWrap.addEventListener("mouseleave", function () { activate(WFE); });
+    }
+  })();
+  </script>
+</section>

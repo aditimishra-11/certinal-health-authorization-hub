@@ -1,0 +1,212 @@
+<section class="scene scene--darker" id="s5" data-scene data-title="The Gap">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <span class="glow glow--brand" style="width:520px;height:520px;left:50%;top:38%;transform:translate(-50%,-50%);opacity:.18" aria-hidden="true"></span>
+  <style>
+    #s5 .s5-head { max-width: 760px; margin-inline: auto; text-align: center; }
+    #s5 .s5-head .eyebrow { justify-content: center; }
+    #s5 .s5-stage {
+      position: relative;
+      max-width: 980px;
+      margin: var(--sp-9) auto 0;
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 420px) 1fr;
+      grid-template-rows: auto auto auto;
+      gap: var(--sp-5);
+      align-items: center;
+    }
+    #s5 .s5-layer {
+      position: relative;
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 20px;
+      border-radius: var(--r-lg);
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--line-dark);
+      opacity: .55;
+      filter: saturate(.6);
+      transition: opacity .7s var(--ease-out), filter .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    #s5 .s5-stage.is-revealed .s5-layer { opacity: .82; }
+    #s5 .s5-layer .s5-ico {
+      flex: 0 0 auto; width: 46px; height: 46px;
+      display: grid; place-items: center;
+      border-radius: 12px;
+      background: rgba(91,124,250,.10);
+      border: 1px solid var(--line-dark);
+      color: var(--on-dark-soft);
+    }
+    #s5 .s5-layer .s5-ico svg { width: 24px; height: 24px; }
+    #s5 .s5-layer h3 { font-size: 1.02rem; color: var(--on-dark); letter-spacing: -.01em; }
+    #s5 .s5-layer p { margin: 3px 0 0; font-size: .8rem; line-height: 1.4; color: var(--on-dark-faint); }
+    #s5 .s5-layer .s5-tag {
+      position: absolute; top: -10px; right: 16px;
+      font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: var(--r-pill);
+      background: var(--bg-darker); color: var(--on-dark-faint);
+      border: 1px solid var(--line-dark);
+    }
+    /* positions */
+    #s5 .s5-emr     { grid-column: 1; grid-row: 1; }
+    #s5 .s5-abdm    { grid-column: 3; grid-row: 1; }
+    #s5 .s5-privacy { grid-column: 1 / 4; grid-row: 3; max-width: 420px; margin-inline: auto; }
+    #s5 .s5-center  { grid-column: 2; grid-row: 1 / 4; }
+
+    /* the conspicuous empty slot */
+    #s5 .s5-slot {
+      position: relative;
+      border-radius: var(--r-xl);
+      border: 2px dashed rgba(91,124,250,.45);
+      background: radial-gradient(70% 70% at 50% 45%, rgba(91,124,250,.10) 0%, transparent 70%);
+      padding: var(--sp-7) var(--sp-6);
+      text-align: center;
+      min-height: 300px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      overflow: hidden;
+      transition: border-color .6s var(--ease-out), box-shadow .6s var(--ease-out);
+    }
+    #s5 .s5-stage.is-revealed .s5-slot {
+      border-color: var(--brand);
+      box-shadow: var(--sh-glow), 0 0 60px rgba(91,124,250,.25);
+      animation: s5-pulse 3.2s ease-in-out 1s infinite;
+    }
+    @keyframes s5-pulse {
+      0%,100% { box-shadow: 0 0 0 1px var(--brand), 0 0 40px rgba(91,124,250,.18); }
+      50%     { box-shadow: 0 0 0 1px var(--brand), 0 0 80px rgba(91,124,250,.42); }
+    }
+    #s5 .s5-slot .s5-pin {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(40% 40% at 50% 42%, rgba(56,225,240,.14), transparent 70%);
+      opacity: 0; transition: opacity .8s var(--ease-out);
+    }
+    #s5 .s5-stage.is-revealed .s5-slot .s5-pin { opacity: 1; }
+    #s5 .s5-slot > * { position: relative; z-index: 1; }
+    #s5 .s5-qmark {
+      width: 64px; height: 64px; display: grid; place-items: center;
+      border-radius: 50%;
+      background: rgba(91,124,250,.12);
+      border: 1px solid rgba(91,124,250,.4);
+      color: var(--cyan);
+      margin-bottom: 4px;
+    }
+    #s5 .s5-qmark svg { width: 30px; height: 30px; }
+    #s5 .s5-slot .s5-kicker {
+      font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--cyan);
+    }
+    #s5 .s5-slot h3 {
+      font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+      line-height: 1.08;
+    }
+    #s5 .s5-slot .s5-empty-note {
+      font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--on-dark-faint);
+    }
+    /* the revealed responsibility label */
+    #s5 .s5-roles {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      margin-top: 6px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .7s var(--ease-out) .9s, transform .7s var(--ease-out) .9s;
+    }
+    #s5 .s5-stage.is-revealed .s5-roles { opacity: 1; transform: none; }
+    #s5 .s5-roles .s5-role {
+      font-size: .76rem; font-weight: 500;
+      padding: 6px 12px; border-radius: var(--r-pill);
+      background: rgba(56,225,240,.08); border: 1px solid rgba(56,225,240,.32);
+      color: var(--on-dark);
+    }
+    /* connector lines */
+    #s5 .s5-wires { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    #s5 .s5-wires path {
+      fill: none; stroke: rgba(91,124,250,.4); stroke-width: 1.5; stroke-dasharray: 5 6;
+      opacity: 0; transition: opacity .8s var(--ease-out) .4s;
+    }
+    #s5 .s5-stage.is-revealed .s5-wires path { opacity: .7; }
+    #s5 .s5-foot { max-width: 640px; margin: var(--sp-8) auto 0; text-align: center; }
+    @media (max-width: 860px){
+      #s5 .s5-stage { grid-template-columns: 1fr; }
+      #s5 .s5-emr, #s5 .s5-abdm, #s5 .s5-privacy, #s5 .s5-center { grid-column: 1; }
+      #s5 .s5-emr { grid-row: 1; } #s5 .s5-center { grid-row: 2; } #s5 .s5-abdm { grid-row: 3; } #s5 .s5-privacy { grid-row: 4; max-width: 100%; }
+      #s5 .s5-wires { display: none; }
+    }
+  </style>
+
+  <div class="container container--wide">
+    <div class="s5-head">
+      <span class="eyebrow" data-reveal="fade">THE MISSING LAYER</span>
+      <span class="section-num" data-reveal="fade" style="display:block;margin-top:14px">SECTION 05</span>
+      <h2 class="h1 balance mt-4" data-reveal="up">Nobody owns <span class="gradient-text">permission execution.</span></h2>
+      <p class="lead balance mt-4" data-reveal="up" data-delay="120">India built world-class rails for capturing and protecting consent. But the layer that <em>acts</em> on it &mdash; executing, withdrawing, proving &mdash; sits empty.</p>
+    </div>
+
+    <div class="s5-stage" id="s5-stage" aria-label="Diagram: three existing healthcare layers surrounding an empty permission-execution gap">
+      <svg class="s5-wires" viewBox="0 0 980 540" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 250 90 C 360 90, 400 160, 490 200" />
+        <path d="M 730 90 C 620 90, 580 160, 490 200" />
+        <path d="M 490 360 C 490 420, 490 450, 490 470" />
+      </svg>
+
+      <!-- EMR -->
+      <div class="s5-layer s5-emr" data-reveal="left">
+        <span class="s5-tag">exists</span>
+        <span class="s5-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="M12 3v2"/></svg>
+        </span>
+        <div><h3>EMR / HIS</h3><p>Stores the clinical record</p></div>
+      </div>
+
+      <!-- ABDM -->
+      <div class="s5-layer s5-abdm" data-reveal="right">
+        <span class="s5-tag">exists</span>
+        <span class="s5-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        </span>
+        <div><h3>ABDM Network</h3><p>Captures &amp; exchanges consent</p></div>
+      </div>
+
+      <!-- CENTER empty slot -->
+      <div class="s5-center" data-reveal="scale" data-delay="160">
+        <div class="s5-slot" role="img" aria-label="Empty layer: the healthcare permission gap, with no owner">
+          <span class="s5-pin" aria-hidden="true"></span>
+          <span class="s5-qmark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 4.5 2.6c-.9.5-1.6 1.2-1.6 2.4"/><path d="M12 17.5h.01"/></svg>
+          </span>
+          <span class="s5-kicker">no owner</span>
+          <h3 class="balance">Healthcare<br/>Permission Gap</h3>
+          <span class="s5-empty-note">[ unassigned ]</span>
+          <div class="s5-roles" aria-label="Responsibilities that fall into the gap">
+            <span class="s5-role">Consent execution</span>
+            <span class="s5-role">Authorization workflows</span>
+            <span class="s5-role">Withdrawal execution</span>
+            <span class="s5-role">Audit evidence orchestration</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="s5-layer s5-privacy" data-reveal="up" data-delay="120">
+        <span class="s5-tag">exists</span>
+        <span class="s5-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.4-7 9-4.1-1.6-7-4.8-7-9V6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+        </span>
+        <div><h3>DPDP / Privacy Law</h3><p>Defines the rights &amp; duties</p></div>
+      </div>
+    </div>
+
+    <p class="s5-foot lead" data-reveal="up">Three layers tell you <strong>what</strong> is allowed. <span class="gradient-text">None of them do the work.</span></p>
+  </div>
+
+  <script>
+  (function(){
+    var root = document.getElementById('s5');
+    if(!root) return;
+    var stage = root.querySelector('#s5-stage');
+    if(!stage) return;
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ stage.classList.add('is-revealed'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    obs.observe(stage);
+  })();
+  </script>
+</section>

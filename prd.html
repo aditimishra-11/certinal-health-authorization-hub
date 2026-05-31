@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Certinal Health Authorization Hub — v1 PRD / Feature Map</title>
+<meta name="description" content="v1 product requirements and feature map for the Certinal Health Authorization Hub — a DPDP execution layer for Indian healthcare." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body{background:var(--bg-tint);color:var(--ink);}
+  .prd-nav{position:sticky;top:0;z-index:900;display:flex;align-items:center;gap:18px;padding:14px clamp(16px,4vw,40px);background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-light);}
+  .prd-nav .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;color:var(--ink);}
+  .prd-nav .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--grad-brand);display:grid;place-items:center;box-shadow:var(--sh-glow);}
+  .prd-tabs{display:flex;gap:6px;margin-left:6px;}
+  .prd-tab{padding:8px 16px;border-radius:var(--r-pill);font-size:.88rem;font-weight:600;color:var(--ink-soft);border:1px solid transparent;}
+  .prd-tab:hover{color:var(--ink);}
+  .prd-tab.is-active{background:var(--grad-brand);color:#fff;box-shadow:var(--sh-glow);}
+  .prd-nav .spacer{margin-left:auto;}
+  .prd-meta-pill{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;color:var(--ink-faint);}
+
+  .prd-shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:212px 1fr;gap:40px;padding:40px clamp(16px,4vw,40px) 100px;}
+  @media (max-width:920px){.prd-shell{grid-template-columns:1fr;gap:18px;}}
+  .prd-toc{position:sticky;top:84px;align-self:start;font-size:.84rem;max-height:calc(100vh - 110px);overflow:auto;}
+  @media (max-width:920px){.prd-toc{position:static;max-height:none;border:1px solid var(--line-light);border-radius:var(--r-md);background:#fff;padding:12px;}}
+  .prd-toc a{display:block;padding:6px 10px;border-radius:8px;color:var(--ink-soft);border-left:2px solid transparent;}
+  .prd-toc a:hover{background:#fff;color:var(--ink);}
+  .prd-toc a.is-active{color:var(--brand-deep);border-left-color:var(--brand);background:#fff;font-weight:600;}
+
+  .prd-main{min-width:0;}
+  .prd-sec{margin-bottom:54px;scroll-margin-top:90px;}
+  .prd-kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:500;}
+  .prd-h{font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.02em;margin:6px 0 0;color:var(--ink);}
+  .prd-sub{color:var(--ink-soft);font-size:1.02rem;margin-top:10px;max-width:70ch;line-height:1.6;}
+  .prd-p{color:var(--ink-soft);line-height:1.65;max-width:74ch;margin:14px 0;}
+  .prd-card{background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);padding:18px 20px;box-shadow:var(--sh-sm);}
+  .prd-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .prd-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media (max-width:760px){.prd-grid2,.prd-grid3{grid-template-columns:1fr;}}
+
+  /* hero */
+  .prd-hero{background:linear-gradient(135deg,#0A0F1E,#131C2E);color:var(--on-dark);border-radius:var(--r-xl);padding:38px clamp(22px,4vw,46px);position:relative;overflow:hidden;margin-bottom:46px;}
+  .prd-hero .grid-bg{opacity:.4;}
+  .prd-hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.02em;line-height:1.05;position:relative;}
+  .prd-hero p{color:var(--on-dark-soft);max-width:64ch;margin-top:12px;position:relative;line-height:1.6;}
+  .prd-metarow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;position:relative;}
+  .prd-metarow .m{background:rgba(255,255,255,.06);border:1px solid var(--line-dark);border-radius:var(--r-pill);padding:7px 14px;font-size:.78rem;}
+  .prd-metarow .m b{color:var(--on-dark);font-weight:600;}
+  .prd-metarow .m span{color:var(--on-dark-faint);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.05em;display:block;text-transform:uppercase;}
+
+  /* tables */
+  .prd-table{width:100%;border-collapse:collapse;font-size:.92rem;background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);overflow:hidden;}
+  .prd-table th,.prd-table td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line-light);vertical-align:top;}
+  .prd-table th{font-family:var(--font-display);font-size:.82rem;color:var(--ink-soft);background:#F4F7FB;}
+  .prd-table tr:last-child td{border-bottom:none;}
+  .prd-table td strong{color:var(--ink);}
+
+  /* feature module blocks */
+  .fm-mod{margin-bottom:30px;}
+  .fm-modhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line-light);padding-bottom:10px;margin-bottom:6px;}
+  .fm-modname{font-family:var(--font-display);font-weight:700;font-size:1.22rem;color:var(--ink);}
+  .fm-why{font-size:.9rem;color:var(--ink-soft);line-height:1.55;margin:8px 0 16px;max-width:80ch;}
+  .fm-why b{color:var(--brand-deep);font-weight:600;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.04em;}
+  .fm-feat{background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);padding:15px 17px;margin-bottom:10px;box-shadow:var(--sh-sm);}
+  .fm-ftop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .fm-fname{font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--ink);}
+  .fm-persona{margin-left:auto;font-size:.74rem;color:var(--ink-faint);font-family:var(--font-mono);}
+  .fm-desc{font-size:.9rem;color:var(--ink-soft);margin:8px 0;line-height:1.5;}
+  .fm-story{font-size:.88rem;color:var(--ink);background:var(--bg-tint);border-left:3px solid var(--brand);border-radius:0 8px 8px 0;padding:9px 12px;margin:8px 0;line-height:1.5;font-style:italic;}
+  .fm-ac{margin:8px 0 0;padding:0;list-style:none;}
+  .fm-ac li{position:relative;padding-left:22px;font-size:.84rem;color:var(--ink-soft);line-height:1.5;margin:5px 0;}
+  .fm-ac li::before{content:"";position:absolute;left:2px;top:6px;width:11px;height:11px;border-radius:3px;border:1.5px solid var(--ok);background:rgba(47,215,155,.18);}
+  .pri{font-family:var(--font-mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;padding:3px 8px;border-radius:var(--r-pill);}
+  .pri-P0{background:rgba(91,124,250,.14);color:var(--brand-deep);}
+  .pri-P1{background:rgba(244,169,59,.16);color:#A66A12;}
+  .pri-P2{background:rgba(138,149,173,.16);color:var(--ink-faint);}
+  .fm-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft);margin:6px 0 22px;}
+  .fm-glance{background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);padding:16px 18px;margin-bottom:24px;box-shadow:var(--sh-sm);}
+  .fm-glance h4{font-family:var(--font-display);margin:0 0 10px;color:var(--ink);font-size:1rem;}
+  .fm-gmod{font-size:.86rem;color:var(--ink-soft);margin:7px 0;line-height:1.5;}
+  .fm-gmod b{color:var(--ink);font-family:var(--font-display);font-weight:600;}
+  .fm-laterhead{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:14px 0 6px;}
+  .fm-mini{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-light);font-size:.86rem;}
+  .fm-mini:last-child{border-bottom:none;}
+  .fm-mini .fm-mininame{font-weight:600;color:var(--ink);}
+  .fm-mini .fm-minidesc{color:var(--ink-soft);}
+  .fm-mini .fm-minip{margin-left:auto;font-size:.74rem;color:var(--ink-faint);font-family:var(--font-mono);white-space:nowrap;}
+
+  /* flow steps */
+  .flow-steps{counter-reset:fs;display:flex;flex-direction:column;gap:10px;}
+  .flow-step{display:flex;gap:14px;background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);padding:14px 16px;box-shadow:var(--sh-sm);}
+  .flow-step .n{counter-increment:fs;flex:none;width:28px;height:28px;border-radius:50%;background:var(--grad-brand);color:#fff;display:grid;place-items:center;font-family:var(--font-mono);font-size:.8rem;font-weight:600;}
+  .flow-step .n::before{content:counter(fs);}
+  .flow-step h4{font-family:var(--font-display);font-size:1rem;margin:0 0 3px;color:var(--ink);}
+  .flow-step p{margin:0;font-size:.88rem;color:var(--ink-soft);line-height:1.5;}
+  .flow-step .tie{display:inline-block;margin-top:6px;font-family:var(--font-mono);font-size:.68rem;color:var(--teal);}
+
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .pill-row .p{font-size:.8rem;padding:6px 12px;border-radius:var(--r-pill);background:#fff;border:1px solid var(--line-light);color:var(--ink-soft);}
+  .inout{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:760px){.inout{grid-template-columns:1fr;}}
+  .inout .col{background:#fff;border:1px solid var(--line-light);border-radius:var(--r-md);padding:16px 18px;}
+  .inout .col.in{border-top:3px solid var(--ok);}
+  .inout .col.out{border-top:3px solid var(--ink-faint);}
+  .inout h4{font-family:var(--font-display);margin:0 0 8px;}
+  .inout ul{margin:0;padding-left:18px;}
+  .inout li{font-size:.88rem;color:var(--ink-soft);line-height:1.5;margin:7px 0;}
+  .inout li b{color:var(--ink);}
+
+  .ai-note{background:#fff;border:1px dashed var(--brand);border-radius:var(--r-md);padding:18px 20px;}
+  .prd-foot{border-top:1px solid var(--line-light);padding:26px clamp(16px,4vw,40px);text-align:center;color:var(--ink-faint);font-size:.82rem;}
+  .backlink{display:inline-flex;align-items:center;gap:7px;color:var(--brand-deep);font-weight:600;font-size:.9rem;margin-top:10px;}
+  /* prototype modal + CTA */
+  .fm-see{margin-left:8px;font-family:var(--font-body);font-size:.74rem;font-weight:600;color:var(--brand-deep);background:rgba(91,124,250,.10);border:1px solid rgba(91,124,250,.3);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .18s;}
+  .fm-see:hover{background:rgba(91,124,250,.18);}
+  .proto-modal{position:fixed;inset:0;z-index:2000;display:none;}
+  .proto-modal.is-open{display:block;}
+  .proto-modal__backdrop{position:absolute;inset:0;background:rgba(6,9,18,.72);backdrop-filter:blur(4px);}
+  .proto-modal__panel{position:absolute;inset:3.5% 4%;background:var(--bg-dark);border:1px solid var(--line-strong);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-lg);}
+  .proto-modal__bar{display:flex;align-items:center;gap:14px;padding:11px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--line-dark);color:var(--on-dark);}
+  .proto-modal__title{font-family:var(--font-display);font-weight:600;font-size:.95rem;}
+  .proto-modal__hint{font-family:var(--font-mono);font-size:.68rem;color:var(--on-dark-faint);}
+  .proto-modal__open{margin-left:auto;font-size:.82rem;color:var(--on-dark-soft);text-decoration:none;}
+  .proto-modal__open:hover{color:var(--on-dark);}
+  .proto-modal__close{background:rgba(255,255,255,.06);border:1px solid var(--line-dark);color:var(--on-dark);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:1rem;line-height:1;}
+  .proto-modal__frame{flex:1;width:100%;border:0;background:var(--bg-dark);}
+</style>
+</head>
+<body>
+
+<nav class="prd-nav">
+  <a class="brand" href="index.html">
+    <span class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 6.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    Certinal <span style="color:var(--teal)">Health</span>
+  </a>
+  <div class="prd-tabs">
+    <a class="prd-tab" href="index.html">Case Study</a>
+    <a class="prd-tab is-active" href="prd.html">PRD / v1 Spec</a>
+  </div>
+  <span class="spacer"></span>
+  <span class="prd-meta-pill">v1.0 · DRAFT</span>
+</nav>
+
+<div class="prd-shell">
+  <!-- TOC -->
+  <aside class="prd-toc" aria-label="Contents">
+    <a href="#problem">Problem &amp; opportunity</a>
+    <a href="#modules-why">How I got to 4 modules</a>
+    <a href="#goals">Goals &amp; non-goals</a>
+    <a href="#personas">Personas</a>
+    <a href="#features">Module feature map</a>
+    <a href="#flows">Detailed user flows</a>
+    <a href="#opd-ux">OPD consent UX</a>
+    <a href="#architecture">Tech-stack fit</a>
+    <a href="#scope">v1 scope vs deferred</a>
+    <a href="#metrics">Success &amp; failure metrics</a>
+    <a href="#rollout">Rollout &amp; pilot</a>
+    <a href="#risks">Risks &amp; open questions</a>
+    <a href="#strategy">Strategy (light)</a>
+    <a href="#ai">How I used AI</a>
+  </aside>
+
+  <main class="prd-main">
+    <!-- HERO -->
+    <div class="prd-hero">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <h1>Certinal Health Authorization Hub</h1>
+      <p>v1 product requirements &amp; feature map. The execution layer that turns patient permissions into auditable healthcare workflows — built on Certinal's e-signature, workflow and evidence primitives, sitting alongside ABDM and the hospital's EMR/HIS.</p>
+      <div class="prd-metarow">
+        <div class="m"><span>Version</span><b>v1.0 — draft</b></div>
+        <div class="m"><span>Submitted by</span><b>Aditi Mishra</b></div>
+        <div class="m"><span>Primary customer</span><b>Large Indian hospital chains</b></div>
+        <div class="m"><span>Trigger</span><b>DPDP Act 2023 — enforceable in ~12–16 mo</b></div>
+      </div>
+      <a class="backlink" href="index.html" style="color:#9FB0CE;margin-top:18px;">&larr; Back to the case study narrative</a>
+    </div>
+
+    <!-- PROBLEM -->
+    <section class="prd-sec" id="problem">
+      <span class="prd-kicker">01 · Problem &amp; opportunity</span>
+      <h2 class="prd-h">Healthcare has a permission execution problem, not a consent problem.</h2>
+      <p class="prd-p">DPDP turns patient consent from an informal, paper-heavy ritual into an operational obligation: a hospital must show what notice was given, what consent was captured, for what purpose, whether it was withdrawn, and what it did about it. Today that lives in PDFs, shared inboxes and Excel — captured but never <em>executed</em> or <em>proven</em>. ABDM owns identity and record-sharing consent; EMR/HIS own the record; privacy suites own policy. Nobody owns the layer that <strong>acts on a permission and proves it across systems.</strong> That layer is the product.</p>
+      <p class="prd-p">I assume "should we build it?" is yes, under one condition: by going <strong>deep on execution</strong> for a focused wedge (hospital chains first), not broad on a generic DPDP suite. The full narrative, market and positioning live in the <a href="index.html" style="color:var(--brand-deep);font-weight:600;">case study</a>; this document is the buildable spec.</p>
+    </section>
+
+    <!-- MODULE DERIVATION -->
+    <section class="prd-sec" id="modules-why">
+      <span class="prd-kicker">02 · How I arrived at the modules</span>
+      <h2 class="prd-h">Four modules, each derived from a specific obligation.</h2>
+      <p class="prd-p">I didn't start from a feature wish-list. I started from the four things DPDP forces a hospital to <em>do</em> with a permission — capture it validly, act within its scope, stop when it's withdrawn, and prove all of the above — and built one module per verb. That's the core four-step flow: <strong>Capture → Authorize → Withdraw → Prove.</strong></p>
+      <table class="prd-table">
+        <thead><tr><th>DPDP obligation</th><th>What it forces the hospital to do</th><th>Module</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Notice &amp; valid consent</strong><br>(S5, S6)</td><td>Present an understandable notice and capture free, specific, purpose-bound consent — and keep every version.</td><td><strong>1 · Consent Lifecycle</strong></td></tr>
+          <tr><td><strong>Purpose limitation &amp; lawful processing</strong><br>(S7, S8)</td><td>Ensure each use is backed by a valid, scoped permission and route the right approvals before data moves.</td><td><strong>2 · Authorization Workflow Engine</strong></td></tr>
+          <tr><td><strong>Right to withdraw</strong><br>(S6(4)–(6))</td><td>Let a patient withdraw as easily as they consented, and cease processing across every system that holds the data.</td><td><strong>3 · Withdrawal Management</strong></td></tr>
+          <tr><td><strong>Accountability / being able to prove compliance</strong><br>(S5, S8)</td><td>Prove, on demand, exactly what was permitted, by whom, when — court-ready.</td><td><strong>4 · Audit Evidence Vault</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="prd-p">Everything outside this spine — data discovery, DPIA tooling, vendor risk, cookie/web consent, a DSAR rights console — is real DPDP work, but it's <em>governance breadth</em>, not <em>permission execution</em>. It's where OneTrust and Securiti already win, and it's not where Certinal's strengths sit. So it's deliberately deferred (see <a href="#scope" style="color:var(--brand-deep)">v1 scope</a>).</p>
+    </section>
+
+    <!-- GOALS -->
+    <section class="prd-sec" id="goals">
+      <span class="prd-kicker">03 · Goals &amp; non-goals</span>
+      <h2 class="prd-h">What v1 is for — and what it refuses to be.</h2>
+      <div class="prd-grid3" style="margin-top:16px;">
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Business goals</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.6;">
+            <li>Land enterprise hospital chains.</li>
+            <li>Extend Certinal beyond e-sign into a healthcare workflow platform.</li>
+            <li>Open a defensible wedge competitors can't easily follow.</li></ul></div>
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">User goals</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.6;">
+            <li>Retrieve any consent in under 30 seconds.</li>
+            <li>Cut audit-prep effort ~80%.</li>
+            <li>Kill paper consent; one permission history per patient.</li></ul></div>
+        <div class="prd-card" style="border-top:3px solid var(--danger);"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Non-goals (v1)</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.6;">
+            <li>Data discovery / inventory, DPIA, vendor risk.</li>
+            <li>Generic OneTrust-style privacy suite.</li>
+            <li>Replacing EMR or ABDM.</li>
+            <li>Cookie/web consent &amp; DSAR console (later).</li></ul></div>
+      </div>
+    </section>
+
+    <!-- PERSONAS -->
+    <section class="prd-sec" id="personas">
+      <span class="prd-kicker">04 · Personas</span>
+      <h2 class="prd-h">Who buys it, who lives in it.</h2>
+      <table class="prd-table">
+        <thead><tr><th>Persona</th><th>Type</th><th>Job-to-be-done</th><th>Broken today</th></tr></thead>
+        <tbody>
+          <tr><td><strong>DPO / Compliance Head</strong></td><td>Primary buyer</td><td>Prove compliance on demand; reduce audit risk.</td><td>Can't prove what was permitted; audits take weeks.</td></tr>
+          <tr><td><strong>CIO / Chief Digital Officer</strong></td><td>Economic buyer</td><td>One integrated permission layer across systems.</td><td>Fragmented systems; no single source of permission truth.</td></tr>
+          <tr><td><strong>Front-desk staff</strong></td><td>Daily user</td><td>Capture consent fast, in the patient's language.</td><td>Paper forms, manual filing, no link to the record.</td></tr>
+          <tr><td><strong>Compliance team</strong></td><td>Daily user</td><td>Monitor permissions; retrieve evidence instantly.</td><td>Excel trackers, inbox archaeology.</td></tr>
+          <tr><td><strong>Hospital admin</strong></td><td>Daily user</td><td>Move approvals along without chasing.</td><td>Email threads, no routing or SLAs.</td></tr>
+          <tr><td><strong>Patient</strong></td><td>Data principal</td><td>Understand and control what's shared; withdraw easily.</td><td>Signs a paper form nobody can find later.</td></tr>
+        </tbody>
+      </table>
+      <div class="prd-grid2" style="margin-top:16px;">
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">A DPO's day, once DPDP is live</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">A regulator email lands asking to prove a patient's data share. Instead of three weeks chasing PDFs and inboxes, they search a name, read the permission timeline, and export a sealed package in under a minute &mdash; then get back to actual governance.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">A front-desk day, once DPDP is live</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin:0;">Every patient now needs valid, language-correct consent at registration. On paper that's chaos; in the Hub it's a 90-second, staff-assisted screen on a shared tablet that files itself to the record &mdash; no folder, no scanning, no "where's that form?"</p></div>
+      </div>
+    </section>
+
+    <!-- FEATURE MAP -->
+    <section class="prd-sec" id="features">
+      <span class="prd-kicker">05 · Module feature map</span>
+      <h2 class="prd-h">The v1 feature map.</h2>
+      <div class="prd-card" style="border-left:3px solid var(--brand);margin-bottom:16px;"><strong>v1 in one line:</strong> capture &rarr; authorize &rarr; withdraw &rarr; prove patient permissions, for Indian hospital chains &mdash; <em>not</em> a data-discovery, DPIA or cookie-consent platform.</div>
+      <p class="prd-p">Below, <strong>P0 features carry full user stories + acceptance criteria</strong> (an engineer can scope from them); P1/P2 are listed as one-liners to keep this skimmable. <strong>How I prioritized:</strong> P0 = needed to make a permission executable and provable on day one; P1 = deepens it (SLAs, guardian, renewals) once the core lands; P2 = adjacent, consciously deferred.</p>
+      <div class="fm-legend">
+        <span><span class="pri pri-P0">P0</span> Must-have for v1</span>
+        <span><span class="pri pri-P1">P1</span> Fast-follow in v1</span>
+        <span><span class="pri pri-P2">P2</span> Deferred</span>
+      </div>
+      <div class="fm-glance"><h4>v1 &mdash; P0 at a glance (20 features)</h4><div class="fm-gmod"><b>Consent Lifecycle</b> &middot; Purpose-Based Consent Capture · Vernacular Notice &amp; Consent · Assisted &amp; Kiosk Capture for OPD · Identity-Bound Signature (ABHA / OTP) · Version Tracking &amp; Re-Consent · Queryable Consent Repository</div><div class="fm-gmod"><b>Authorization Workflow Engine</b> &middot; Purpose-Scoped Grant Builder · Configurable Multi-Party Approval Routing · Use-Case Workflow Templates · Point-of-Use Enforcement Check</div><div class="fm-gmod"><b>Withdrawal Management</b> &middot; Omnichannel Withdrawal Intake · Partial vs Full Withdrawal Selector · Withdrawal Impact Analysis · Task Routing with SLA Deadlines · Stop/Purge Completion Receipts</div><div class="fm-gmod"><b>Audit Evidence Vault</b> &middot; Tamper-Evident Permission Ledger · Regulator &amp; Court-Ready Evidence Package Export · Per-Patient Permission Timeline · Fast Evidence Retrieval &amp; Search · Vault Access Logging (Watch-the-Watchers)</div></div>
+<div class="fm-mod"><div class="fm-modhead"><span class="fm-modname">Module 1 — Consent Lifecycle</span><span class="pri pri-P0">6 P0</span><span class="fm-persona">8 features</span><button class="fm-see" data-proto="s15" type="button">&#9658; See it</button></div><p class="fm-why"><b>WHY THIS MODULE</b> &nbsp;DPDP Section 5 (notice) and Section 6 (consent must be free, specific, informed, unambiguous and given by a clear affirmative action, for a specified purpose) require the hospital to present an understandable notice and capture valid, purpose-bound consent in the patient&#x27;s language — and to keep every version provable.</p><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Purpose-Based Consent Capture</span><span class="fm-persona">Front-desk staff</span></div><p class="fm-desc">Capture consent split into discrete, independently-toggled purposes (treatment, diagnostics sharing, research) rather than one blanket form.</p><div class="fm-story">As front-desk staff, I want to capture consent broken out by purpose so that each downstream use has its own provable basis under DPDP.</div><ul class="fm-ac"><li>Each purpose is an independent opt-in; bundled or blanket consent is not possible.</li><li>Required vs optional purposes are visually distinct and no purpose defaults to ON.</li><li>Each captured consent records purpose, data categories, timestamp and the notice version shown.</li><li>A patient can grant some purposes and decline others and still complete the flow.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Vernacular Notice &amp; Consent</span><span class="fm-persona">Patient (data principal)</span></div><p class="fm-desc">Present the notice and consent in the patient&#x27;s chosen language (English + Eighth-Schedule languages), language chosen before anything else.</p><div class="fm-story">As a patient, I want the notice and consent in my own language so that I actually understand what I am agreeing to.</div><ul class="fm-ac"><li>Language is selected before any notice text is shown.</li><li>v1 ships English, Hindi and at least two regional languages.</li><li>The exact language version shown is stored with the consent record.</li><li>Switching language never changes the scope or purposes being captured.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Assisted &amp; Kiosk Capture for OPD</span><span class="fm-persona">Front-desk staff</span></div><p class="fm-desc">Low-literacy-friendly capture on a shared tablet/kiosk, self-serve or staff-assisted, designed for an OPD waiting room.</p><div class="fm-story">As front-desk staff, I want to capture consent on a shared device for a patient who can barely use a phone so that nobody is excluded or pushed back to paper.</div><ul class="fm-ac"><li>A consent completed on a staff-operated device is still attributed to the patient after patient verification.</li><li>Interface offers large touch targets, icon-led purposes and a read-aloud option.</li><li>A standard OPD consent completes in roughly 90 seconds.</li><li>Staff-assisted sessions record that assistance was given and by whom.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Identity-Bound Signature (ABHA / OTP)</span><span class="fm-persona">Patient (data principal)</span></div><p class="fm-desc">Bind each consent to a verified identity via ABHA or mobile OTP and sign it with Certinal eSign.</p><div class="fm-story">As a DPO, I want every consent bound to a verified patient identity so that it holds up as that specific person&#x27;s affirmative action.</div><ul class="fm-ac"><li>Consent is signed via Certinal eSign and bound to a verified identifier (ABHA where available, else OTP-verified mobile).</li><li>The signed artifact is immutable once captured.</li><li>The identity-verification method used is recorded on the consent.</li><li>An unverified consent cannot reach &#x27;active&#x27; status.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Version Tracking &amp; Re-Consent</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Every notice or purpose change creates a new immutable version; materially affected patients are flagged for re-consent.</p><div class="fm-story">As a DPO, I want every consent version preserved and changes to trigger re-consent so that we can always prove which version a patient agreed to.</div><ul class="fm-ac"><li>Editing a notice or purpose set creates a new version; prior versions are never overwritten.</li><li>Each consent records the exact version the patient agreed to.</li><li>A material change flags impacted patients for re-consent.</li><li>Superseded consents are marked as such, not deleted.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Queryable Consent Repository</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">A central, searchable store of all consents with status, purpose, language, version and validity.</p><div class="fm-story">As compliance, I want to search every consent by patient, purpose or status so that I can answer &#x27;what did this patient agree to&#x27; instantly.</div><ul class="fm-ac"><li>Search by patient/ABHA, purpose, status and date range.</li><li>Each record shows purpose, language, version, validity window and current status.</li><li>A single patient&#x27;s full consent set exports in one action.</li><li>Results return in seconds, not minutes.</li></ul></div><div class="fm-laterhead">Fast-follow &amp; deferred</div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Consent Expiry &amp; Validity Windows</span><span class="fm-minidesc">&mdash; Time-bound or event-bound consents that lapse automatically rather than living forever.</span><span class="fm-minip">Compliance team / DPO</span></div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Guardian / Minor Consent</span><span class="fm-minidesc">&mdash; Capture consent given by a verified guardian for a minor or dependent, per DPDP&#x27;s provisions for children.</span><span class="fm-minip">Front-desk staff</span></div></div>
+<div class="fm-mod"><div class="fm-modhead"><span class="fm-modname">Module 2 — Authorization Workflow Engine</span><span class="pri pri-P0">4 P0</span><span class="fm-persona">8 features</span><button class="fm-see" data-proto="s16" type="button">&#9658; See it</button></div><p class="fm-why"><b>WHY THIS MODULE</b> &nbsp;DPDP Section 7 purpose limitation and Section 8(1) accountability require a Data Fiduciary to ensure all processing is backed by valid, purpose-scoped permission and to prove it on demand, so the hospital needs an enforceable execution layer — route, scope, enforce at point-of-use, and evidence — not just stored consent.</p><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Purpose-Scoped Grant Builder</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Defines every authorization as a structured grant bound to a specific purpose, data categories, and time/expiry window so processing can never exceed what the patient permitted.</p><div class="fm-story">As a DPO, I want every authorization to be tied to a named purpose, specific data categories, and an expiry so that processing is provably limited to what the patient agreed to under DPDP purpose limitation.</div><ul class="fm-ac"><li>A grant cannot be created without at least one named purpose, one or more data categories, and a validity window (fixed end-date or event-based, e.g. &#x27;until discharge&#x27;).</li><li>Selecting a purpose auto-constrains the selectable data categories to those declared necessary for that purpose; out-of-scope categories cannot be added.</li><li>Each grant shows a human-readable scope summary (&#x27;Cardiology can view labs + imaging for treatment until 31-Dec-2026&#x27;) visible to staff and patient.</li><li>A grant past its expiry or event trigger automatically moves to an inactive state with no further processing allowed.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Configurable Multi-Party Approval Routing</span><span class="fm-persona">Hospital admin</span></div><p class="fm-desc">Routes an authorization request through an ordered or parallel set of approvers (clinician, DPO/ethics, patient) with rules that vary by use-case and data sensitivity.</p><div class="fm-story">As a hospital admin, I want to configure who must approve which type of request so that sensitive data sharing always gets the right sign-offs before any data moves.</div><ul class="fm-ac"><li>Admins can build a routing rule specifying approvers, order (sequential or parallel), and conditions (purpose, data category, requester role) without code.</li><li>A request cannot reach &#x27;granted&#x27; state until every required approver in the active route has acted.</li><li>Patient approval can be inserted as a mandatory step in any route, and the patient&#x27;s decision is binding (a clinician cannot override a patient denial).</li><li>Each approver sees the exact scope they are approving, and a rejection at any step halts the request with a recorded reason.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Use-Case Workflow Templates</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Prebuilt, editable templates for the common Indian healthcare authorization scenarios — treatment, insurance/TPA claim, caregiver access, external data share, and research — so each use-case ships with correct routing, scope, and notices.</p><div class="fm-story">As a DPO, I want ready-made templates per use-case so that front-line teams launch compliant authorizations without reinventing scope and routing each time.</div><ul class="fm-ac"><li>V1 ships with at least four templates: insurance/TPA, caregiver/family access, external data share, and research/ethics.</li><li>Each template pre-fills purpose, default data categories, validity, and the required approver route, and remains editable before launch.</li><li>Selecting a template enforces its mandatory steps (e.g. research template forces a DPO/ethics approval step that cannot be removed).</li><li>Templates are versioned so the exact template version used for any grant is recoverable later.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Point-of-Use Enforcement Check</span><span class="fm-persona">Clinician</span></div><p class="fm-desc">A real-time permission check that EMR/HIS and downstream systems call before any data access or share, returning allow/block based on the live grant — turning permission into enforcement, not paperwork.</p><div class="fm-story">As a clinician, I want the system to tell me in real time whether I&#x27;m permitted to access or share a patient&#x27;s data so that I never act outside what the patient authorized.</div><ul class="fm-ac"><li>A data-use attempt is evaluated against the active grant&#x27;s purpose, data category, requester, and validity, returning a clear allow or block decision.</li><li>If no valid grant exists or the requested use falls outside scope, the action is blocked and the reason is shown to the user.</li><li>An expired, withdrawn, or out-of-window grant produces a block even if the data was previously accessible.</li><li>Every check (allow and block) is recorded with timestamp, requester, purpose, and outcome.</li></ul></div><div class="fm-laterhead">Fast-follow &amp; deferred</div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">SLA Timers and Escalation</span><span class="fm-minidesc">&mdash; Tracks how long each approval step has been pending and auto-escalates or reassigns when an approver misses the SLA, so authorizations don&#x27;t silently stall.</span><span class="fm-minip">Hospital admin</span></div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Guardian and Delegated Authorization</span><span class="fm-minidesc">&mdash; Handles authorizations granted by a verified guardian for a minor or by a delegate/caregiver for an incapacitated adult, binding the grant to the delegate&#x27;s verified identity and relationship.</span><span class="fm-minip">Front-desk staff</span></div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Re-Authorization and Renewal Workflows</span><span class="fm-minidesc">&mdash; Detects grants nearing expiry, scope changes, or purpose changes and runs a lightweight re-consent/renewal loop rather than letting processing continue on stale permission.</span><span class="fm-minip">Compliance team / DPO</span></div><div class="fm-mini"><span class="pri pri-P2">P2</span><span class="fm-mininame">Cross-Fiduciary External Share Approval</span><span class="fm-minidesc">&mdash; A specialized route for sharing data with a third party (TPA, pharma sponsor, referral hospital, research collaborator) that captures the recipient, onward-use purpose, and transfer conditions before release.</span><span class="fm-minip">Compliance team / DPO</span></div></div>
+<div class="fm-mod"><div class="fm-modhead"><span class="fm-modname">Module 3 — Withdrawal Management</span><span class="pri pri-P0">5 P0</span><span class="fm-persona">8 features</span><button class="fm-see" data-proto="s16b" type="button">&#9658; See it</button></div><p class="fm-why"><b>WHY THIS MODULE</b> &nbsp;DPDP Section 6(4)-(6) requires that a Data Principal be able to withdraw consent &quot;as easily as it was given,&quot; that the Data Fiduciary cease processing within a reasonable time, and that this cascade to its Data Processors — so a hospital needs an execution-and-evidence layer that turns a withdrawal request into completed stop/purge actions across every system and downstream party that holds the affected data.</p><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Omnichannel Withdrawal Intake</span><span class="fm-persona">Patient (data principal)</span></div><p class="fm-desc">Capture a withdrawal request through any channel the patient already uses — self-service portal/app, front-desk assisted, or phone — into a single tracked request.</p><div class="fm-story">As a patient, I want to withdraw my consent through the portal, the front desk, or a phone call so that I can stop processing of my data using whichever channel is easiest for me.</div><ul class="fm-ac"><li>A patient can initiate withdrawal from the self-service portal/app without staff involvement, and the same request can alternatively be logged by front-desk staff or a phone agent on the patient&#x27;s behalf.</li><li>Every withdrawal request, regardless of channel, produces one unified request record with a unique reference number shown/read back to the patient.</li><li>The withdrawal entry point is reachable in no more steps than the original consent capture (verifiable parity test of clicks/steps), satisfying &#x27;as easy to withdraw as to give&#x27;.</li><li>Assisted (front-desk/phone) withdrawals require patient identity verification (e.g., ABHA/OTP or in-person ID) before the request is accepted.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Partial vs Full Withdrawal Selector</span><span class="fm-persona">Patient (data principal)</span></div><p class="fm-desc">Let the patient withdraw consent for specific purposes (e.g., research, marketing) while retaining others (e.g., active treatment), in plain language.</p><div class="fm-story">As a patient, I want to withdraw consent for some purposes (like research or marketing) but keep consent for my ongoing treatment so that I stay in control without disrupting my care.</div><ul class="fm-ac"><li>The patient sees each active consent purpose as a separately selectable item and can withdraw one, several, or all of them in a single request.</li><li>Purposes that are legally required to continue (e.g., statutory medical record retention) are clearly flagged as not withdrawable, with the reason stated.</li><li>Purpose names and descriptions are shown in the patient&#x27;s chosen language (Eighth Schedule set) at the point of selection.</li><li>The resulting request explicitly records which purposes are withdrawn and which are retained.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Withdrawal Impact Analysis</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Automatically map a withdrawal to every internal system, dataset, and downstream party (processors, labs, third parties) that holds the affected data.</p><div class="fm-story">As a DPO, I want a withdrawal request to automatically show me which systems and external parties hold the affected data so that I know exactly what must stop or be purged.</div><ul class="fm-ac"><li>On submission, the system generates an impact list of internal systems/datasets and named downstream parties linked to the withdrawn purpose(s).</li><li>Each impacted item shows its responsible owner and the required action (stop processing vs purge vs notify downstream).</li><li>Retained-purpose data and legally-retained data are excluded from purge actions and shown separately so they are not wrongly deleted.</li><li>The DPO can review the impact list before tasks are dispatched.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Task Routing with SLA Deadlines</span><span class="fm-persona">Hospital admin</span></div><p class="fm-desc">Route each stop/purge/notify action to the responsible system owner as a tracked task with a due date and escalation if missed.</p><div class="fm-story">As a hospital admin, I want each withdrawal action routed to the right system owner with a deadline so that processing actually stops within the legally required time, not just on paper.</div><ul class="fm-ac"><li>Each impacted item generates a task assigned to its owner with a configurable SLA due date derived from the withdrawal date.</li><li>Tasks approaching or past their deadline trigger reminders and escalate to a supervisor/DPO.</li><li>A live dashboard shows, per withdrawal, how many tasks are open, in-progress, completed, and overdue.</li><li>Downstream-party notification tasks track acknowledgement from the processor/third party, not just dispatch.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Stop/Purge Completion Receipts</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Capture proof of completion for each action and issue the patient a court-ready receipt confirming what was stopped or purged and when.</p><div class="fm-story">As a DPO, I want a verifiable receipt for every stop/purge action so that I can prove to the patient and the Board that the withdrawal was executed within time.</div><ul class="fm-ac"><li>Each completed task records who completed it, when, and the action taken (stopped/purged/notified), with the completing owner&#x27;s attestation.</li><li>When all in-scope tasks for a withdrawal are complete, the patient receives a confirmation receipt summarizing what was withdrawn and the actions taken.</li><li>A consolidated, tamper-evident withdrawal evidence package can be exported for any request showing the full timeline from intake to completion.</li><li>Downstream-party acknowledgements are included in the completion record.</li></ul></div><div class="fm-laterhead">Fast-follow &amp; deferred</div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Patient Withdrawal Status Tracker</span><span class="fm-minidesc">&mdash; Give the patient real-time visibility into their withdrawal request status and SLA countdown via the portal and proactive notifications.</span><span class="fm-minip">Patient (data principal)</span></div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Guardian &amp; Assisted Withdrawal for Minors and Dependents</span><span class="fm-minidesc">&mdash; Allow a verified guardian or authorized representative to withdraw consent on behalf of a minor or dependent, with proof of authority captured.</span><span class="fm-minip">Front-desk staff (capture consent)</span></div><div class="fm-mini"><span class="pri pri-P2">P2</span><span class="fm-mininame">Re-consent &amp; Reactivation Flow</span><span class="fm-minidesc">&mdash; Let a patient who previously withdrew a purpose easily grant it again, with the new consent treated as a fresh, separately logged permission.</span><span class="fm-minip">Patient (data principal)</span></div></div>
+<div class="fm-mod"><div class="fm-modhead"><span class="fm-modname">Module 4 — Audit Evidence Vault</span><span class="pri pri-P0">5 P0</span><span class="fm-persona">8 features</span><button class="fm-see" data-proto="s17" type="button">&#9658; See it</button></div><p class="fm-why"><b>WHY THIS MODULE</b> &nbsp;This module exists to satisfy the Data Fiduciary&#x27;s DPDP Act 2023 accountability and demonstrable-compliance obligation (Sections 5, 8(1)/8(2), 8(7)) — when a patient complains or the Data Protection Board investigates, the hospital must be able to PROVE what permission existed, when, for what purpose, and that it was honored, with tamper-evident evidence that holds up in front of the Board and courts.</p><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Tamper-Evident Permission Ledger</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Append-only, hash-chained ledger that records every permission event (grant, scope, withdrawal, expiry, access) as an immutable entry.</p><div class="fm-story">As a DPO, I want every permission event written to an append-only hash-chained ledger so that no record can be silently altered or deleted and I can defend the hospital&#x27;s compliance posture.</div><ul class="fm-ac"><li>Every permission lifecycle event (grant, modify, withdraw, expire, purpose-use) creates a new ledger entry; existing entries can never be edited or deleted, only superseded.</li><li>Each entry is cryptographically chained to the prior entry so any tampering breaks the chain and is detectable.</li><li>Entries are timestamped with a trusted time source and attributed to the actor (patient, staff member, or system) who caused the event.</li><li>An integrity-check function can confirm the entire chain is intact and flag the exact entry where any break occurs.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Regulator &amp; Court-Ready Evidence Package Export</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">One-click generation of a self-contained, signed evidence bundle for a patient or incident, ready to hand to the Data Protection Board or a court.</p><div class="fm-story">As a DPO responding to a Board inquiry, I want to export a complete signed evidence package for a patient in one click so that I can prove our permission handling without engineering help or manual assembly.</div><ul class="fm-ac"><li>A user can generate a package scoped to one patient, one consent reference, or one incident/date-range and receive a single downloadable bundle.</li><li>The package includes the signed permission artifacts, the relevant ledger timeline, integrity proof, and a plain-language summary cover sheet.</li><li>The exported package is digitally signed/sealed and includes verification instructions a third party can follow to confirm authenticity offline.</li><li>The act of exporting is itself recorded in the access log with requester, scope, and reason.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Per-Patient Permission Timeline</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">A single chronological view of everything that ever happened to a patient&#x27;s permissions, retrievable by patient ID, ABHA, or consent reference.</p><div class="fm-story">As a DPO, I want a complete chronological timeline of a patient&#x27;s permissions so that I can answer &#x27;what did we have permission to do, and when&#x27; in seconds during a grievance or audit.</div><ul class="fm-ac"><li>A user can pull the full timeline by patient identifier, linked ABHA number, or consent reference and see all grants, scopes, purposes, withdrawals, and accesses in order.</li><li>Each timeline entry shows what changed, who triggered it, the purpose it was tied to, and the language the patient saw at capture.</li><li>Withdrawal events and the resulting state change are clearly visible alongside the grant they revoke.</li><li>The timeline view can be exported directly into an evidence package.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Fast Evidence Retrieval &amp; Search</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">High-speed search and filter across the vault by patient, ABHA, consent reference, purpose, date range, or event type.</p><div class="fm-story">As a DPO under a time-bound Board notice, I want to locate the exact permission evidence I need by any identifier or filter so that I can respond within regulatory deadlines.</div><ul class="fm-ac"><li>A user can search by patient identifier, ABHA, consent reference, purpose, actor, event type, or date range and combine filters.</li><li>Search returns results fast enough to use interactively during an active inquiry, even on a large historical vault.</li><li>Search results link directly to the underlying ledger entries and the patient timeline.</li><li>Searches that surface patient records are themselves logged in the vault access log.</li></ul></div><div class="fm-feat"><div class="fm-ftop"><span class="pri pri-P0">P0</span><span class="fm-fname">Vault Access Logging (Watch-the-Watchers)</span><span class="fm-persona">Compliance team / DPO</span></div><p class="fm-desc">Immutable logging of every read, search, and export performed against the vault itself, so the evidence store is as accountable as the data it protects.</p><div class="fm-story">As a DPO, I want every access to the evidence vault recorded immutably so that I can prove the audit trail was not misused and so the Board trusts the evidence as untampered.</div><ul class="fm-ac"><li>Every view, search, and export against the vault records who accessed it, when, what scope, and the stated reason.</li><li>Access logs are written to the same append-only, tamper-evident store and cannot be edited by vault users including admins.</li><li>A DPO can review and export an access report for any time window or for a specific patient&#x27;s records.</li></ul></div><div class="fm-laterhead">Fast-follow &amp; deferred</div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Integrity Proof &amp; Verification</span><span class="fm-minidesc">&mdash; On-demand and scheduled integrity verification of the ledger, producing a portable proof that a given entry or package is genuine and unaltered.</span><span class="fm-minip">Compliance team / DPO</span></div><div class="fm-mini"><span class="pri pri-P1">P1</span><span class="fm-mininame">Retention &amp; Lawful Disposal Alignment</span><span class="fm-minidesc">&mdash; Enforces retention rules so evidence is kept for the required period and disposed of in an auditable way, with the disposal itself logged as evidence.</span><span class="fm-minip">Compliance team / DPO</span></div><div class="fm-mini"><span class="pri pri-P2">P2</span><span class="fm-mininame">Multi-Language Evidence Rendering</span><span class="fm-minidesc">&mdash; Renders the evidence package and patient timeline in the Eighth Schedule language the patient was served, plus an English working copy for the Board.</span><span class="fm-minip">Compliance team / DPO</span></div></div>
+    </section>
+
+    <!-- FLOWS -->
+    <section class="prd-sec" id="flows">
+      <span class="prd-kicker">06 · Detailed user flows</span>
+      <h2 class="prd-h">Two flows, screen by screen.</h2>
+      <p class="prd-p">The two flows that carry the thesis: capturing consent at the front line, and executing a withdrawal across systems. Walk through the steps below &mdash; or hit <strong>See it</strong> on either to run the live, clickable prototype.</p>
+
+      <h3 style="font-family:var(--font-display);margin:22px 0 10px;color:var(--ink);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Flow A — OPD consent capture <span style="font-weight:400;color:var(--ink-faint);font-size:.9rem;">(front desk · patient)</span><button class="fm-see" data-proto="s15" type="button" style="margin-left:auto;">&#9658; See it</button></h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="n"></span><div><h4>Choose language</h4><p>Before any text appears, the patient (or staff on a shared tablet) picks a language — English, Hindi or a regional language.<span class="tie">DPDP S5 · notice must be understood</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Verify identity</h4><p>Scan ABHA or enter mobile → OTP. The consent will be bound to this verified identity.<span class="tie">Binds the affirmative action to a person</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Plain-language notice</h4><p>A scannable, icon-led summary (why we collect, what we store, who sees it, your control) with a read-aloud option. Full notice one tap away.<span class="tie">DPDP S5</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Pick purposes</h4><p>Per-purpose toggles — Treatment (required), Diagnostics sharing, Research — each its own opt-in, nothing default-on.<span class="tie">DPDP S6 · specific &amp; purpose-bound</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Sign</h4><p>Patient signs via Certinal eSign, bound to the verified identity. Captured artifact is immutable.<span class="tie">Reuses Certinal e-sign</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Confirm &amp; store evidence</h4><p>"Consent recorded · v1 · evidence stored." A copy goes to the patient (SMS/WhatsApp); the signed record is filed to the repository and the audit ledger.<span class="tie">Feeds Audit Vault</span></p></div></div>
+      </div>
+
+      <h3 style="font-family:var(--font-display);margin:30px 0 10px;color:var(--ink);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Flow B — Withdrawal execution <span style="font-weight:400;color:var(--ink-faint);font-size:.9rem;">(patient · compliance)</span><button class="fm-see" data-proto="s16b" type="button" style="margin-left:auto;">&#9658; See it</button></h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="n"></span><div><h4>Patient initiates withdrawal</h4><p>From the portal, an SMS link, or the front desk — patient picks which permission to revoke (partial) or all (full).<span class="tie">DPDP S6(4) · as easy as giving it</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Impact analysis</h4><p>The Hub maps every system, dataset and downstream party holding the affected data, and what must stop.<span class="tie">Turns a request into scoped work</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Task routing</h4><p>Each affected system (EMR, lab/LIS, research dataset) gets an owned, deadlined task routed to the right team.<span class="tie">DPDP S6(6) · cease processing</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Execute &amp; collect receipts</h4><p>Each task closes with a stop/purge receipt. Nothing is "done" until every system confirms.<span class="tie">Evidence, not promises</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Complete &amp; prove</h4><p>Patient is notified — "withdrawn across 3 systems" — and a sealed evidence event is written to the ledger.<span class="tie">Feeds Audit Vault</span></p></div></div>
+      </div>
+    </section>
+
+    <!-- OPD UX -->
+    <section class="prd-sec" id="opd-ux">
+      <span class="prd-kicker">07 · OPD consent UX</span>
+      <h2 class="prd-h">Consent for a patient who barely uses a phone.</h2>
+      <p class="prd-p">The hardest screen in the product isn't the compliance console — it's a consent flow for an anxious, possibly elderly patient in a crowded OPD waiting room, in a language that may not be English, on a device they don't own. v1 design principles:</p>
+      <div class="prd-grid2" style="margin-top:14px;">
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Design principles</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.65;">
+            <li><b>Language first</b> — pick language before anything else.</li>
+            <li><b>Assume low literacy</b> — icons, plain words, short lines, read-aloud audio.</li>
+            <li><b>Big touch targets</b> — usable by shaky or unfamiliar hands.</li>
+            <li><b>Assisted mode</b> — staff can drive on a shared device; still attributed to the patient.</li>
+            <li><b>Never default-on</b> — every purpose is an explicit choice.</li>
+            <li><b>~90 seconds</b> — fast enough for OPD throughput.</li></ul></div>
+        <div class="prd-card"><h4 style="margin:0 0 6px;font-family:var(--font-display)">Real-world constraints</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.65;">
+            <li>Shared kiosk/tablet, not the patient's phone.</li>
+            <li>Noisy, time-pressured front desk.</li>
+            <li>Patient may be unwell, elderly, or accompanied by kin.</li>
+            <li>Many languages; uneven connectivity.</li>
+            <li>Must be provable later as <em>that</em> patient's consent.</li></ul></div>
+      </div>
+      <p class="prd-p">The clickable version of this flow is <a href="index.html#s15" style="color:var(--brand-deep);font-weight:600;">in the case study</a>.</p>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section class="prd-sec" id="architecture">
+      <span class="prd-kicker">08 · Tech-stack fit</span>
+      <h2 class="prd-h">How it sits in a hospital's stack — and on Certinal's.</h2>
+      <p class="prd-p">The Hub is an <strong>execution layer that rides existing rails</strong>, not another silo staff must log into. Where it can, it surfaces inside the systems people already use (HIS screens, the patient portal) via embed/API. It is built <em>on top of</em> Certinal's e-signature, workflow and evidence engine — that's the unfair advantage, not a rebuild.</p>
+      <table class="prd-table">
+        <thead><tr><th>System</th><th>Its role</th><th>What crosses the boundary</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Certinal eSign</strong></td><td>Signature, workflow &amp; evidence engine</td><td>The Hub <em>is</em> built on it — signing, routing, tamper-evident records.</td></tr>
+          <tr><td><strong>HIS / HMS</strong></td><td>Registration &amp; admission</td><td>Triggers a consent at registration; embeds the capture screen at the desk.</td></tr>
+          <tr><td><strong>EMR / EHR</strong></td><td>Clinical system of record</td><td>Asks the Hub "is this use permitted?" at point of use; receives consent status.</td></tr>
+          <tr><td><strong>LIS / diagnostics</strong></td><td>Labs &amp; imaging</td><td>Checks permission before sharing results externally.</td></tr>
+          <tr><td><strong>ABDM</strong></td><td>National health stack</td><td>ABHA identity verification; record-sharing consent rails the Hub complements.</td></tr>
+          <tr><td><strong>Patient portal / app</strong></td><td>Patient channel</td><td>Self-serve consent, status, and one-tap withdrawal.</td></tr>
+        </tbody>
+      </table>
+      <h3 style="font-family:var(--font-display);font-size:1.05rem;color:var(--ink);margin:22px 0 8px;">Integration sequence &mdash; lowest-risk value first</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="n"></span><div><h4>Capture + Audit</h4><p>Need almost no integration &mdash; ship value (paperless consent, instant retrieval) before touching clinical systems.</p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>HIS / registration embed</h4><p>Trigger and surface consent capture inside the existing front-desk screen &mdash; no new login.</p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Withdrawal task routing</h4><p>Wire the systems that hold data so withdrawals become real, tracked tasks.</p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>EMR / LIS point-of-use enforcement</h4><p>The deepest integration &mdash; check permission at the moment of access. Done last, on proven value.</p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>ABDM cross-provider</h4><p>Ride the national exchange rails for record sharing between providers.</p></div></div>
+      </div>
+      <p class="prd-p" style="font-size:.86rem;"><em>Per scoping decision, this PRD stays at product/integration level — data models and API contracts are out of scope here and belong in the technical design that follows.</em></p>
+    </section>
+
+    <!-- SCOPE -->
+    <section class="prd-sec" id="scope">
+      <span class="prd-kicker">09 · v1 scope vs deferred</span>
+      <h2 class="prd-h">What ships, what waits, and why.</h2>
+      <div class="inout">
+        <div class="col in"><h4>In v1</h4>
+          <ul>
+            <li><b>The four-step flow</b> — the P0 features of all four modules.</li>
+            <li><b>Hospital-first</b> — OPD/IPD consent, authorization, withdrawal, audit.</li>
+            <li><b>Vernacular, assisted capture</b> — the OPD reality.</li>
+            <li><b>Certinal eSign + ABHA/OTP</b> identity binding.</li>
+            <li><b>HIS / EMR / LIS integration</b> for capture, enforcement and audit.</li></ul></div>
+        <div class="col out"><h4>Deferred (with reason)</h4>
+          <ul>
+            <li><b>DSAR / rights console</b> — real, but governance breadth; not the wedge.</li>
+            <li><b>Data discovery &amp; inventory, DPIA, vendor risk</b> — OneTrust/Securiti turf.</li>
+            <li><b>Cookie / web consent</b> — one future channel of a unified preference layer.</li>
+            <li><b>Deep pharma/CRO clinical-trial eConsent</b> — start hospital-first, expand later.</li>
+            <li><b>Retention/deletion automation</b> — beyond withdrawal-driven stops.</li></ul></div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section class="prd-sec" id="metrics">
+      <span class="prd-kicker">10 · Metrics</span>
+      <h2 class="prd-h">How I'll know it's working.</h2>
+      <div class="prd-grid2">
+        <div class="prd-card" style="border-top:3px solid var(--ok)"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Success metrics</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.86rem;line-height:1.6;">
+            <li><b>Digital consent adoption</b> — ~0% digital today &rarr; <b>90%+</b> in pilot depts by month 6 · <span class="faint">Hub captures ÷ total registrations</span></li>
+            <li><b>Consent retrieval time</b> — days today &rarr; <b>&lt;30s</b> · <span class="faint">timed from search to sealed export</span></li>
+            <li><b>Audit-prep effort</b> — weeks today &rarr; <b>&minus;80% hours</b> · <span class="faint">person-hours per audit, before vs after</span></li>
+            <li><b>Workflow completion</b> — n/a today &rarr; <b>95%+</b> closed within SLA · <span class="faint">completed ÷ initiated authorizations</span></li>
+            <li><b>Monthly active compliance users</b> — <b>growing</b> · <span class="faint">weekly-active DPO/compliance seats</span></li></ul></div>
+        <div class="prd-card" style="border-top:3px solid var(--danger)"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Failure signals</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.7;">
+            <li>Staff still keep Excel trackers.</li>
+            <li>Teams still hold paper "just in case".</li>
+            <li>Audit retrieval still takes &gt; 5 minutes.</li>
+            <li>Requests stall — low workflow completion.</li></ul></div>
+      </div>
+    </section>
+
+    <!-- ROLLOUT -->
+    <section class="prd-sec" id="rollout">
+      <span class="prd-kicker">11 · Rollout &amp; pilot</span>
+      <h2 class="prd-h">Land narrow, prove value, then widen.</h2>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="n"></span><div><h4>Design partner (0–3 mo)</h4><p>One hospital chain, one site. Ship Consent Capture + Audit Vault — the lowest-integration, highest-proof slice.<span class="tie">Exit: paper consent gone in one OPD; audit retrieval &lt; 30s</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Pilot (3–6 mo)</h4><p>2–3 departments. Add Authorization for insurance/TPA and external data-share.<span class="tie">Exit: 90% digital adoption in pilot depts</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Withdrawal &amp; enforcement (6–9 mo)</h4><p>Turn on Withdrawal Management + point-of-use enforcement with EMR/LIS.<span class="tie">Exit: withdrawals execute across systems with receipts</span></p></div></div>
+        <div class="flow-step"><span class="n"></span><div><h4>Chain-wide + diagnostics (9–15 mo)</h4><p>Roll across the chain; extend to diagnostics. Begin templating for pharma/CRO.<span class="tie">Exit: multi-site reference customer</span></p></div></div>
+      </div>
+    </section>
+
+    <!-- RISKS -->
+    <section class="prd-sec" id="risks">
+      <span class="prd-kicker">12 · Risks, assumptions &amp; open questions</span>
+      <h2 class="prd-h">What could break this — and what I'm assuming.</h2>
+      <div class="prd-grid2">
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Risks → mitigation</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.88rem;line-height:1.6;">
+            <li><b>Hospital integration is slow</b> → start with capture + audit, which need the least integration.</li>
+            <li><b>"Another login" rejection</b> → embed in HIS/portal, don't force a new tool.</li>
+            <li><b>Consent capture is commoditized</b> → lead with execution + evidence, not signing.</li>
+            <li><b>Regulatory timing slips</b> → the audit/retrieval value lands even pre-enforcement.</li></ul></div>
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Assumptions &amp; open questions</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--ink-soft);font-size:.88rem;line-height:1.6;">
+            <li>DPDP enforceable within ~12–16 months; rules clarify SDF duties.</li>
+            <li>Large chains likely classed as Significant Data Fiduciaries.</li>
+            <li><b>Open:</b> Register as a DPDP Consent Manager later, or stay a processor for the Fiduciary?</li>
+            <li><b>Open:</b> when do pharma/CRO clinical-trial flows earn their own track?</li></ul></div>
+      </div>
+    </section>
+
+    <!-- STRATEGY -->
+    <section class="prd-sec" id="strategy">
+      <span class="prd-kicker">13 · Strategy (lighter)</span>
+      <h2 class="prd-h">Right to win, expansion, and go-to-market.</h2>
+      <div class="prd-grid3">
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Right to win</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.6;margin:0;">Certinal already runs the hard primitives — e-sign, workflow, approvals, audit, evidence, integrations — plus healthcare e-consent and enterprise security (ISO 27001, SOC 2, FIPS). vs OneTrust/Securiti: generic and heavy, not clinical. vs in-house: hospitals don't want to build and maintain compliance plumbing.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Beyond India?</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.6;margin:0;">The four-step flow generalizes to other consent-heavy regulated verticals (BFSI, insurance) and to geographies with similar consent regimes (Gulf, SEA). But v1 is deliberately India-healthcare — win depth first, generalize later.</p></div>
+        <div class="prd-card"><h4 style="margin:0 0 8px;font-family:var(--font-display)">Pricing &amp; adoption</h4><p style="font-size:.88rem;color:var(--ink-soft);line-height:1.6;margin:0;">Per-facility / volume SaaS + implementation, in a cost-sensitive, relationship-driven market. Land via compliance urgency and the CIO; distribute through HIS vendors and SIs; drive adoption by embedding in the existing front-desk workflow (low training) and proving audit-prep savings.</p></div>
+      </div>
+    </section>
+
+    <!-- AI NOTE -->
+    <section class="prd-sec" id="ai">
+      <span class="prd-kicker">14 · How I used AI</span>
+      <h2 class="prd-h">Disclosure.</h2>
+      <div class="ai-note">
+        <p class="prd-p" style="margin:0;">I used Claude as a thinking partner and build accelerator: to synthesize DPDP and ABDM research, pressure-test the framing, draft feature maps and copy, and generate the interactive case-study site and this PRD. Every product decision — the reframe to "permission execution," the four-module spine, the MVP cuts, the positioning, and the tradeoffs — is mine; AI sped up drafting and production, it didn't make the calls. Where AI-suggested framings conflicted with the thesis (e.g. an early "governance breadth" positioning axis), I overrode them.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="prd-foot">
+  Certinal Health Authorization Hub · v1 PRD / feature map · DPDP × Indian Healthcare<br>
+  <span style="color:var(--ink-soft)">Submitted by <strong style="color:var(--ink)">Aditi Mishra</strong></span><br>
+  <a class="backlink" href="index.html">&larr; Back to the case study</a>
+</footer>
+
+<script>
+(function(){
+  // active TOC highlight
+  var links=[].slice.call(document.querySelectorAll('.prd-toc a'));
+  var map={};
+  links.forEach(function(a){ var id=a.getAttribute('href').slice(1); var el=document.getElementById(id); if(el) map[id]=a; });
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('is-active');}); var a=map[e.target.id]; if(a)a.classList.add('is-active'); } });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){ var el=document.getElementById(id); if(el) io.observe(el); });
+})();
+</script>
+<div class="proto-modal" id="protoModal" aria-hidden="true">
+  <div class="proto-modal__backdrop" data-close></div>
+  <div class="proto-modal__panel" role="dialog" aria-modal="true" aria-label="Prototype preview">
+    <div class="proto-modal__bar">
+      <span class="proto-modal__title" id="protoModalTitle">Prototype</span>
+      <span class="proto-modal__hint">live, clickable</span>
+      <a class="proto-modal__open" id="protoModalOpen" href="index.html" target="_blank" rel="noopener">Open in full ↗</a>
+      <button class="proto-modal__close" data-close aria-label="Close preview">✕</button>
+    </div>
+    <iframe class="proto-modal__frame" id="protoModalFrame" title="Prototype preview" loading="lazy" src="about:blank"></iframe>
+  </div>
+</div>
+<script>
+(function(){
+  var modal=document.getElementById('protoModal');
+  if(!modal) return;
+  var frame=document.getElementById('protoModalFrame'), title=document.getElementById('protoModalTitle'), openLink=document.getElementById('protoModalOpen');
+  var LABELS={s15:'01 · Patient registration & consent',swallet:'02 · Patient consent wallet',s16b:'03 · Withdrawal that executes',sxprov:'04 · Cross-provider sharing',s16:'05 · Research authorization',sbreak:'06 · Emergency access',s17:'07 · Compliance audit'};
+  function openP(id){frame.src='index.html?only='+id;openLink.href='index.html#'+id;title.textContent=LABELS[id]||'Prototype';modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function closeP(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');frame.src='about:blank';document.body.style.overflow='';}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-proto]');if(b){e.preventDefault();openP(b.getAttribute('data-proto'));return;}if(e.target.closest('[data-close]'))closeP();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeP();});
+})();
+</script>
+</body>
+</html>

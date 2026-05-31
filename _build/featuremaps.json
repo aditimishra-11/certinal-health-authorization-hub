@@ -1,0 +1,433 @@
+[
+ {
+  "module": "Module 1 \u2014 Consent Lifecycle",
+  "why": "DPDP Section 5 (notice) and Section 6 (consent must be free, specific, informed, unambiguous and given by a clear affirmative action, for a specified purpose) require the hospital to present an understandable notice and capture valid, purpose-bound consent in the patient's language \u2014 and to keep every version provable.",
+  "features": [
+   {
+    "name": "Purpose-Based Consent Capture",
+    "priority": "P0",
+    "persona": "Front-desk staff",
+    "description": "Capture consent split into discrete, independently-toggled purposes (treatment, diagnostics sharing, research) rather than one blanket form.",
+    "userStory": "As front-desk staff, I want to capture consent broken out by purpose so that each downstream use has its own provable basis under DPDP.",
+    "acceptanceCriteria": [
+     "Each purpose is an independent opt-in; bundled or blanket consent is not possible.",
+     "Required vs optional purposes are visually distinct and no purpose defaults to ON.",
+     "Each captured consent records purpose, data categories, timestamp and the notice version shown.",
+     "A patient can grant some purposes and decline others and still complete the flow."
+    ]
+   },
+   {
+    "name": "Vernacular Notice & Consent",
+    "priority": "P0",
+    "persona": "Patient (data principal)",
+    "description": "Present the notice and consent in the patient's chosen language (English + Eighth-Schedule languages), language chosen before anything else.",
+    "userStory": "As a patient, I want the notice and consent in my own language so that I actually understand what I am agreeing to.",
+    "acceptanceCriteria": [
+     "Language is selected before any notice text is shown.",
+     "v1 ships English, Hindi and at least two regional languages.",
+     "The exact language version shown is stored with the consent record.",
+     "Switching language never changes the scope or purposes being captured."
+    ]
+   },
+   {
+    "name": "Assisted & Kiosk Capture for OPD",
+    "priority": "P0",
+    "persona": "Front-desk staff",
+    "description": "Low-literacy-friendly capture on a shared tablet/kiosk, self-serve or staff-assisted, designed for an OPD waiting room.",
+    "userStory": "As front-desk staff, I want to capture consent on a shared device for a patient who can barely use a phone so that nobody is excluded or pushed back to paper.",
+    "acceptanceCriteria": [
+     "A consent completed on a staff-operated device is still attributed to the patient after patient verification.",
+     "Interface offers large touch targets, icon-led purposes and a read-aloud option.",
+     "A standard OPD consent completes in roughly 90 seconds.",
+     "Staff-assisted sessions record that assistance was given and by whom."
+    ]
+   },
+   {
+    "name": "Identity-Bound Signature (ABHA / OTP)",
+    "priority": "P0",
+    "persona": "Patient (data principal)",
+    "description": "Bind each consent to a verified identity via ABHA or mobile OTP and sign it with Certinal eSign.",
+    "userStory": "As a DPO, I want every consent bound to a verified patient identity so that it holds up as that specific person's affirmative action.",
+    "acceptanceCriteria": [
+     "Consent is signed via Certinal eSign and bound to a verified identifier (ABHA where available, else OTP-verified mobile).",
+     "The signed artifact is immutable once captured.",
+     "The identity-verification method used is recorded on the consent.",
+     "An unverified consent cannot reach 'active' status."
+    ]
+   },
+   {
+    "name": "Version Tracking & Re-Consent",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Every notice or purpose change creates a new immutable version; materially affected patients are flagged for re-consent.",
+    "userStory": "As a DPO, I want every consent version preserved and changes to trigger re-consent so that we can always prove which version a patient agreed to.",
+    "acceptanceCriteria": [
+     "Editing a notice or purpose set creates a new version; prior versions are never overwritten.",
+     "Each consent records the exact version the patient agreed to.",
+     "A material change flags impacted patients for re-consent.",
+     "Superseded consents are marked as such, not deleted."
+    ]
+   },
+   {
+    "name": "Queryable Consent Repository",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "A central, searchable store of all consents with status, purpose, language, version and validity.",
+    "userStory": "As compliance, I want to search every consent by patient, purpose or status so that I can answer 'what did this patient agree to' instantly.",
+    "acceptanceCriteria": [
+     "Search by patient/ABHA, purpose, status and date range.",
+     "Each record shows purpose, language, version, validity window and current status.",
+     "A single patient's full consent set exports in one action.",
+     "Results return in seconds, not minutes."
+    ]
+   },
+   {
+    "name": "Consent Expiry & Validity Windows",
+    "priority": "P1",
+    "persona": "Compliance team / DPO",
+    "description": "Time-bound or event-bound consents that lapse automatically rather than living forever.",
+    "userStory": "As a DPO, I want consents to carry validity windows so that processing doesn't continue indefinitely on an old consent.",
+    "acceptanceCriteria": [
+     "A consent can be fixed-term or event-bound (e.g. 'until discharge').",
+     "Expired consents move to inactive automatically.",
+     "Expiring consents trigger a renewal prompt within a configurable lead time."
+    ]
+   },
+   {
+    "name": "Guardian / Minor Consent",
+    "priority": "P1",
+    "persona": "Front-desk staff",
+    "description": "Capture consent given by a verified guardian for a minor or dependent, per DPDP's provisions for children.",
+    "userStory": "As front-desk staff, I want to capture a parent's consent for a minor so that we lawfully process a child's data.",
+    "acceptanceCriteria": [
+     "Guardian identity and relationship are recorded and the grant is flagged as guardian-given.",
+     "Guardian verification is attached to the consent evidence.",
+     "Grants for minors can be configured to require re-consent when the child reaches majority."
+    ]
+   }
+  ]
+ },
+ {
+  "module": "Module 2 \u2014 Authorization Workflow Engine",
+  "why": "DPDP Section 7 purpose limitation and Section 8(1) accountability require a Data Fiduciary to ensure all processing is backed by valid, purpose-scoped permission and to prove it on demand, so the hospital needs an enforceable execution layer \u2014 route, scope, enforce at point-of-use, and evidence \u2014 not just stored consent.",
+  "features": [
+   {
+    "name": "Purpose-Scoped Grant Builder",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Defines every authorization as a structured grant bound to a specific purpose, data categories, and time/expiry window so processing can never exceed what the patient permitted.",
+    "userStory": "As a DPO, I want every authorization to be tied to a named purpose, specific data categories, and an expiry so that processing is provably limited to what the patient agreed to under DPDP purpose limitation.",
+    "acceptanceCriteria": [
+     "A grant cannot be created without at least one named purpose, one or more data categories, and a validity window (fixed end-date or event-based, e.g. 'until discharge').",
+     "Selecting a purpose auto-constrains the selectable data categories to those declared necessary for that purpose; out-of-scope categories cannot be added.",
+     "Each grant shows a human-readable scope summary ('Cardiology can view labs + imaging for treatment until 31-Dec-2026') visible to staff and patient.",
+     "A grant past its expiry or event trigger automatically moves to an inactive state with no further processing allowed."
+    ]
+   },
+   {
+    "name": "Configurable Multi-Party Approval Routing",
+    "priority": "P0",
+    "persona": "Hospital admin",
+    "description": "Routes an authorization request through an ordered or parallel set of approvers (clinician, DPO/ethics, patient) with rules that vary by use-case and data sensitivity.",
+    "userStory": "As a hospital admin, I want to configure who must approve which type of request so that sensitive data sharing always gets the right sign-offs before any data moves.",
+    "acceptanceCriteria": [
+     "Admins can build a routing rule specifying approvers, order (sequential or parallel), and conditions (purpose, data category, requester role) without code.",
+     "A request cannot reach 'granted' state until every required approver in the active route has acted.",
+     "Patient approval can be inserted as a mandatory step in any route, and the patient's decision is binding (a clinician cannot override a patient denial).",
+     "Each approver sees the exact scope they are approving, and a rejection at any step halts the request with a recorded reason."
+    ]
+   },
+   {
+    "name": "Use-Case Workflow Templates",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Prebuilt, editable templates for the common Indian healthcare authorization scenarios \u2014 treatment, insurance/TPA claim, caregiver access, external data share, and research \u2014 so each use-case ships with correct routing, scope, and notices.",
+    "userStory": "As a DPO, I want ready-made templates per use-case so that front-line teams launch compliant authorizations without reinventing scope and routing each time.",
+    "acceptanceCriteria": [
+     "V1 ships with at least four templates: insurance/TPA, caregiver/family access, external data share, and research/ethics.",
+     "Each template pre-fills purpose, default data categories, validity, and the required approver route, and remains editable before launch.",
+     "Selecting a template enforces its mandatory steps (e.g. research template forces a DPO/ethics approval step that cannot be removed).",
+     "Templates are versioned so the exact template version used for any grant is recoverable later."
+    ]
+   },
+   {
+    "name": "Point-of-Use Enforcement Check",
+    "priority": "P0",
+    "persona": "Clinician",
+    "description": "A real-time permission check that EMR/HIS and downstream systems call before any data access or share, returning allow/block based on the live grant \u2014 turning permission into enforcement, not paperwork.",
+    "userStory": "As a clinician, I want the system to tell me in real time whether I'm permitted to access or share a patient's data so that I never act outside what the patient authorized.",
+    "acceptanceCriteria": [
+     "A data-use attempt is evaluated against the active grant's purpose, data category, requester, and validity, returning a clear allow or block decision.",
+     "If no valid grant exists or the requested use falls outside scope, the action is blocked and the reason is shown to the user.",
+     "An expired, withdrawn, or out-of-window grant produces a block even if the data was previously accessible.",
+     "Every check (allow and block) is recorded with timestamp, requester, purpose, and outcome."
+    ]
+   },
+   {
+    "name": "SLA Timers and Escalation",
+    "priority": "P1",
+    "persona": "Hospital admin",
+    "description": "Tracks how long each approval step has been pending and auto-escalates or reassigns when an approver misses the SLA, so authorizations don't silently stall.",
+    "userStory": "As a hospital admin, I want stalled approval steps to escalate automatically so that patient care and claims aren't held up by an unresponsive approver.",
+    "acceptanceCriteria": [
+     "Each route step has a configurable time limit, and a breach triggers escalation to a defined backup approver or role.",
+     "Pending and breached requests are visible in a queue filterable by approver, use-case, and age.",
+     "Escalations and reassignments are logged with timestamps and the triggering rule.",
+     "Approvers receive reminders before the SLA breaches via their configured channel."
+    ]
+   },
+   {
+    "name": "Guardian and Delegated Authorization",
+    "priority": "P1",
+    "persona": "Front-desk staff",
+    "description": "Handles authorizations granted by a verified guardian for a minor or by a delegate/caregiver for an incapacitated adult, binding the grant to the delegate's verified identity and relationship.",
+    "userStory": "As front-desk staff, I want to capture and route an authorization given by a parent or caregiver so that we lawfully process a minor's or dependent's data under DPDP guardian-consent rules.",
+    "acceptanceCriteria": [
+     "A grant for a minor or dependent records the guardian/delegate identity, the relationship, and the basis of authority.",
+     "The grant flags it was given by a guardian/delegate (not the principal directly) wherever the grant is viewed.",
+     "Guardian-based grants tied to a minor can be configured to require re-authorization upon the principal reaching majority.",
+     "The delegate's verified identity (e.g. via ABHA where available) is attached to the grant evidence."
+    ]
+   },
+   {
+    "name": "Re-Authorization and Renewal Workflows",
+    "priority": "P1",
+    "persona": "Compliance team / DPO",
+    "description": "Detects grants nearing expiry, scope changes, or purpose changes and runs a lightweight re-consent/renewal loop rather than letting processing continue on stale permission.",
+    "userStory": "As a DPO, I want expiring or scope-changed grants to trigger a renewal request so that we never keep processing data on an out-of-date or expanded purpose.",
+    "acceptanceCriteria": [
+     "Grants approaching expiry generate a renewal request to the patient and relevant approvers within a configurable lead time.",
+     "Adding a new purpose or data category to an existing grant triggers a fresh authorization rather than silently expanding scope.",
+     "If a renewal is not completed before expiry, the grant lapses to inactive and point-of-use checks begin blocking.",
+     "The renewal links to the prior grant so the full lineage of a continuing authorization is traceable."
+    ]
+   },
+   {
+    "name": "Cross-Fiduciary External Share Approval",
+    "priority": "P2",
+    "persona": "Compliance team / DPO",
+    "description": "A specialized route for sharing data with a third party (TPA, pharma sponsor, referral hospital, research collaborator) that captures the recipient, onward-use purpose, and transfer conditions before release.",
+    "userStory": "As a DPO, I want external data shares to go through a dedicated approval that records the recipient and their permitted onward use so that we retain accountability after data leaves our systems.",
+    "acceptanceCriteria": [
+     "An external-share request requires a named recipient, the recipient's permitted purpose, and the data categories being shared.",
+     "Release is blocked until the external-share route is fully approved, including a DPO step.",
+     "The share record captures the transfer scope and any onward-use restrictions for later inspection.",
+     "Each external share is individually traceable to the patient grant that authorized it."
+    ]
+   }
+  ]
+ },
+ {
+  "module": "Module 3 \u2014 Withdrawal Management",
+  "why": "DPDP Section 6(4)-(6) requires that a Data Principal be able to withdraw consent \"as easily as it was given,\" that the Data Fiduciary cease processing within a reasonable time, and that this cascade to its Data Processors \u2014 so a hospital needs an execution-and-evidence layer that turns a withdrawal request into completed stop/purge actions across every system and downstream party that holds the affected data.",
+  "features": [
+   {
+    "name": "Omnichannel Withdrawal Intake",
+    "priority": "P0",
+    "persona": "Patient (data principal)",
+    "description": "Capture a withdrawal request through any channel the patient already uses \u2014 self-service portal/app, front-desk assisted, or phone \u2014 into a single tracked request.",
+    "userStory": "As a patient, I want to withdraw my consent through the portal, the front desk, or a phone call so that I can stop processing of my data using whichever channel is easiest for me.",
+    "acceptanceCriteria": [
+     "A patient can initiate withdrawal from the self-service portal/app without staff involvement, and the same request can alternatively be logged by front-desk staff or a phone agent on the patient's behalf.",
+     "Every withdrawal request, regardless of channel, produces one unified request record with a unique reference number shown/read back to the patient.",
+     "The withdrawal entry point is reachable in no more steps than the original consent capture (verifiable parity test of clicks/steps), satisfying 'as easy to withdraw as to give'.",
+     "Assisted (front-desk/phone) withdrawals require patient identity verification (e.g., ABHA/OTP or in-person ID) before the request is accepted."
+    ]
+   },
+   {
+    "name": "Partial vs Full Withdrawal Selector",
+    "priority": "P0",
+    "persona": "Patient (data principal)",
+    "description": "Let the patient withdraw consent for specific purposes (e.g., research, marketing) while retaining others (e.g., active treatment), in plain language.",
+    "userStory": "As a patient, I want to withdraw consent for some purposes (like research or marketing) but keep consent for my ongoing treatment so that I stay in control without disrupting my care.",
+    "acceptanceCriteria": [
+     "The patient sees each active consent purpose as a separately selectable item and can withdraw one, several, or all of them in a single request.",
+     "Purposes that are legally required to continue (e.g., statutory medical record retention) are clearly flagged as not withdrawable, with the reason stated.",
+     "Purpose names and descriptions are shown in the patient's chosen language (Eighth Schedule set) at the point of selection.",
+     "The resulting request explicitly records which purposes are withdrawn and which are retained."
+    ]
+   },
+   {
+    "name": "Withdrawal Impact Analysis",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Automatically map a withdrawal to every internal system, dataset, and downstream party (processors, labs, third parties) that holds the affected data.",
+    "userStory": "As a DPO, I want a withdrawal request to automatically show me which systems and external parties hold the affected data so that I know exactly what must stop or be purged.",
+    "acceptanceCriteria": [
+     "On submission, the system generates an impact list of internal systems/datasets and named downstream parties linked to the withdrawn purpose(s).",
+     "Each impacted item shows its responsible owner and the required action (stop processing vs purge vs notify downstream).",
+     "Retained-purpose data and legally-retained data are excluded from purge actions and shown separately so they are not wrongly deleted.",
+     "The DPO can review the impact list before tasks are dispatched."
+    ]
+   },
+   {
+    "name": "Task Routing with SLA Deadlines",
+    "priority": "P0",
+    "persona": "Hospital admin",
+    "description": "Route each stop/purge/notify action to the responsible system owner as a tracked task with a due date and escalation if missed.",
+    "userStory": "As a hospital admin, I want each withdrawal action routed to the right system owner with a deadline so that processing actually stops within the legally required time, not just on paper.",
+    "acceptanceCriteria": [
+     "Each impacted item generates a task assigned to its owner with a configurable SLA due date derived from the withdrawal date.",
+     "Tasks approaching or past their deadline trigger reminders and escalate to a supervisor/DPO.",
+     "A live dashboard shows, per withdrawal, how many tasks are open, in-progress, completed, and overdue.",
+     "Downstream-party notification tasks track acknowledgement from the processor/third party, not just dispatch."
+    ]
+   },
+   {
+    "name": "Stop/Purge Completion Receipts",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Capture proof of completion for each action and issue the patient a court-ready receipt confirming what was stopped or purged and when.",
+    "userStory": "As a DPO, I want a verifiable receipt for every stop/purge action so that I can prove to the patient and the Board that the withdrawal was executed within time.",
+    "acceptanceCriteria": [
+     "Each completed task records who completed it, when, and the action taken (stopped/purged/notified), with the completing owner's attestation.",
+     "When all in-scope tasks for a withdrawal are complete, the patient receives a confirmation receipt summarizing what was withdrawn and the actions taken.",
+     "A consolidated, tamper-evident withdrawal evidence package can be exported for any request showing the full timeline from intake to completion.",
+     "Downstream-party acknowledgements are included in the completion record."
+    ]
+   },
+   {
+    "name": "Patient Withdrawal Status Tracker",
+    "priority": "P1",
+    "persona": "Patient (data principal)",
+    "description": "Give the patient real-time visibility into their withdrawal request status and SLA countdown via the portal and proactive notifications.",
+    "userStory": "As a patient, I want to see the status of my withdrawal request and when it will be completed so that I have confidence my data is actually being stopped.",
+    "acceptanceCriteria": [
+     "The patient can view their request status (received, in progress, completed) using the reference number, on the portal and via SMS/notification.",
+     "Status and notifications are presented in the patient's chosen Eighth Schedule language.",
+     "The patient is proactively notified when the withdrawal is completed or if it is delayed beyond the committed timeframe."
+    ]
+   },
+   {
+    "name": "Guardian & Assisted Withdrawal for Minors and Dependents",
+    "priority": "P1",
+    "persona": "Front-desk staff (capture consent)",
+    "description": "Allow a verified guardian or authorized representative to withdraw consent on behalf of a minor or dependent, with proof of authority captured.",
+    "userStory": "As front-desk staff, I want to process a withdrawal made by a verified guardian for a minor so that we honor withdrawals for patients who cannot act for themselves while staying compliant.",
+    "acceptanceCriteria": [
+     "A withdrawal can be submitted by a guardian/authorized representative only after their relationship and authority are verified and recorded.",
+     "The request record links the guardian's identity to the patient and notes that the withdrawal was guardian-initiated.",
+     "For minors, the same impact-analysis and execution flow applies as for adult withdrawals."
+    ]
+   },
+   {
+    "name": "Re-consent & Reactivation Flow",
+    "priority": "P2",
+    "persona": "Patient (data principal)",
+    "description": "Let a patient who previously withdrew a purpose easily grant it again, with the new consent treated as a fresh, separately logged permission.",
+    "userStory": "As a patient, I want to re-grant consent I previously withdrew so that I can opt back into a service like research without confusion about my history.",
+    "acceptanceCriteria": [
+     "A patient can re-consent to a previously withdrawn purpose without it overwriting or hiding the prior withdrawal record.",
+     "The reactivation is logged as a new consent event with its own timestamp, preserving the full withdraw-then-reconsent history.",
+     "Re-consent cannot silently reactivate purged data; the patient is informed if previously purged data cannot be recovered."
+    ]
+   }
+  ]
+ },
+ {
+  "module": "Module 4 \u2014 Audit Evidence Vault",
+  "why": "This module exists to satisfy the Data Fiduciary's DPDP Act 2023 accountability and demonstrable-compliance obligation (Sections 5, 8(1)/8(2), 8(7)) \u2014 when a patient complains or the Data Protection Board investigates, the hospital must be able to PROVE what permission existed, when, for what purpose, and that it was honored, with tamper-evident evidence that holds up in front of the Board and courts.",
+  "features": [
+   {
+    "name": "Tamper-Evident Permission Ledger",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Append-only, hash-chained ledger that records every permission event (grant, scope, withdrawal, expiry, access) as an immutable entry.",
+    "userStory": "As a DPO, I want every permission event written to an append-only hash-chained ledger so that no record can be silently altered or deleted and I can defend the hospital's compliance posture.",
+    "acceptanceCriteria": [
+     "Every permission lifecycle event (grant, modify, withdraw, expire, purpose-use) creates a new ledger entry; existing entries can never be edited or deleted, only superseded.",
+     "Each entry is cryptographically chained to the prior entry so any tampering breaks the chain and is detectable.",
+     "Entries are timestamped with a trusted time source and attributed to the actor (patient, staff member, or system) who caused the event.",
+     "An integrity-check function can confirm the entire chain is intact and flag the exact entry where any break occurs."
+    ]
+   },
+   {
+    "name": "Regulator & Court-Ready Evidence Package Export",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "One-click generation of a self-contained, signed evidence bundle for a patient or incident, ready to hand to the Data Protection Board or a court.",
+    "userStory": "As a DPO responding to a Board inquiry, I want to export a complete signed evidence package for a patient in one click so that I can prove our permission handling without engineering help or manual assembly.",
+    "acceptanceCriteria": [
+     "A user can generate a package scoped to one patient, one consent reference, or one incident/date-range and receive a single downloadable bundle.",
+     "The package includes the signed permission artifacts, the relevant ledger timeline, integrity proof, and a plain-language summary cover sheet.",
+     "The exported package is digitally signed/sealed and includes verification instructions a third party can follow to confirm authenticity offline.",
+     "The act of exporting is itself recorded in the access log with requester, scope, and reason."
+    ]
+   },
+   {
+    "name": "Per-Patient Permission Timeline",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "A single chronological view of everything that ever happened to a patient's permissions, retrievable by patient ID, ABHA, or consent reference.",
+    "userStory": "As a DPO, I want a complete chronological timeline of a patient's permissions so that I can answer 'what did we have permission to do, and when' in seconds during a grievance or audit.",
+    "acceptanceCriteria": [
+     "A user can pull the full timeline by patient identifier, linked ABHA number, or consent reference and see all grants, scopes, purposes, withdrawals, and accesses in order.",
+     "Each timeline entry shows what changed, who triggered it, the purpose it was tied to, and the language the patient saw at capture.",
+     "Withdrawal events and the resulting state change are clearly visible alongside the grant they revoke.",
+     "The timeline view can be exported directly into an evidence package."
+    ]
+   },
+   {
+    "name": "Fast Evidence Retrieval & Search",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "High-speed search and filter across the vault by patient, ABHA, consent reference, purpose, date range, or event type.",
+    "userStory": "As a DPO under a time-bound Board notice, I want to locate the exact permission evidence I need by any identifier or filter so that I can respond within regulatory deadlines.",
+    "acceptanceCriteria": [
+     "A user can search by patient identifier, ABHA, consent reference, purpose, actor, event type, or date range and combine filters.",
+     "Search returns results fast enough to use interactively during an active inquiry, even on a large historical vault.",
+     "Search results link directly to the underlying ledger entries and the patient timeline.",
+     "Searches that surface patient records are themselves logged in the vault access log."
+    ]
+   },
+   {
+    "name": "Vault Access Logging (Watch-the-Watchers)",
+    "priority": "P0",
+    "persona": "Compliance team / DPO",
+    "description": "Immutable logging of every read, search, and export performed against the vault itself, so the evidence store is as accountable as the data it protects.",
+    "userStory": "As a DPO, I want every access to the evidence vault recorded immutably so that I can prove the audit trail was not misused and so the Board trusts the evidence as untampered.",
+    "acceptanceCriteria": [
+     "Every view, search, and export against the vault records who accessed it, when, what scope, and the stated reason.",
+     "Access logs are written to the same append-only, tamper-evident store and cannot be edited by vault users including admins.",
+     "A DPO can review and export an access report for any time window or for a specific patient's records."
+    ]
+   },
+   {
+    "name": "Integrity Proof & Verification",
+    "priority": "P1",
+    "persona": "Compliance team / DPO",
+    "description": "On-demand and scheduled integrity verification of the ledger, producing a portable proof that a given entry or package is genuine and unaltered.",
+    "userStory": "As a DPO, I want to produce a verifiable integrity proof for any record so that a regulator or opposing counsel can independently confirm our evidence was not tampered with.",
+    "acceptanceCriteria": [
+     "A user can run an integrity check on the whole ledger or a selected subset and get a clear pass/fail with the location of any break.",
+     "A portable proof can be attached to any exported evidence package and verified by a third party without access to the live system.",
+     "Scheduled integrity checks run automatically and alert the DPO if the chain is ever found broken."
+    ]
+   },
+   {
+    "name": "Retention & Lawful Disposal Alignment",
+    "priority": "P1",
+    "persona": "Compliance team / DPO",
+    "description": "Enforces retention rules so evidence is kept for the required period and disposed of in an auditable way, with the disposal itself logged as evidence.",
+    "userStory": "As a DPO, I want the vault to retain evidence for the mandated period and then dispose of it in a logged, provable way so that we meet both retention duties and the DPDP storage-limitation principle.",
+    "acceptanceCriteria": [
+     "Each evidence class carries a configurable retention period aligned to applicable health-records and DPDP requirements.",
+     "Records past retention are flagged for review and disposed only through a controlled, logged action \u2014 never silently.",
+     "Disposal events are themselves written to the tamper-evident ledger as proof of lawful deletion, retaining a non-reversible record that disposal occurred."
+    ]
+   },
+   {
+    "name": "Multi-Language Evidence Rendering",
+    "priority": "P2",
+    "persona": "Compliance team / DPO",
+    "description": "Renders the evidence package and patient timeline in the Eighth Schedule language the patient was served, plus an English working copy for the Board.",
+    "userStory": "As a DPO, I want evidence to show the exact regional-language notice the patient actually saw, alongside an English version, so that a court can confirm informed permission for low-literacy or non-English-speaking patients.",
+    "acceptanceCriteria": [
+     "Evidence packages preserve and display the original Eighth Schedule language version presented to the patient at capture.",
+     "An English working copy is generated alongside the original-language record for Board and court review.",
+     "The package clearly states which language version was the one the patient acted on."
+    ]
+   }
+  ]
+ }
+]

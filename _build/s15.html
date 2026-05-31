@@ -1,0 +1,317 @@
+<section class="scene scene--light" id="s15" data-scene data-title="Prototype · Registration">
+  <style>
+    #s15 .s15-wrap{display:grid;grid-template-columns:1fr 360px;gap:var(--sp-8);align-items:center;}
+    @media (max-width:920px){#s15 .s15-wrap{grid-template-columns:1fr;gap:var(--sp-7);}}
+    #s15 .s15-lede{max-width:440px;}
+    #s15 .s15-steplist{margin-top:var(--sp-6);display:grid;gap:2px;}
+    #s15 .s15-steprow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);transition:background .3s var(--ease);}
+    #s15 .s15-steprow.is-active{background:rgba(91,124,250,.08);}
+    #s15 .s15-steprow.is-done{opacity:.62;}
+    #s15 .s15-stepidx{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-mono);font-size:.74rem;font-weight:600;border:1.5px solid var(--line-light);color:var(--ink-faint);transition:all .3s var(--ease);}
+    #s15 .s15-steprow.is-active .s15-stepidx{background:var(--grad-brand);border-color:transparent;color:#fff;box-shadow:var(--sh-glow);}
+    #s15 .s15-steprow.is-done .s15-stepidx{background:var(--ok);border-color:transparent;color:#fff;}
+    #s15 .s15-steprow .s15-steplabel{font-weight:600;font-size:.95rem;}
+    #s15 .s15-steprow .s15-stepsub{font-size:.78rem;color:var(--ink-faint);margin-top:1px;}
+
+    #s15 .device{position:relative;}
+    #s15 .s15-screen-host{position:relative;min-height:520px;}
+    #s15 .s15-screen{position:absolute;inset:0;padding:22px 20px 18px;display:flex;flex-direction:column;opacity:0;transform:translateX(26px) scale(.98);pointer-events:none;transition:opacity .45s var(--ease-out),transform .45s var(--ease-out);}
+    #s15 .s15-screen.is-active{position:relative;opacity:1;transform:none;pointer-events:auto;}
+    #s15 .s15-statusbar{display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:.64rem;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:14px;}
+    #s15 .s15-statusbar .s15-sig{display:flex;gap:3px;align-items:center;}
+    #s15 .s15-statusbar .s15-sig i{width:3px;border-radius:1px;background:var(--ink-faint);display:inline-block;}
+    #s15 .s15-statusbar .s15-sig i:nth-child(1){height:5px}#s15 .s15-statusbar .s15-sig i:nth-child(2){height:7px}#s15 .s15-statusbar .s15-sig i:nth-child(3){height:9px}#s15 .s15-statusbar .s15-sig i:nth-child(4){height:11px}
+
+    #s15 .s15-brandrow{display:flex;align-items:center;gap:9px;margin-bottom:18px;}
+    #s15 .s15-brandmark{width:30px;height:30px;border-radius:9px;background:var(--grad-brand);display:grid;place-items:center;box-shadow:var(--sh-glow);}
+    #s15 .s15-brandname{font-family:var(--font-display);font-weight:700;font-size:.92rem;letter-spacing:-.01em;color:var(--ink);}
+    #s15 .s15-scrtitle{font-family:var(--font-display);font-weight:700;font-size:1.32rem;line-height:1.12;letter-spacing:-.02em;color:var(--ink);}
+    #s15 .s15-scrsub{font-size:.84rem;color:var(--ink-soft);margin-top:6px;line-height:1.45;}
+    #s15 .s15-body{flex:1;margin-top:18px;}
+
+    /* language options */
+    #s15 .s15-langopt{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 16px;border-radius:var(--r-md);border:1.5px solid var(--line-light);background:#fff;margin-bottom:10px;text-align:left;transition:all .22s var(--ease);}
+    #s15 .s15-langopt:hover{border-color:var(--brand);}
+    #s15 .s15-langopt.is-sel{border-color:var(--brand);background:rgba(91,124,250,.07);box-shadow:0 0 0 3px rgba(91,124,250,.12);}
+    #s15 .s15-langname{font-weight:700;font-size:1.02rem;color:var(--ink);font-family:var(--font-display);}
+    #s15 .s15-langnat{font-size:.78rem;color:var(--ink-faint);margin-top:2px;}
+    #s15 .s15-radio{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line-light);display:grid;place-items:center;transition:all .2s;}
+    #s15 .s15-langopt.is-sel .s15-radio{border-color:var(--brand);}
+    #s15 .s15-radio b{width:9px;height:9px;border-radius:50%;background:var(--brand);transform:scale(0);transition:transform .2s var(--ease);}
+    #s15 .s15-langopt.is-sel .s15-radio b{transform:scale(1);}
+
+    /* privacy notice */
+    #s15 .s15-noticecard{border:1px solid var(--line-light);border-radius:var(--r-md);padding:4px 0;background:#fff;}
+    #s15 .s15-noticeitem{display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid var(--line-light);}
+    #s15 .s15-noticeitem:last-child{border-bottom:none;}
+    #s15 .s15-noticeico{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:rgba(91,124,250,.10);color:var(--brand);}
+    #s15 .s15-noticeico.teal{background:rgba(25,198,176,.12);color:var(--teal);}
+    #s15 .s15-noticeico.violet{background:rgba(154,107,255,.12);color:var(--violet);}
+    #s15 .s15-noticeico.ok{background:rgba(47,215,155,.12);color:var(--ok);}
+    #s15 .s15-noticet{font-weight:600;font-size:.86rem;color:var(--ink);}
+    #s15 .s15-noticed{font-size:.76rem;color:var(--ink-soft);margin-top:2px;line-height:1.4;}
+
+    /* consent toggles */
+    #s15 .s15-purpose{display:flex;align-items:flex-start;gap:12px;padding:14px 15px;border:1px solid var(--line-light);border-radius:var(--r-md);background:#fff;margin-bottom:10px;}
+    #s15 .s15-purpose .s15-pmeta{flex:1;}
+    #s15 .s15-pname{font-weight:600;font-size:.9rem;color:var(--ink);display:flex;align-items:center;gap:7px;}
+    #s15 .s15-preq{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.05em;padding:2px 6px;border-radius:var(--r-pill);background:rgba(91,124,250,.10);color:var(--brand);text-transform:uppercase;}
+    #s15 .s15-popt{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.05em;padding:2px 6px;border-radius:var(--r-pill);background:rgba(138,149,173,.14);color:var(--ink-faint);text-transform:uppercase;}
+    #s15 .s15-pdesc{font-size:.74rem;color:var(--ink-soft);margin-top:3px;line-height:1.4;}
+    #s15 .s15-switch{flex:none;width:44px;height:25px;border-radius:var(--r-pill);background:#D7DEEA;border:none;padding:2px;position:relative;transition:background .25s var(--ease);}
+    #s15 .s15-switch[aria-checked="true"]{background:var(--ok);}
+    #s15 .s15-switch[disabled]{opacity:.85;cursor:not-allowed;}
+    #s15 .s15-switch b{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(8,12,24,.3);transition:transform .25s var(--ease);}
+    #s15 .s15-switch[aria-checked="true"] b{transform:translateX(19px);}
+
+    /* signature */
+    #s15 .s15-field{margin-bottom:14px;}
+    #s15 .s15-flabel{font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);font-family:var(--font-mono);margin-bottom:6px;display:block;}
+    #s15 .s15-input{width:100%;padding:12px 14px;border:1.5px solid var(--line-light);border-radius:var(--r-sm);font:inherit;font-size:.92rem;color:var(--ink);background:#fff;}
+    #s15 .s15-input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,124,250,.12);}
+    #s15 .s15-sigpad{position:relative;height:120px;border:1.5px dashed var(--line-light);border-radius:var(--r-md);background:linear-gradient(#fff,#FAFCFF);overflow:hidden;cursor:crosshair;}
+    #s15 .s15-sigpad svg{position:absolute;inset:0;width:100%;height:100%;}
+    #s15 .s15-sighint{position:absolute;inset:0;display:grid;place-items:center;font-size:.78rem;color:var(--ink-faint);transition:opacity .3s;}
+    #s15 .s15-sigpad.is-signed .s15-sighint{opacity:0;}
+    #s15 .s15-sigpath{fill:none;stroke:var(--brand);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:620;stroke-dashoffset:620;transition:stroke-dashoffset 1.1s var(--ease-out);}
+    #s15 .s15-sigpad.is-signed .s15-sigpath{stroke-dashoffset:0;}
+    #s15 .s15-sigclear{position:absolute;bottom:8px;right:10px;font-family:var(--font-mono);font-size:.62rem;color:var(--ink-faint);background:rgba(255,255,255,.85);border:1px solid var(--line-light);border-radius:var(--r-pill);padding:3px 9px;}
+
+    /* confirmation */
+    #s15 .s15-confirm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;}
+    #s15 .s15-checkring{width:84px;height:84px;}
+    #s15 .s15-checkring circle{fill:none;stroke:var(--ok);stroke-width:5;stroke-dasharray:251;stroke-dashoffset:251;transition:stroke-dashoffset .7s var(--ease-out);}
+    #s15 .s15-checkring path{fill:none;stroke:var(--ok);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:48;stroke-dashoffset:48;transition:stroke-dashoffset .5s var(--ease-out) .55s;}
+    #s15 .s15-screen.is-active .s15-checkring circle{stroke-dashoffset:0;}
+    #s15 .s15-screen.is-active .s15-checkring path{stroke-dashoffset:0;}
+    #s15 .s15-conftitle{font-family:var(--font-display);font-weight:700;font-size:1.3rem;color:var(--ink);margin-top:6px;}
+    #s15 .s15-receipt{margin-top:14px;width:100%;border:1px solid var(--line-light);border-radius:var(--r-md);background:#FAFCFF;padding:14px 16px;text-align:left;display:grid;gap:9px;}
+    #s15 .s15-rrow{display:flex;justify-content:space-between;gap:10px;font-size:.78rem;}
+    #s15 .s15-rk{color:var(--ink-faint);font-family:var(--font-mono);font-size:.72rem;}
+    #s15 .s15-rv{color:var(--ink);font-weight:600;font-family:var(--font-mono);font-size:.72rem;}
+    #s15 .s15-rv.ok{color:var(--ok);}
+
+    /* footer controls */
+    #s15 .s15-foot{margin-top:16px;display:flex;align-items:center;gap:10px;}
+    #s15 .s15-progress{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-faint);letter-spacing:.04em;}
+    #s15 .s15-dots{display:flex;gap:6px;flex:1;justify-content:center;}
+    #s15 .s15-dots button{width:7px;height:7px;border-radius:50%;border:none;background:#D7DEEA;padding:0;transition:all .25s var(--ease);}
+    #s15 .s15-dots button.is-active{background:var(--brand);width:22px;border-radius:4px;}
+    #s15 .s15-dots button.is-done{background:var(--ok);}
+    #s15 .s15-btn{flex:none;border:none;border-radius:var(--r-pill);font-weight:700;font-size:.84rem;padding:11px 18px;transition:all .22s var(--ease);font-family:var(--font-body);}
+    #s15 .s15-next{background:var(--grad-brand);color:#fff;box-shadow:var(--sh-glow);}
+    #s15 .s15-next:hover{transform:translateY(-2px);}
+    #s15 .s15-back{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-light);}
+    #s15 .s15-back:hover{border-color:var(--brand);color:var(--ink);}
+    #s15 .s15-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+    #s15 .s15-trackbar{height:4px;border-radius:var(--r-pill);background:#E6ECF6;overflow:hidden;margin-bottom:2px;}
+    #s15 .s15-trackfill{height:100%;width:20%;background:var(--grad-brand);border-radius:var(--r-pill);transition:width .45s var(--ease-out);}
+  </style>
+
+  <div class="container container--wide">
+    <span class="section-num">SECTION 15</span>
+    <span class="eyebrow" style="margin-left:14px;">PROTOTYPE JOURNEY 01</span>
+
+    <div class="s15-wrap mt-5">
+      <div class="s15-lede" data-reveal="right">
+        <h2 class="h1 balance">Patient Registration <span class="gradient-text">&amp; Consent</span></h2>
+        <p class="lead mt-4">A patient walks in. In under a minute, their permissions become a structured, versioned, evidence-backed record &mdash; not a signature on a paper form nobody can find later.</p>
+        <div class="s15-steplist" id="s15-steplist" aria-hidden="true">
+          <div class="s15-steprow is-active" data-step="0"><span class="s15-stepidx">1</span><span><span class="s15-steplabel">Language</span><span class="s15-stepsub">Patient picks their language</span></span></div>
+          <div class="s15-steprow" data-step="1"><span class="s15-stepidx">2</span><span><span class="s15-steplabel">Privacy notice</span><span class="s15-stepsub">Scannable, plain-language summary</span></span></div>
+          <div class="s15-steprow" data-step="2"><span class="s15-stepidx">3</span><span><span class="s15-steplabel">Consent purposes</span><span class="s15-stepsub">Granular, per-purpose toggles</span></span></div>
+          <div class="s15-steprow" data-step="3"><span class="s15-stepidx">4</span><span><span class="s15-steplabel">Signature</span><span class="s15-stepsub">Captured &amp; bound to the record</span></span></div>
+          <div class="s15-steprow" data-step="4"><span class="s15-stepidx">5</span><span><span class="s15-steplabel">Confirmation</span><span class="s15-stepsub">Versioned · evidence stored</span></span></div>
+        </div>
+      </div>
+
+      <div data-reveal="left" data-delay="120">
+        <div class="device" role="group" aria-label="Patient consent prototype">
+          <div class="device__notch"></div>
+          <div class="device__screen">
+            <div class="s15-trackbar"><div class="s15-trackfill" id="s15-trackfill"></div></div>
+            <div class="s15-screen-host" id="s15-host">
+
+              <!-- SCREEN 1 -->
+              <div class="s15-screen is-active" data-screen="0" role="group" aria-label="Step 1 of 5: Language">
+                <div class="s15-statusbar"><span>9:41</span><span class="s15-sig"><i></i><i></i><i></i><i></i></span></div>
+                <div class="s15-brandrow"><span class="s15-brandmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span><span class="s15-brandname">Health Authorization Hub</span></div>
+                <div class="s15-scrtitle">Choose your language</div>
+                <div class="s15-scrsub">अपनी भाषा चुनें · உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்</div>
+                <div class="s15-body">
+                  <button class="s15-langopt is-sel" data-lang="English"><span><span class="s15-langname">English</span><span class="s15-langnat">English</span></span><span class="s15-radio"><b></b></span></button>
+                  <button class="s15-langopt" data-lang="हिंदी"><span><span class="s15-langname">हिंदी</span><span class="s15-langnat">Hindi</span></span><span class="s15-radio"><b></b></span></button>
+                  <button class="s15-langopt" data-lang="தமிழ்"><span><span class="s15-langname">தமிழ்</span><span class="s15-langnat">Tamil</span></span><span class="s15-radio"><b></b></span></button>
+                </div>
+              </div>
+
+              <!-- SCREEN 2 -->
+              <div class="s15-screen" data-screen="1" role="group" aria-label="Step 2 of 5: Privacy notice">
+                <div class="s15-statusbar"><span>9:41</span><span class="s15-sig"><i></i><i></i><i></i><i></i></span></div>
+                <div class="s15-scrtitle">How your data is used</div>
+                <div class="s15-scrsub">A 20-second summary. Full notice available any time.</div>
+                <div class="s15-body">
+                  <div class="s15-noticecard">
+                    <div class="s15-noticeitem"><span class="s15-noticeico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="9"/></svg></span><span><span class="s15-noticet">Why we collect it</span><span class="s15-noticed">To treat you and coordinate your care across providers.</span></span></div>
+                    <div class="s15-noticeitem"><span class="s15-noticeico teal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span><span><span class="s15-noticet">What we store</span><span class="s15-noticed">Records, diagnostics and the permissions you grant below.</span></span></div>
+                    <div class="s15-noticeitem"><span class="s15-noticeico violet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 12a9 9 0 0 1 18 0"/></svg></span><span><span class="s15-noticet">Who can see it</span><span class="s15-noticed">Only parties you authorize &mdash; nothing more, nothing default-on.</span></span></div>
+                    <div class="s15-noticeitem"><span class="s15-noticeico ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4 10-12"/></svg></span><span><span class="s15-noticet">Your control</span><span class="s15-noticed">Withdraw any permission, any time, in one tap.</span></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SCREEN 3 -->
+              <div class="s15-screen" data-screen="2" role="group" aria-label="Step 3 of 5: Consent purposes">
+                <div class="s15-statusbar"><span>9:41</span><span class="s15-sig"><i></i><i></i><i></i><i></i></span></div>
+                <div class="s15-scrtitle">What do you allow?</div>
+                <div class="s15-scrsub">Each purpose is separate. You decide what shares.</div>
+                <div class="s15-body">
+                  <div class="s15-purpose">
+                    <div class="s15-pmeta"><div class="s15-pname">Treatment <span class="s15-preq">Required</span></div><div class="s15-pdesc">Care from your treating clinicians at this facility.</div></div>
+                    <button class="s15-switch" role="switch" aria-checked="true" aria-label="Treatment consent (required)" disabled data-purpose="Treatment"><b></b></button>
+                  </div>
+                  <div class="s15-purpose">
+                    <div class="s15-pmeta"><div class="s15-pname">Diagnostics sharing <span class="s15-popt">Optional</span></div><div class="s15-pdesc">Share lab &amp; imaging results with referred specialists.</div></div>
+                    <button class="s15-switch" role="switch" aria-checked="true" aria-label="Diagnostics sharing consent" data-purpose="Diagnostics"><b></b></button>
+                  </div>
+                  <div class="s15-purpose">
+                    <div class="s15-pmeta"><div class="s15-pname">Research <span class="s15-popt">Optional</span></div><div class="s15-pdesc">Allow de-identified data in approved research studies.</div></div>
+                    <button class="s15-switch" role="switch" aria-checked="false" aria-label="Research consent" data-purpose="Research"><b></b></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SCREEN 4 -->
+              <div class="s15-screen" data-screen="3" role="group" aria-label="Step 4 of 5: Signature">
+                <div class="s15-statusbar"><span>9:41</span><span class="s15-sig"><i></i><i></i><i></i><i></i></span></div>
+                <div class="s15-scrtitle">Confirm &amp; sign</div>
+                <div class="s15-scrsub">Your signature binds these permissions to your identity.</div>
+                <div class="s15-body">
+                  <div class="s15-field">
+                    <label class="s15-flabel" for="s15-name">Full name</label>
+                    <input class="s15-input" id="s15-name" type="text" value="Ananya Sharma" autocomplete="off">
+                  </div>
+                  <div class="s15-field">
+                    <label class="s15-flabel">Signature</label>
+                    <div class="s15-sigpad" id="s15-sigpad" role="button" tabindex="0" aria-label="Tap to sign">
+                      <svg viewBox="0 0 320 120" preserveAspectRatio="none"><path class="s15-sigpath" d="M18 78 C40 30 58 30 70 62 C80 88 96 90 108 58 C118 32 132 34 142 64 C150 86 168 88 184 56 C200 26 224 40 236 64 C246 84 270 80 302 50"/></svg>
+                      <span class="s15-sighint">Tap to sign</span>
+                      <span class="s15-sigclear" id="s15-sigclear">clear</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SCREEN 5 -->
+              <div class="s15-screen" data-screen="4" role="group" aria-label="Step 5 of 5: Confirmation">
+                <div class="s15-statusbar"><span>9:41</span><span class="s15-sig"><i></i><i></i><i></i><i></i></span></div>
+                <div class="s15-confirm">
+                  <svg class="s15-checkring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40"/><path d="M32 52 L45 65 L70 36"/></svg>
+                  <div class="s15-conftitle">Consent recorded</div>
+                  <div class="s15-scrsub" style="max-width:240px;">Your permissions are now an auditable, machine-enforceable record.</div>
+                  <div class="s15-receipt">
+                    <div class="s15-rrow"><span class="s15-rk">status</span><span class="s15-rv ok">RECORDED</span></div>
+                    <div class="s15-rrow"><span class="s15-rk">version</span><span class="s15-rv">v1</span></div>
+                    <div class="s15-rrow"><span class="s15-rk">purposes</span><span class="s15-rv" id="s15-rpurposes">Treatment, Diagnostics</span></div>
+                    <div class="s15-rrow"><span class="s15-rk">language</span><span class="s15-rv" id="s15-rlang">English</span></div>
+                    <div class="s15-rrow"><span class="s15-rk">evidence</span><span class="s15-rv ok">STORED</span></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- controls -->
+            <div class="s15-foot">
+              <button class="s15-btn s15-back" id="s15-back" disabled>Back</button>
+              <div class="s15-dots" id="s15-dots" role="tablist" aria-label="Step navigation"></div>
+              <button class="s15-btn s15-next" id="s15-next">Next</button>
+            </div>
+            <div class="center" style="margin-top:8px;"><span class="s15-progress" id="s15-progress">Step 1 of 5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var root=document.getElementById('s15');if(!root)return;
+    var screens=Array.prototype.slice.call(root.querySelectorAll('.s15-screen'));
+    var total=screens.length;
+    var cur=0;
+    var nextBtn=root.querySelector('#s15-next');
+    var backBtn=root.querySelector('#s15-back');
+    var dotsWrap=root.querySelector('#s15-dots');
+    var progress=root.querySelector('#s15-progress');
+    var fill=root.querySelector('#s15-trackfill');
+    var steprows=Array.prototype.slice.call(root.querySelectorAll('.s15-steprow'));
+    var labels=['Language','Privacy notice','Consent purposes','Signature','Confirmation'];
+    var lang='English';var signed=false;
+
+    // build dots
+    var dots=[];
+    for(var i=0;i<total;i++){(function(idx){
+      var b=document.createElement('button');
+      b.setAttribute('role','tab');
+      b.setAttribute('aria-label','Go to step '+(idx+1)+': '+labels[idx]);
+      b.addEventListener('click',function(){ if(idx<=maxReached) go(idx); });
+      dotsWrap.appendChild(b);dots.push(b);
+    })(i);}
+    var maxReached=0;
+
+    function render(){
+      screens.forEach(function(s,i){ s.classList.toggle('is-active',i===cur); });
+      dots.forEach(function(d,i){ d.classList.toggle('is-active',i===cur); d.classList.toggle('is-done',i<cur); });
+      steprows.forEach(function(r,i){ r.classList.toggle('is-active',i===cur); r.classList.toggle('is-done',i<cur); });
+      progress.textContent='Step '+(cur+1)+' of '+total;
+      fill.style.width=((cur+1)/total*100)+'%';
+      backBtn.disabled=(cur===0);
+      if(cur===total-1){ nextBtn.textContent='Done'; }
+      else if(cur===total-2){ nextBtn.textContent='Record consent'; }
+      else { nextBtn.textContent='Next'; }
+      // gate signature
+      if(cur===3){ nextBtn.disabled=!signed; } else { nextBtn.disabled=false; }
+      if(cur===total-1){ updateReceipt(); }
+    }
+    function go(i){ if(i<0||i>=total)return; cur=i; if(i>maxReached)maxReached=i; render(); }
+
+    nextBtn.addEventListener('click',function(){ if(cur<total-1) go(cur+1); else go(0); });
+    backBtn.addEventListener('click',function(){ go(cur-1); });
+
+    // language
+    root.querySelectorAll('.s15-langopt').forEach(function(opt){
+      opt.addEventListener('click',function(){
+        root.querySelectorAll('.s15-langopt').forEach(function(o){o.classList.remove('is-sel');});
+        opt.classList.add('is-sel'); lang=opt.getAttribute('data-lang');
+      });
+    });
+    // purpose switches
+    root.querySelectorAll('.s15-switch').forEach(function(sw){
+      if(sw.disabled)return;
+      sw.addEventListener('click',function(){
+        var on=sw.getAttribute('aria-checked')==='true';
+        sw.setAttribute('aria-checked',String(!on));
+      });
+    });
+    // signature pad
+    var pad=root.querySelector('#s15-sigpad');
+    var clear=root.querySelector('#s15-sigclear');
+    function doSign(){ pad.classList.add('is-signed'); signed=true; if(cur===3)nextBtn.disabled=false; }
+    pad.addEventListener('click',doSign);
+    pad.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();doSign();} });
+    clear.addEventListener('click',function(e){ e.stopPropagation(); pad.classList.remove('is-signed'); signed=false; if(cur===3)nextBtn.disabled=true; });
+
+    function updateReceipt(){
+      var ps=['Treatment'];
+      root.querySelectorAll('.s15-switch').forEach(function(sw){
+        if(sw.disabled)return;
+        if(sw.getAttribute('aria-checked')==='true') ps.push(sw.getAttribute('data-purpose'));
+      });
+      var rp=root.querySelector('#s15-rpurposes'); if(rp)rp.textContent=ps.join(', ');
+      var rl=root.querySelector('#s15-rlang'); if(rl)rl.textContent=lang;
+    }
+    render();
+  })();
+  </script>
+</section>

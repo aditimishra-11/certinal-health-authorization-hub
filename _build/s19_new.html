@@ -1,0 +1,213 @@
+<section id="s19" class="scene scene--dark" data-scene data-title="Why It Wins" aria-labelledby="s19-title">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <span class="glow glow--brand" style="width:520px;height:520px;top:-120px;right:-80px;opacity:.16" aria-hidden="true"></span>
+  <span class="glow glow--teal" style="width:420px;height:420px;bottom:-140px;left:-100px;opacity:.12" aria-hidden="true"></span>
+  <style>
+    #s19 .s19-head{max-width:780px;}
+    #s19 .s19-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--sp-7);align-items:start;margin-top:var(--sp-7);}
+    @media (max-width:980px){#s19 .s19-layout{grid-template-columns:1fr;gap:var(--sp-6);}}
+
+    /* ---- the map ---- */
+    #s19 .s19-mapwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;}
+    #s19 .s19-plot{position:relative;min-width:540px;aspect-ratio:1/.92;background:
+      linear-gradient(rgba(255,255,255,.018),rgba(255,255,255,.018));
+      border:1px solid var(--line-dark);border-radius:var(--r-lg);overflow:hidden;}
+    /* quadrant tints */
+    #s19 .s19-q{position:absolute;width:50%;height:50%;}
+    #s19 .s19-q.tr{top:0;right:0;background:radial-gradient(120% 120% at 90% 10%,rgba(91,124,250,.16),transparent 70%);}
+    #s19 .s19-q.tl{top:0;left:0;background:radial-gradient(120% 120% at 10% 10%,rgba(154,107,255,.07),transparent 70%);}
+    #s19 .s19-q.br{bottom:0;right:0;background:radial-gradient(120% 120% at 90% 90%,rgba(25,198,176,.06),transparent 70%);}
+    #s19 .s19-q.bl{bottom:0;left:0;background:radial-gradient(120% 120% at 10% 90%,rgba(244,169,59,.05),transparent 70%);}
+    /* crosshair */
+    #s19 .s19-cross{position:absolute;background:var(--line-dark);}
+    #s19 .s19-cross.v{left:50%;top:4%;bottom:4%;width:1px;border-left:1px dashed var(--line-strong);background:none;}
+    #s19 .s19-cross.h{top:50%;left:4%;right:4%;height:1px;border-top:1px dashed var(--line-strong);background:none;}
+    /* quadrant captions */
+    #s19 .s19-qlabel{position:absolute;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-dark-faint);max-width:42%;line-height:1.35;}
+    #s19 .s19-qlabel.tr{top:11px;right:14px;text-align:right;color:var(--brand);font-weight:600;}
+    #s19 .s19-qlabel.tl{top:11px;left:14px;}
+    #s19 .s19-qlabel.br{bottom:38px;right:14px;text-align:right;}
+    #s19 .s19-qlabel.bl{bottom:38px;left:14px;}
+    /* axis labels */
+    #s19 .s19-axis{position:absolute;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:var(--on-dark-soft);text-transform:uppercase;}
+    #s19 .s19-axis.x-title{bottom:6px;left:50%;transform:translateX(-50%);color:var(--teal);font-weight:600;}
+    #s19 .s19-axis.x-lo{bottom:6px;left:12px;}
+    #s19 .s19-axis.x-hi{bottom:6px;right:12px;}
+    #s19 .s19-axis.y-title{top:50%;left:8px;transform:rotate(-90deg) translateX(0);transform-origin:left center;color:var(--cyan);font-weight:600;white-space:nowrap;}
+    #s19 .s19-axis.y-hi{top:10px;left:14px;}
+    #s19 .s19-axis.y-lo{bottom:30px;left:14px;}
+    /* dots */
+    #s19 .s19-dot{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;}
+    #s19 .s19-dot .pt{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.04);}
+    #s19 .s19-dot .nm{font-size:.64rem;font-weight:500;color:var(--on-dark-soft);white-space:nowrap;line-height:1;}
+    #s19 .s19-dot.lft{flex-direction:row-reverse;}
+    #s19 .cat-hc .pt{background:var(--teal);} #s19 .cat-hc .nm{color:#bff0e8;}
+    #s19 .cat-gov .pt{background:var(--violet);} #s19 .cat-gov .nm{color:#d8c8ff;}
+    #s19 .cat-sign .pt{background:var(--warn);} #s19 .cat-sign .nm{color:#f6d8a8;}
+    #s19 .cat-cookie .pt{background:#8A95AD;} #s19 .cat-cookie .nm{color:#aeb8cd;}
+    /* certinal target */
+    #s19 .s19-cert{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:5;}
+    #s19 .s19-cert .star{width:30px;height:30px;border-radius:9px;background:var(--grad-brand);display:grid;place-items:center;box-shadow:var(--sh-glow);animation:s19pulse 3s ease-in-out infinite;}
+    @keyframes s19pulse{0%,100%{box-shadow:0 0 0 1px var(--brand),0 0 26px rgba(91,124,250,.4);}50%{box-shadow:0 0 0 1px var(--brand),0 0 52px rgba(91,124,250,.7);}}
+    #s19 .s19-cert .ct-nm{font-family:var(--font-display);font-weight:700;font-size:.78rem;color:#fff;text-align:center;line-height:1.05;text-shadow:0 1px 8px rgba(0,0,0,.5);}
+    @media (prefers-reduced-motion:reduce){#s19 .s19-cert .star{animation:none;}}
+    /* legend */
+    #s19 .s19-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:var(--sp-4);font-size:.76rem;color:var(--on-dark-soft);}
+    #s19 .s19-legend span{display:inline-flex;align-items:center;gap:7px;}
+    #s19 .s19-legend i{width:11px;height:11px;border-radius:50%;display:inline-block;}
+
+    /* ---- teardown cards ---- */
+    #s19 .s19-tear{display:flex;flex-direction:column;gap:10px;}
+    #s19 .s19-tcard{border:1px solid var(--line-dark);border-radius:var(--r-md);padding:14px 16px;background:rgba(255,255,255,.025);}
+    #s19 .s19-tcard.is-cert{background:linear-gradient(rgba(91,124,250,.08),rgba(25,198,176,.05));border-color:rgba(91,124,250,.4);box-shadow:var(--sh-glow);}
+    #s19 .s19-tc-top{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
+    #s19 .s19-tc-dot{width:9px;height:9px;border-radius:50%;flex:none;}
+    #s19 .s19-tc-name{font-family:var(--font-display);font-weight:600;font-size:.96rem;color:var(--on-dark);}
+    #s19 .s19-tc-who{font-size:.78rem;color:var(--on-dark-faint);margin-left:auto;text-align:right;max-width:48%;line-height:1.3;}
+    #s19 .s19-tc-row{display:flex;gap:8px;font-size:.82rem;line-height:1.45;margin-top:3px;}
+    #s19 .s19-tc-k{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;flex:none;width:46px;padding-top:2px;}
+    #s19 .s19-tc-row.owns .s19-tc-k{color:var(--ok);}
+    #s19 .s19-tc-row.gap .s19-tc-k{color:var(--danger);}
+    #s19 .s19-tc-v{color:var(--on-dark-soft);}
+    #s19 .s19-tcard.is-cert .s19-tc-v{color:var(--on-dark);}
+
+    #s19 .s19-note{display:flex;gap:10px;align-items:flex-start;margin-top:var(--sp-5);padding:13px 16px;border:1px dashed var(--line-strong);border-radius:var(--r-md);background:rgba(255,255,255,.02);}
+    #s19 .s19-note svg{flex:none;color:var(--cyan);margin-top:2px;}
+    #s19 .s19-note p{margin:0;font-size:.84rem;color:var(--on-dark-soft);line-height:1.5;}
+    #s19 .s19-creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--sp-5);}
+    #s19 .s19-cred{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.04em;padding:6px 11px;border-radius:var(--r-pill);border:1px solid rgba(47,215,155,.3);background:rgba(47,215,155,.07);color:var(--ok);}
+    #s19 .s19-corner{font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,2vw,1.35rem);margin-top:var(--sp-6);max-width:760px;}
+  </style>
+
+  <div class="container container--wide">
+    <div class="s19-head" data-reveal="up">
+      <span class="eyebrow">Competitive landscape</span>
+      <h2 id="s19-title" class="h1 balance mt-4">Why this wins.</h2>
+      <p class="lead mt-4 balance">The DPDP market is crowded &mdash; but only along axes that miss the point. Map vendors by <strong>how healthcare-native</strong> they are and <strong>how far they execute permission</strong>, and one corner stays open.</p>
+    </div>
+
+    <div class="s19-layout">
+      <!-- MAP -->
+      <div data-reveal="scale" data-delay="120">
+        <div class="s19-mapwrap">
+          <div class="s19-plot" id="s19-plot" role="img" aria-label="Positioning map. X axis: generic compliance on the left to healthcare-workflow-native on the right. Y axis: consent capture and e-sign at the bottom to permission execution and evidence at the top. Certinal Health Authorization Hub sits alone in the top-right corner: healthcare-native permission execution.">
+            <div class="s19-q tr"></div><div class="s19-q tl"></div><div class="s19-q br"></div><div class="s19-q bl"></div>
+            <div class="s19-cross v"></div><div class="s19-cross h"></div>
+
+            <span class="s19-qlabel tr">Healthcare-native<br>permission execution</span>
+            <span class="s19-qlabel tl">Generic privacy &amp;<br>DPDP governance</span>
+            <span class="s19-qlabel br">Healthcare<br>e-consent / signing</span>
+            <span class="s19-qlabel bl">Generic e-sign &amp;<br>cookie consent</span>
+
+            <span class="s19-axis x-title">Vertical specialisation &rarr;</span>
+            <span class="s19-axis x-lo">Generic</span>
+            <span class="s19-axis x-hi">Healthcare-native</span>
+            <span class="s19-axis y-title">Execution depth &uarr;</span>
+            <span class="s19-axis y-hi">Executes &amp; proves</span>
+            <span class="s19-axis y-lo">Captures only</span>
+            <!-- dots injected by JS -->
+          </div>
+        </div>
+        <div class="s19-legend" aria-hidden="true">
+          <span><i style="background:var(--teal)"></i> Healthcare / clinical consent</span>
+          <span><i style="background:var(--violet)"></i> DPDP / privacy governance</span>
+          <span><i style="background:var(--warn)"></i> E-signature &amp; documents</span>
+          <span><i style="background:#8A95AD"></i> Cookie / web consent</span>
+          <span><i style="background:var(--brand)"></i> Certinal Hub (target)</span>
+        </div>
+      </div>
+
+      <!-- TEARDOWN -->
+      <div class="s19-tear" data-reveal="up" data-delay="160">
+        <div class="s19-tcard">
+          <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--violet)"></span><span class="s19-tc-name">Global privacy suites</span><span class="s19-tc-who">OneTrust · Securiti · BigID</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v">Broad governance — discovery, DSAR, DPIA, vendor risk.</span></div>
+          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">Generic &amp; heavy; not wired into clinical workflows.</span></div>
+        </div>
+        <div class="s19-tcard">
+          <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--violet)"></span><span class="s19-tc-name">India DPDP &amp; consent managers</span><span class="s19-tc-who">Privy by IDfy · Perfios · Seqrite · Neokred · KavachOne</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v">Consent lifecycle, CMP, audit-ready consent records.</span></div>
+          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">Records consent — doesn't run multi-party clinical authorization.</span></div>
+        </div>
+        <div class="s19-tcard">
+          <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--teal)"></span><span class="s19-tc-name">Healthcare e-consent</span><span class="s19-tc-who">Naree · Clinion · Octalsoft · E-Consent.in · Kleeto · Redacto</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v">Digital clinical &amp; trial consent — signed, stored, multilingual.</span></div>
+          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">Captures &amp; files; no withdrawal propagation or evidence orchestration.</span></div>
+        </div>
+        <div class="s19-tcard">
+          <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--warn)"></span><span class="s19-tc-name">E-sign &amp; documents</span><span class="s19-tc-who">DocuSign · Adobe Sign · Leegality</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v">Legally-valid signature &amp; document execution.</span></div>
+          <div class="s19-tc-row gap"><span class="s19-tc-k">Gap</span><span class="s19-tc-v">No purpose, consent or healthcare permission model.</span></div>
+        </div>
+        <div class="s19-tcard is-cert">
+          <div class="s19-tc-top"><span class="s19-tc-dot" style="background:var(--brand)"></span><span class="s19-tc-name">Certinal Health Authorization Hub</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Owns</span><span class="s19-tc-v"><strong>Permission execution</strong> across healthcare workflows — consent, authorization, withdrawal &amp; court-ready evidence.</span></div>
+          <div class="s19-tc-row owns"><span class="s19-tc-k">Why us</span><span class="s19-tc-v">Healthcare-native depth meets the e-sign, workflow &amp; audit primitives Certinal already runs in production.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s19-note" data-reveal="fade">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+      <p><strong>ABDM and EMR/HIS aren't on this map.</strong> They're national infrastructure and systems of record Certinal <em>integrates with</em> — the rails permission rides on, not vendors competing for the compliance buyer.</p>
+    </div>
+
+    <div class="s19-creds" data-reveal="up" aria-label="Certinal credibility signals">
+      <span class="s19-cred">ISO 27001</span>
+      <span class="s19-cred">SOC 2 Type II</span>
+      <span class="s19-cred">FIPS 140-2</span>
+      <span class="s19-cred">HIS / EMR integrations</span>
+      <span class="s19-cred">Production e-consent base</span>
+    </div>
+
+    <p class="s19-corner gradient-text" data-reveal="up">The top-right corner is barely contested — a few Indian players gesture at it. None execute and prove permission as a healthcare workflow. That's the wedge.</p>
+  </div>
+
+  <script>
+  (function(){
+    var plot=document.getElementById('s19-plot');
+    if(!plot) return;
+    // x: 0 generic (left) -> 100 healthcare-native (right); y: 0 captures (bottom) -> 100 executes (top)
+    var DATA=[
+      // healthcare / clinical (teal)
+      {n:'Redacto',x:67,y:62,c:'hc'},
+      {n:'KavachOne / ConsentiQo',x:57,y:53,c:'hc'},
+      {n:'Kleeto',x:58,y:36,c:'hc'},
+      {n:'Naree eConsent',x:72,y:30,c:'hc'},
+      {n:'E-Consent.in',x:65,y:21,c:'hc'},
+      {n:'Octalsoft',x:87,y:27,c:'hc'},
+      {n:'Clinion',x:90,y:37,c:'hc'},
+      // governance (violet)
+      {n:'OneTrust',x:30,y:82,c:'gov'},
+      {n:'Securiti',x:21,y:74,c:'gov'},
+      {n:'BigID',x:13,y:64,c:'gov'},
+      {n:'Seqrite',x:37,y:70,c:'gov'},
+      {n:'Privy by IDfy',x:44,y:60,c:'gov'},
+      {n:'Perfios',x:41,y:50,c:'gov'},
+      {n:'Neokred Blutic',x:30,y:54,c:'gov'},
+      // e-sign (amber)
+      {n:'DocuSign',x:17,y:22,c:'sign'},
+      {n:'Adobe Sign',x:29,y:14,c:'sign'},
+      {n:'Leegality',x:21,y:34,c:'sign'},
+      // cookie (slate)
+      {n:'CookieYes',x:10,y:10,c:'cookie'}
+    ];
+    var CLS={hc:'cat-hc',gov:'cat-gov',sign:'cat-sign',cookie:'cat-cookie'};
+    DATA.forEach(function(d){
+      var el=document.createElement('span');
+      var left = d.x>=52 ? ' lft':''; // labels to the left for right-side dots
+      el.className='s19-dot '+CLS[d.c]+left;
+      el.style.left=d.x+'%';
+      el.style.top=(100-d.y)+'%';
+      el.innerHTML='<span class="pt"></span><span class="nm">'+d.n+'</span>';
+      plot.appendChild(el);
+    });
+    // Certinal target
+    var cert=document.createElement('span');
+    cert.className='s19-cert';
+    cert.style.left='85%'; cert.style.top=(100-86)+'%';
+    cert.innerHTML='<span class="star"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg></span><span class="ct-nm">Certinal<br>Hub</span>';
+    plot.appendChild(cert);
+  })();
+  </script>
+</section>

@@ -1,0 +1,555 @@
+<section id="s16" class="scene scene--dark" data-scene data-title="Prototype · Research">
+  <div class="glow glow--violet" style="width:420px;height:420px;top:-80px;right:-60px;opacity:.26;"></div>
+  <div class="glow glow--teal" style="width:360px;height:360px;bottom:-120px;left:-90px;opacity:.20;"></div>
+  <style>
+    #s16 .s16-head{max-width:720px;}
+    #s16 .s16-layout{display:grid;grid-template-columns:1.55fr .95fr;gap:26px;margin-top:var(--sp-6);align-items:start;}
+    @media (max-width:940px){#s16 .s16-layout{grid-template-columns:1fr;}}
+
+    /* stage strip (step dots row) */
+    #s16 .s16-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:var(--sp-5);}
+    #s16 .s16-stagebtn{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:var(--r-pill);border:1px solid var(--line-dark);background:rgba(255,255,255,.03);color:var(--on-dark-soft);transition:all .22s var(--ease);font-size:.8rem;font-weight:600;}
+    #s16 .s16-stagebtn:hover:not(:disabled){border-color:var(--line-strong);color:var(--on-dark);}
+    #s16 .s16-stagebtn.is-active{border-color:transparent;background:var(--grad-brand);color:#fff;box-shadow:var(--sh-glow);}
+    #s16 .s16-stagebtn.is-done{color:var(--ok);border-color:rgba(47,215,155,.4);}
+    #s16 .s16-stagebtn.is-halt{color:var(--danger);border-color:rgba(251,111,132,.45);background:rgba(251,111,132,.08);}
+    #s16 .s16-stagebtn .s16-sidx{font-family:var(--font-mono);font-size:.66rem;opacity:.85;}
+    #s16 .s16-stagebtn:disabled{opacity:.4;cursor:not-allowed;}
+
+    /* actor chip + dots */
+    #s16 .s16-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:var(--sp-5) 0 var(--sp-3);}
+    #s16 .s16-actor{display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border-radius:var(--r-pill);font-size:.82rem;font-weight:600;}
+    #s16 .s16-actor svg{width:16px;height:16px;}
+    #s16 .s16-actor.researcher{background:rgba(91,124,250,.12);color:var(--brand);border:1px solid rgba(91,124,250,.35);}
+    #s16 .s16-actor.dpo{background:rgba(154,107,255,.12);color:var(--violet);border:1px solid rgba(154,107,255,.35);}
+    #s16 .s16-actor.patient{background:rgba(25,198,176,.12);color:var(--teal);border:1px solid rgba(25,198,176,.35);}
+    #s16 .s16-actor.system{background:rgba(56,225,240,.10);color:var(--cyan);border:1px solid rgba(56,225,240,.30);}
+    #s16 .s16-actor.vault{background:rgba(47,215,155,.12);color:var(--ok);border:1px solid rgba(47,215,155,.35);}
+    #s16 .s16-actor.halt{background:rgba(251,111,132,.12);color:var(--danger);border:1px solid rgba(251,111,132,.4);}
+    #s16 .s16-sees{font-family:var(--font-mono);font-size:.7rem;color:var(--on-dark-faint);letter-spacing:.03em;}
+    #s16 .s16-dots{display:inline-flex;gap:7px;margin-left:auto;}
+    #s16 .s16-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .25s;}
+    #s16 .s16-dot.on{background:var(--teal);transform:scale(1.35);}
+    #s16 .s16-dot.halt{background:var(--danger);}
+    @media (max-width:520px){#s16 .s16-dots{margin-left:0;}}
+
+    /* browser body / stage host */
+    #s16 .browser{margin-top:0;}
+    #s16 .s16-host{position:relative;min-height:340px;}
+    #s16 .s16-stage{display:none;}
+    #s16 .s16-stage.is-active{display:block;opacity:1;}
+    #s16 .s16-appbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:13px;margin-bottom:16px;border-bottom:1px solid var(--line-light);}
+    #s16 .s16-who{display:flex;align-items:center;gap:10px;font-weight:700;font-family:var(--font-display);color:var(--ink);font-size:.92rem;line-height:1.25;}
+    #s16 .s16-ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;flex:none;}
+    #s16 .s16-role{display:block;font-family:var(--font-mono);font-weight:500;font-size:.64rem;color:#7A879E;letter-spacing:.05em;margin-top:2px;}
+    #s16 .s16-badge{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:var(--r-pill);white-space:nowrap;}
+
+    #s16 .s16-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:22px;}
+    @media (max-width:720px){#s16 .s16-grid{grid-template-columns:1fr;}}
+    #s16 .s16-h{font-family:var(--font-display);font-weight:700;font-size:1.12rem;color:var(--ink);letter-spacing:-.01em;}
+    #s16 .s16-p{font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin-top:8px;}
+    #s16 .s16-panel{background:#F6F9FE;border:1px solid #E4ECF6;border-radius:var(--r-md);padding:15px;}
+    #s16 .s16-panel.danger{background:#FFF1F3;border-color:#FBD3DA;}
+    #s16 .s16-kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #E9EFF8;font-size:.8rem;}
+    #s16 .s16-panel.danger .s16-kv{border-color:#FBD3DA;}
+    #s16 .s16-kv:last-child{border-bottom:none;}
+    #s16 .s16-kvk{color:#7A879E;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.02em;}
+    #s16 .s16-kvv{color:var(--ink);font-weight:600;text-align:right;}
+    #s16 .s16-chiprow{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;}
+    #s16 .s16-tag{font-family:var(--font-mono);font-size:.66rem;padding:4px 9px;border-radius:var(--r-pill);background:rgba(91,124,250,.10);color:var(--brand-deep);}
+    #s16 .s16-tag.warn{background:rgba(244,169,59,.16);color:#A66A12;}
+    #s16 .s16-tag.ok{background:rgba(47,215,155,.16);color:#0E8A5E;}
+    #s16 .s16-tag.danger{background:rgba(251,111,132,.14);color:#C32B45;}
+
+    #s16 .s16-cond{display:flex;gap:9px;align-items:flex-start;padding:7px 0;font-size:.82rem;color:var(--ink);line-height:1.4;}
+    #s16 .s16-cond svg{flex:none;margin-top:1px;color:var(--violet);}
+    #s16 .s16-cond.req svg{color:var(--warn);}
+
+    /* scenario toggle (non-happy path) */
+    #s16 .s16-scenario{margin-bottom:16px;padding:12px;border:1px dashed #D8E0EE;border-radius:var(--r-md);background:#FBFCFE;}
+    #s16 .s16-scenario-lbl{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:#7A879E;margin-bottom:9px;display:block;}
+    #s16 .s16-seg{display:inline-flex;background:#EEF2FA;border:1px solid #E0E7F3;border-radius:var(--r-pill);padding:3px;gap:3px;}
+    #s16 .s16-segbtn{border:none;background:transparent;border-radius:var(--r-pill);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--ink-soft);transition:all .2s var(--ease);}
+    #s16 .s16-segbtn.on{background:#fff;color:var(--ink);box-shadow:var(--sh-sm);}
+    #s16 .s16-segbtn[data-sc="reject"].on{color:#C32B45;}
+
+    /* execution rows incl. block */
+    #s16 .s16-exrow{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid #E9EFF8;font-size:.82rem;color:var(--ink);}
+    #s16 .s16-exrow:last-child{border-bottom:none;}
+    #s16 .s16-exico{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;}
+    #s16 .s16-exico.ok{background:rgba(47,215,155,.16);color:var(--ok);}
+    #s16 .s16-exico.block{background:rgba(251,111,132,.16);color:var(--danger);}
+    #s16 .s16-exnum{margin-left:auto;font-family:var(--font-mono);font-size:.72rem;font-weight:700;}
+    #s16 .s16-exnum.ok{color:#0E8A5E;}
+    #s16 .s16-exnum.block{color:#C32B45;}
+    #s16 .s16-blocknote{margin-top:12px;display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:var(--r-md);background:#FFF1F3;border:1px solid #FBD3DA;}
+    #s16 .s16-blocknote svg{flex:none;color:var(--danger);margin-top:1px;}
+    #s16 .s16-blocknote span{font-size:.8rem;color:#C32B45;font-weight:600;line-height:1.45;}
+
+    /* halt banner (reject path) */
+    #s16 .s16-halt{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-md);background:#FFF1F3;border:1px solid #FBD3DA;margin-top:12px;}
+    #s16 .s16-halt svg{flex:none;color:var(--danger);margin-top:1px;}
+    #s16 .s16-haltt{font-size:.82rem;color:#C32B45;font-weight:600;line-height:1.45;}
+
+    #s16 .s16-seal{display:flex;align-items:center;gap:10px;margin-top:13px;padding:11px 13px;border-radius:var(--r-md);background:rgba(47,215,155,.08);border:1px solid rgba(47,215,155,.3);}
+    #s16 .s16-seal svg{flex:none;color:var(--ok);}
+    #s16 .s16-sealt{font-size:.8rem;color:#0E8A5E;font-weight:600;}
+
+    /* footer nav */
+    #s16 .s16-foot{display:flex;align-items:center;gap:12px;margin-top:var(--sp-5);flex-wrap:wrap;}
+    #s16 .s16-prog{font-family:var(--font-mono);font-size:.72rem;color:var(--on-dark-faint);letter-spacing:.04em;}
+    #s16 .s16-spacer{flex:1;}
+    #s16 .s16-btn{border:none;border-radius:var(--r-pill);font-weight:700;font-size:.88rem;padding:11px 20px;font-family:var(--font-body);transition:all .2s var(--ease);}
+    #s16 .s16-next{background:var(--grad-brand);color:#fff;box-shadow:var(--sh-glow);}
+    #s16 .s16-next:hover:not(:disabled){transform:translateY(-2px);}
+    #s16 .s16-back{background:transparent;color:var(--on-dark-soft);border:1px solid var(--line-strong);}
+    #s16 .s16-back:hover:not(:disabled){border-color:var(--brand);color:var(--on-dark);}
+    #s16 .s16-restart{background:transparent;color:var(--on-dark-faint);border:1px solid var(--line-dark);font-size:.8rem;padding:11px 16px;}
+    #s16 .s16-restart:hover{color:var(--on-dark);border-color:var(--line-strong);}
+    #s16 .s16-btn:disabled{opacity:.38;cursor:not-allowed;transform:none;}
+
+    /* EVIDENCE LEDGER (dark panel) */
+    #s16 .s16-ledger{background:var(--surface-1);border:1px solid var(--line-strong);border-radius:var(--r-lg);padding:18px;box-shadow:var(--sh-md);position:sticky;top:20px;}
+    #s16 .s16-ledhead{display:flex;align-items:center;gap:9px;padding-bottom:13px;margin-bottom:6px;border-bottom:1px solid var(--line-dark);}
+    #s16 .s16-ledhead svg{color:var(--teal);flex:none;}
+    #s16 .s16-ledtitle{font-family:var(--font-display);font-weight:700;font-size:.95rem;color:var(--on-dark);}
+    #s16 .s16-ledsub{font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-faint);letter-spacing:.05em;display:block;margin-top:2px;}
+    #s16 .s16-ledlist{display:flex;flex-direction:column;max-height:380px;overflow-y:auto;}
+    #s16 .s16-ledempty{font-size:.78rem;color:var(--on-dark-faint);padding:14px 2px;font-style:italic;}
+    #s16 .s16-ev{padding:11px 2px;border-bottom:1px solid var(--line-dark);}
+    #s16 .s16-ev:last-child{border-bottom:none;}
+    #s16 .s16-evtop{display:flex;align-items:center;gap:8px;}
+    #s16 .s16-evdot{width:8px;height:8px;border-radius:50%;flex:none;}
+    #s16 .s16-evactor{font-size:.7rem;font-weight:700;font-family:var(--font-mono);letter-spacing:.04em;text-transform:uppercase;}
+    #s16 .s16-evtime{margin-left:auto;font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-faint);}
+    #s16 .s16-evtext{font-size:.8rem;color:var(--on-dark);margin-top:5px;line-height:1.4;}
+    #s16 .s16-evtext.danger{color:var(--danger);}
+    #s16 .s16-evhash{font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-faint);margin-top:4px;display:flex;align-items:center;gap:6px;}
+    #s16 .s16-evhash svg{width:11px;height:11px;color:var(--on-dark-faint);}
+    #s16 .s16-sealrow{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-dark);display:flex;align-items:center;gap:9px;}
+    #s16 .s16-sealrow .s16-spill{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;font-family:var(--font-mono);letter-spacing:.04em;padding:6px 12px;border-radius:var(--r-pill);}
+    #s16 .s16-spill.sealed{background:rgba(47,215,155,.12);color:var(--ok);border:1px solid rgba(47,215,155,.35);}
+    #s16 .s16-spill.halted{background:rgba(251,111,132,.12);color:var(--danger);border:1px solid rgba(251,111,132,.4);}
+    #s16 .s16-spill.open{background:rgba(255,255,255,.05);color:var(--on-dark-faint);border:1px solid var(--line-dark);}
+    @keyframes s16-evin{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+    #s16 .s16-ev{animation:s16-evin .35s var(--ease-out);}
+  </style>
+
+  <div class="container container--wide">
+    <span class="eyebrow">PROTOTYPE JOURNEY 00</span>
+    <div class="s16-head">
+      <h2 class="h1 mt-4 balance">Research <span class="gradient-text">participation.</span></h2>
+      <p class="lead mt-4">One study, four actors, one authorization loop &mdash; investigator, ethics office, patient, and the engine. Every act is enforced and every act is logged. Watch what happens when the DPO says no.</p>
+    </div>
+
+    <!-- step strip -->
+    <div class="s16-strip" id="s16-strip" role="tablist" aria-label="Authorization stages"></div>
+
+    <!-- actor meta + step dots -->
+    <div class="s16-meta">
+      <span class="s16-actor" id="s16-actorchip"></span>
+      <span class="s16-sees" id="s16-sees"></span>
+      <span class="s16-dots" id="s16-dots" aria-hidden="true"></span>
+    </div>
+
+    <div class="s16-layout">
+      <!-- LEFT: browser flow -->
+      <div class="browser">
+        <div class="browser__bar"><i></i><i></i><i></i><span class="browser__url" id="s16-url">hub.certinal.health/studies/onco-2026/request</span></div>
+        <div class="browser__body">
+          <div class="s16-host" id="s16-host">
+
+            <!-- STAGE 1 : REQUEST -->
+            <div class="s16-stage is-active" data-stage="0" role="tabpanel" aria-label="Stage 1 of 5: Request">
+              <div class="s16-appbar">
+                <span class="s16-who"><span class="s16-ico" style="background:var(--brand);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6l-4 8a3 3 0 0 0 3 4h6a3 3 0 0 0 3-4l-4-8V2M8 2h8"/></svg></span><span>Dr. Rao &middot; Oncology Research<span class="s16-role">PRINCIPAL INVESTIGATOR (PI)</span></span></span>
+                <span class="s16-badge" style="background:rgba(91,124,250,.12);color:var(--brand-deep);">Draft request</span>
+              </div>
+              <div class="s16-grid">
+                <div>
+                  <div class="s16-h">Define the cohort, scope &amp; purpose</div>
+                  <p class="s16-p">The investigator states who, what data, why, and for how long &mdash; before a single record moves. A structured request, not an email.</p>
+                  <div class="s16-chiprow mt-4"><span class="s16-tag">Cohort: 6 patients</span><span class="s16-tag">Onco &middot; Stage II</span><span class="s16-tag warn">De-identified</span></div>
+                </div>
+                <div class="s16-panel">
+                  <div class="s16-kv"><span class="s16-kvk">study</span><span class="s16-kvv">ONCO-2026</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">data scope</span><span class="s16-kvv">Diagnostics + outcomes</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">purpose</span><span class="s16-kvv">Research only</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">duration</span><span class="s16-kvv">18 months</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">basis</span><span class="s16-kvv">Explicit consent</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 2 : APPROVAL (with scenario toggle) -->
+            <div class="s16-stage" data-stage="1" role="tabpanel" aria-label="Stage 2 of 5: Approval">
+              <div class="s16-appbar">
+                <span class="s16-who"><span class="s16-ico" style="background:var(--violet);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></span><span>Ethics &amp; DPO Office<span class="s16-role">DATA PROTECTION OFFICER (DPO)</span></span></span>
+                <span class="s16-badge" id="s16-appr-badge" style="background:rgba(154,107,255,.14);color:#6B3FD6;">Reviewing</span>
+              </div>
+
+              <div class="s16-scenario">
+                <span class="s16-scenario-lbl">Scenario &middot; what does the DPO decide?</span>
+                <div class="s16-seg" role="group" aria-label="Approval scenario">
+                  <button type="button" class="s16-segbtn on" data-sc="approve" aria-pressed="true">Approved with conditions</button>
+                  <button type="button" class="s16-segbtn" data-sc="reject" aria-pressed="false">Requests changes / rejects</button>
+                </div>
+              </div>
+
+              <!-- approve variant -->
+              <div class="s16-grid" id="s16-appr-approve">
+                <div>
+                  <div class="s16-h">Approve &mdash; with binding conditions</div>
+                  <p class="s16-p">The DPO doesn&rsquo;t just say yes. They attach conditions the engine will <strong>enforce</strong> automatically at execution.</p>
+                  <div style="margin-top:8px;">
+                    <div class="s16-cond"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l5 5L21 4"/></svg>De-identification mandatory &mdash; no direct identifiers</div>
+                    <div class="s16-cond"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l5 5L21 4"/></svg>Per-patient explicit consent required</div>
+                    <div class="s16-cond"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l5 5L21 4"/></svg>Access auto-expires after 18 months</div>
+                  </div>
+                </div>
+                <div class="s16-panel">
+                  <div class="s16-kv"><span class="s16-kvk">ref</span><span class="s16-kvv">EC-2026-0417</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">reviewer</span><span class="s16-kvv">DPO &middot; Ethics Board</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">decision</span><span class="s16-kvv" style="color:var(--violet);">Conditional approve</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">conditions</span><span class="s16-kvv">3 binding</span></div>
+                </div>
+              </div>
+
+              <!-- reject variant -->
+              <div class="s16-grid" id="s16-appr-reject" style="display:none;">
+                <div>
+                  <div class="s16-h" style="color:#C32B45;">Returned to PI &mdash; not approved</div>
+                  <p class="s16-p">The DPO sends the request back with required changes. The workflow <strong>halts here</strong> &mdash; no consent is collected, nothing is released.</p>
+                  <div style="margin-top:8px;">
+                    <div class="s16-cond req"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v9M12 18h.01"/></svg>Narrow the cohort &mdash; Stage II confirmed only</div>
+                    <div class="s16-cond req"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v9M12 18h.01"/></svg>Stronger de-identification &mdash; drop free-text notes</div>
+                    <div class="s16-cond req"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v9M12 18h.01"/></svg>Re-submit with a defined retention limit</div>
+                  </div>
+                  <div class="s16-halt">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8"/></svg>
+                    <span class="s16-haltt">Workflow halted. The engine will not advance to consent or execution until a corrected request is approved.</span>
+                  </div>
+                </div>
+                <div class="s16-panel danger">
+                  <div class="s16-kv"><span class="s16-kvk">ref</span><span class="s16-kvv">EC-2026-0417</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">reviewer</span><span class="s16-kvv">DPO &middot; Ethics Board</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">decision</span><span class="s16-kvv" style="color:#C32B45;">Returned to PI</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">required changes</span><span class="s16-kvv">3</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">released</span><span class="s16-kvv" style="color:#C32B45;">Nothing</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 3 : PATIENT CONSENT -->
+            <div class="s16-stage" data-stage="2" role="tabpanel" aria-label="Stage 3 of 5: Patient consent">
+              <div class="s16-appbar">
+                <span class="s16-who"><span class="s16-ico" style="background:var(--teal);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.5-6 7-6s7 2 7 6"/></svg></span><span>Invited patients<span class="s16-role">PATIENT &middot; MOBILE DEVICE</span></span></span>
+                <span class="s16-badge" style="background:rgba(25,198,176,.14);color:#0E8A6F;">Collecting consent</span>
+              </div>
+              <div class="s16-grid">
+                <div>
+                  <div class="s16-h">Each patient decides on their phone</div>
+                  <p class="s16-p">Invited patients see a plain-language request and choose for themselves. The cohort is opted-into, never assumed. Running count below.</p>
+                  <div class="s16-chiprow mt-4"><span class="s16-tag ok" id="s16-cnt-granted">4 of 6 granted</span><span class="s16-tag danger" id="s16-cnt-declined">2 declined</span></div>
+                </div>
+                <div class="s16-panel">
+                  <div class="s16-kv"><span class="s16-kvk">invited</span><span class="s16-kvv">6 patients</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">granted</span><span class="s16-kvv" style="color:var(--teal);">4</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">declined</span><span class="s16-kvv" style="color:#C32B45;">2</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">withdraw</span><span class="s16-kvv">Any time</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 4 : EXECUTION + ENFORCEMENT -->
+            <div class="s16-stage" data-stage="3" role="tabpanel" aria-label="Stage 4 of 5: Execution and enforcement">
+              <div class="s16-appbar">
+                <span class="s16-who"><span class="s16-ico" style="background:var(--cyan);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></span><span>Authorization Hub<span class="s16-role">EXECUTION ENGINE</span></span></span>
+                <span class="s16-badge" style="background:rgba(56,225,240,.16);color:#0E7C8A;">Enforcing</span>
+              </div>
+              <div class="s16-grid">
+                <div>
+                  <div class="s16-h">Released within scope &mdash; the rest blocked</div>
+                  <p class="s16-p">The engine enforces every condition. Only consented patients, only approved fields, de-identified. The 2 non-consented patients are excluded.</p>
+                  <div class="s16-blocknote">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>
+                    <span>2 patients without consent &mdash; <strong>blocked</strong> at the engine. Their records never leave the vault.</span>
+                  </div>
+                </div>
+                <div class="s16-panel">
+                  <div class="s16-exrow"><span class="s16-exico ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>Consented &amp; in-scope<span class="s16-exnum ok">4 released</span></div>
+                  <div class="s16-exrow"><span class="s16-exico block"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>No consent &mdash; excluded<span class="s16-exnum block">2 blocked</span></div>
+                  <div class="s16-exrow"><span class="s16-exico ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>Identifiers stripped<span class="s16-exnum ok">enforced</span></div>
+                  <div class="s16-exrow"><span class="s16-exico ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>Auto-expiry armed<span class="s16-exnum ok">2027-11</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 5 : EVIDENCE -->
+            <div class="s16-stage" data-stage="4" role="tabpanel" aria-label="Stage 5 of 5: Evidence">
+              <div class="s16-appbar">
+                <span class="s16-who"><span class="s16-ico" style="background:var(--ok);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM9 12l2 2 4-4"/></svg></span><span>Audit Evidence Vault<span class="s16-role">IMMUTABLE RECORD</span></span></span>
+                <span class="s16-badge" style="background:rgba(47,215,155,.16);color:#0E8A5E;">Sealed</span>
+              </div>
+              <div class="s16-grid">
+                <div>
+                  <div class="s16-h">Evidence package, sealed</div>
+                  <p class="s16-p">Every act in the loop &mdash; request, approval, each consent, the blocks, the release &mdash; is captured in the ledger on the right as linked, hashed records. Hand the regulator one package, not a scavenger hunt across inboxes.</p>
+                  <div class="s16-seal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span class="s16-sealt">Tamper-evident &middot; cryptographically sealed</span></div>
+                </div>
+                <div class="s16-panel">
+                  <div class="s16-kv"><span class="s16-kvk">study</span><span class="s16-kvv">ONCO-2026</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">events logged</span><span class="s16-kvv" id="s16-ev-summary">&mdash;</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">records released</span><span class="s16-kvv" style="color:var(--ok);">4</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">records blocked</span><span class="s16-kvv" style="color:#C32B45;">2</span></div>
+                  <div class="s16-kv"><span class="s16-kvk">status</span><span class="s16-kvv" style="color:var(--ok);">Sealed</span></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: EVIDENCE LEDGER (dark) -->
+      <div class="s16-ledger" aria-live="polite">
+        <div class="s16-ledhead">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 9h6M8 13h8M8 17h5"/></svg>
+          <span>
+            <span class="s16-ledtitle">Evidence ledger</span>
+            <span class="s16-ledsub">append-only &middot; actor &middot; time &middot; hash</span>
+          </span>
+        </div>
+        <div class="s16-ledlist" id="s16-ledlist">
+          <div class="s16-ledempty" id="s16-ledempty">No events yet. Advance the loop to record evidence.</div>
+        </div>
+        <div class="s16-sealrow">
+          <span class="s16-spill open" id="s16-spill">Ledger open</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer nav -->
+    <div class="s16-foot">
+      <button type="button" class="s16-btn s16-back" id="s16-back" disabled>Back</button>
+      <span class="s16-prog" id="s16-prog">Step 1 of 5</span>
+      <span class="s16-spacer"></span>
+      <button type="button" class="s16-btn s16-restart" id="s16-restart">Restart</button>
+      <button type="button" class="s16-btn s16-next" id="s16-next">Next</button>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var root=document.getElementById('s16'); if(!root) return;
+    var stages=Array.prototype.slice.call(root.querySelectorAll('.s16-stage'));
+    var total=stages.length;
+    var cur=0, maxReached=0, scenario='approve';
+
+    var strip=root.querySelector('#s16-strip');
+    var nextBtn=root.querySelector('#s16-next');
+    var backBtn=root.querySelector('#s16-back');
+    var restartBtn=root.querySelector('#s16-restart');
+    var prog=root.querySelector('#s16-prog');
+    var url=root.querySelector('#s16-url');
+    var actorChip=root.querySelector('#s16-actorchip');
+    var sees=root.querySelector('#s16-sees');
+    var dotsWrap=root.querySelector('#s16-dots');
+    var ledList=root.querySelector('#s16-ledlist');
+    var ledEmpty=root.querySelector('#s16-ledempty');
+    var spill=root.querySelector('#s16-spill');
+    var evSummary=root.querySelector('#s16-ev-summary');
+    var apprApprove=root.querySelector('#s16-appr-approve');
+    var apprReject=root.querySelector('#s16-appr-reject');
+    var apprBadge=root.querySelector('#s16-appr-badge');
+    var segBtns=Array.prototype.slice.call(root.querySelectorAll('.s16-segbtn'));
+
+    var meta=[
+      {name:'Request',actor:'PI',cls:'researcher',sees:'sees → cohort builder & data scope',url:'hub.certinal.health/studies/onco-2026/request',
+        ico:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6l-4 8a3 3 0 0 0 3 4h6a3 3 0 0 0 3-4l-4-8V2M8 2h8"/></svg>'},
+      {name:'Approval',actor:'DPO / Ethics',cls:'dpo',sees:'sees → request + decision',url:'hub.certinal.health/studies/onco-2026/review',
+        ico:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>'},
+      {name:'Patient consent',actor:'Patient',cls:'patient',sees:'sees → plain-language request on phone',url:'hub.certinal.health/me/requests/onco-2026',
+        ico:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.5-6 7-6s7 2 7 6"/></svg>'},
+      {name:'Execution',actor:'Hub Engine',cls:'system',sees:'acts → enforces scope & blocks',url:'hub.certinal.health/studies/onco-2026/execute',
+        ico:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>'},
+      {name:'Evidence',actor:'Evidence Vault',cls:'vault',sees:'produces → sealed audit package',url:'hub.certinal.health/studies/onco-2026/evidence',
+        ico:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM9 12l2 2 4-4"/></svg>'}
+    ];
+
+    var haltMeta={actor:'DPO / Ethics',cls:'halt',sees:'returns → request to PI · workflow halted',url:'hub.certinal.health/studies/onco-2026/returned'};
+
+    /* hash generator (display only) */
+    function hash(seed){var h=0x811c9dc5;for(var i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=(h*0x01000193)>>>0;}return '0x'+('00000000'+h.toString(16)).slice(-8,-4)+'…';}
+
+    var actorColor={researcher:'var(--brand)',dpo:'var(--violet)',patient:'var(--teal)',system:'var(--cyan)',vault:'var(--ok)',halt:'var(--danger)'};
+    var actorLabel={researcher:'PI',dpo:'DPO',patient:'PATIENT',system:'ENGINE',vault:'VAULT',halt:'DPO'};
+
+    var ledger=[]; /* {actor,cls,text,danger,t} */
+    var clock=9*60+12; /* 09:12 base, minutes */
+    function stamp(){var hh=Math.floor(clock/60),mm=clock%60;clock+=Math.floor(Math.random()*3)+1;return ('0'+hh).slice(-2)+':'+('0'+mm).slice(-2);}
+
+    function logEvent(cls,text,danger){
+      var t=stamp();
+      var rec={cls:cls,text:text,danger:!!danger,t:t,hash:hash(cls+text+t)};
+      ledger.push(rec);
+      renderLedger();
+    }
+
+    function renderLedger(){
+      ledEmpty.style.display=ledger.length?'none':'block';
+      /* clear existing event nodes (keep empty placeholder) */
+      Array.prototype.slice.call(ledList.querySelectorAll('.s16-ev')).forEach(function(n){n.remove();});
+      ledger.forEach(function(r){
+        var el=document.createElement('div');
+        el.className='s16-ev';
+        el.innerHTML=
+          '<div class="s16-evtop">'+
+            '<span class="s16-evdot" style="background:'+actorColor[r.cls]+';"></span>'+
+            '<span class="s16-evactor" style="color:'+actorColor[r.cls]+';">'+actorLabel[r.cls]+'</span>'+
+            '<span class="s16-evtime">'+r.t+'</span>'+
+          '</div>'+
+          '<div class="s16-evtext'+(r.danger?' danger':'')+'">'+r.text+'</div>'+
+          '<div class="s16-evhash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'+r.hash+'</div>';
+        ledList.appendChild(el);
+      });
+      ledList.scrollTop=ledList.scrollHeight;
+    }
+
+    /* events recorded once when first reaching a stage (happy path) */
+    var loggedSteps={};
+    function recordForStep(i){
+      if(i===0 && !loggedSteps[0]){ loggedSteps[0]=1; logEvent('researcher','Request submitted · ONCO-2026 · cohort 6 · 18 months'); }
+      if(i===1){
+        if(scenario==='approve' && !loggedSteps['1a']){ loggedSteps['1a']=1; logEvent('dpo','Approved with 3 binding conditions'); }
+        if(scenario==='reject' && !loggedSteps['1r']){ loggedSteps['1r']=1; logEvent('halt','Returned to PI — not approved · 3 changes required', true); }
+      }
+      if(i===2 && !loggedSteps[2]){ loggedSteps[2]=1; logEvent('patient','Consent collected · 4 granted, 2 declined'); }
+      if(i===3 && !loggedSteps[3]){ loggedSteps[3]=1; logEvent('system','Released 4 in-scope, de-identified'); logEvent('system','Blocked 2 — no consent · excluded at engine', true); }
+      if(i===4 && !loggedSteps[4]){ loggedSteps[4]=1; logEvent('vault','Evidence package sealed · tamper-evident'); }
+    }
+
+    function buildStrip(){
+      meta.forEach(function(m,i){(function(idx){
+        var b=document.createElement('button');
+        b.type='button';
+        b.className='s16-stagebtn';
+        b.setAttribute('role','tab');
+        b.setAttribute('aria-label','Step '+(idx+1)+' of '+total+': '+m.name);
+        b.innerHTML='<span class="s16-sidx">0'+(idx+1)+'</span>'+m.name;
+        b.addEventListener('click',function(){ if(idx<=maxReached && !(scenario==='reject' && idx>1)) go(idx); });
+        strip.appendChild(b);
+      })(i);});
+    }
+    var tabs;
+    function dots(){
+      dotsWrap.innerHTML='';
+      for(var i=0;i<total;i++){var d=document.createElement('span');d.className='s16-dot';dotsWrap.appendChild(d);}
+    }
+
+    function render(){
+      var rejectHalt=(scenario==='reject');
+      stages.forEach(function(s,i){ s.classList.toggle('is-active',i===cur); });
+
+      /* approval variant visibility */
+      if(apprApprove&&apprReject){
+        apprApprove.style.display=(scenario==='approve')?'':'none';
+        apprReject.style.display=(scenario==='reject')?'':'none';
+      }
+      if(apprBadge){
+        if(scenario==='approve'){apprBadge.textContent='Approved · conditions';apprBadge.style.background='rgba(154,107,255,.14)';apprBadge.style.color='#6B3FD6';}
+        else{apprBadge.textContent='Returned to PI';apprBadge.style.background='rgba(251,111,132,.14)';apprBadge.style.color='#C32B45';}
+      }
+
+      tabs=Array.prototype.slice.call(strip.querySelectorAll('.s16-stagebtn'));
+      tabs.forEach(function(t,i){
+        t.classList.toggle('is-active',i===cur);
+        t.classList.toggle('is-done',i<cur && !(rejectHalt&&i===1));
+        t.classList.toggle('is-halt',rejectHalt&&i===1&&cur===1);
+        var locked=(rejectHalt && i>1);
+        t.disabled=(i>maxReached)||locked;
+        t.setAttribute('aria-selected',String(i===cur));
+      });
+
+      var dnodes=Array.prototype.slice.call(dotsWrap.querySelectorAll('.s16-dot'));
+      dnodes.forEach(function(d,i){d.classList.toggle('on',i<=cur);d.classList.toggle('halt',rejectHalt&&i===1&&cur===1);});
+
+      var m=(rejectHalt&&cur===1)?{name:'Approval',actor:haltMeta.actor,cls:haltMeta.cls,sees:haltMeta.sees,url:haltMeta.url,ico:meta[1].ico}:meta[cur];
+      actorChip.className='s16-actor '+m.cls;
+      actorChip.innerHTML=m.ico+' '+m.actor;
+      sees.textContent=m.sees;
+      url.textContent=m.url;
+      prog.textContent='Step '+(cur+1)+' of '+total;
+      backBtn.disabled=(cur===0);
+
+      if(evSummary) evSummary.textContent=String(ledger.length);
+
+      /* ledger seal pill */
+      if(rejectHalt && (loggedSteps['1r'])){
+        spill.className='s16-spill halted';spill.textContent='Workflow halted · nothing released';
+      } else if(loggedSteps[4]){
+        spill.className='s16-spill sealed';spill.textContent='Sealed · '+ledger.length+' events';
+      } else {
+        spill.className='s16-spill open';spill.textContent=ledger.length?('Ledger open · '+ledger.length):'Ledger open';
+      }
+
+      /* NEXT button behaviour */
+      if(rejectHalt && cur===1){
+        nextBtn.textContent='Workflow halted';
+        nextBtn.disabled=true;
+      } else if(cur===total-1){
+        nextBtn.textContent='Restart loop';
+        nextBtn.disabled=false;
+      } else {
+        nextBtn.disabled=false;
+        nextBtn.textContent=(cur===total-2)?'Generate evidence':(cur===2?'Run execution':'Next');
+      }
+    }
+
+    function go(i){
+      if(i<0||i>=total) return;
+      if(scenario==='reject' && i>1) return; /* enforcement: cannot pass halt */
+      cur=i;
+      if(i>maxReached) maxReached=i;
+      recordForStep(i);
+      render();
+    }
+
+    function fullReset(){
+      cur=0;maxReached=0;scenario='approve';ledger=[];loggedSteps={};clock=9*60+12;
+      segBtns.forEach(function(b){var on=b.getAttribute('data-sc')==='approve';b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
+      renderLedger();
+      go(0);
+    }
+
+    nextBtn.addEventListener('click',function(){
+      if(scenario==='reject' && cur===1) return;
+      if(cur<total-1) go(cur+1); else fullReset();
+    });
+    backBtn.addEventListener('click',function(){ go(cur-1); });
+    restartBtn.addEventListener('click',fullReset);
+
+    segBtns.forEach(function(b){
+      b.addEventListener('click',function(){
+        var sc=b.getAttribute('data-sc');
+        if(sc===scenario) return;
+        scenario=sc;
+        segBtns.forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on));});
+        /* switching scenario at approval: clear downstream progress + downstream log */
+        maxReached=1; cur=1;
+        delete loggedSteps['1a'];delete loggedSteps['1r'];delete loggedSteps[2];delete loggedSteps[3];delete loggedSteps[4];
+        /* drop any ledger events from approval onward */
+        ledger=ledger.filter(function(r){return r.cls==='researcher';});
+        renderLedger();
+        recordForStep(1);
+        render();
+      });
+    });
+
+    buildStrip();
+    dots();
+    recordForStep(0);
+    render();
+  })();
+  </script>
+</section>
