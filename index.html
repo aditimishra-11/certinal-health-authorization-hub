@@ -2575,6 +2575,7 @@
 <span class="eyebrow">MODULE 01</span>
 <div class="flex items-center mt-4" style="gap:14px;flex-wrap:wrap"><h2 class="h1">Consent Lifecycle</h2></div>
 <p class="lead mt-4 balance">Capture <strong>purpose-based</strong> consent in the patient's own language, signed and version-tracked &mdash; then keep every version in a queryable repository. This is <strong>data-use</strong> consent: treating you runs on a legitimate-use notice, and the opt-ins are secondary uses like insurance, research and external sharing &mdash; each scoped to the visit.</p>
+<p class="balance" data-reveal="up" data-delay="160" style="max-width:66ch;margin:14px auto 0;text-align:center;font-size:.95rem;line-height:1.6;color:inherit;opacity:.82;"><b>Two kinds of sharing, two rules.</b> Sharing <b>to help you</b> &mdash; care, referrals &mdash; you just get <b>told</b>. Sharing <b>to help the business</b> &mdash; insurance, research, marketing &mdash; you must be <b>asked</b>, and you can take it back. The Hub tells them apart &mdash; and proves which one happened.</p>
 <div class="s11-chips mt-6 stagger">
 <span class="s11-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Purpose-based consent</span>
 <span class="s11-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Multi-language</span>
@@ -3298,15 +3299,15 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
 
                 <!-- STEP 4: PURPOSES -->
                 <div class="s15-screen" data-s15-step="4" role="group" aria-label="Choose purposes">
-                  <h3 class="s15-scrtitle">What you agree to</h3>
-                  <p class="s15-scrsub">Each is a separate choice. You decide.</p>
+                  <h3 class="s15-scrtitle">How your data is used</h3>
+                  <p class="s15-scrsub">The first is necessary care (a notice). The rest are separate choices — you decide.</p>
                   <div class="s15-bodyscroll">
                     <div class="s15-purpose" id="s15-p-treatment">
                       <div class="s15-pmeta">
-                        <div class="s15-pname">Treatment <span class="s15-preq">Required</span></div>
-                        <div class="s15-pdesc">Lets doctors use your info to diagnose and treat you.</div>
+                        <div class="s15-pname">Use of your data for care <span class="s15-preq">Necessary</span></div>
+                        <div class="s15-pdesc">Using your records to treat you here — a legitimate use under DPDP, shown for transparency. Needed to proceed.</div>
                       </div>
-                      <button class="s15-toggle s15-toggle--req is-on" data-s15-purpose="treatment" role="switch" aria-checked="true" aria-label="Treatment consent"><span></span></button>
+                      <button class="s15-toggle s15-toggle--req is-on" data-s15-purpose="treatment" role="switch" aria-checked="true" aria-label="Acknowledge data use for care"><span></span></button>
                     </div>
                     <div class="s15-purpose">
                       <div class="s15-pmeta">
@@ -3330,9 +3331,9 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
                 <div class="s15-screen" data-s15-step="branch" role="group" aria-label="Treatment consent needed">
                   <div class="s15-branchcalm"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>Care is not blocked</div>
                   <div class="s15-branchicon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3L12 3z"/><path d="M12 10v4M12 16.5v.3"/></svg></div>
-                  <h3 class="s15-scrtitle">Treatment consent is needed to provide care.</h3>
+                  <h3 class="s15-scrtitle">This data use is necessary for your care.</h3>
                   <p class="s15-scrsub">A staff member will explain this in your language before you decide.</p>
-                  <div class="s15-branchnote">You turned off the <b>required</b> Treatment purpose. That's okay — nothing happens silently. We pause and bring in a person.</div>
+                  <div class="s15-branchnote">You turned off the <b>necessary</b> data-use for your care. That's okay — nothing happens silently. We pause and bring in a person to explain.</div>
                   <div class="s15-bodyscroll" style="margin-top:6px;">
                     <button class="s15-branchopt" data-s15-go="4">
                       <span class="s15-boico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 5v4h4"/></svg></span>
@@ -3629,8 +3630,8 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
         });
         if(scennote){
           scennote.textContent = scenario==='edge'
-            ? 'On the purposes screen, the patient turns OFF the required Treatment purpose. Watch the calm branch: re-explain, or capture the refusal and escalate to a clinician.'
-            : 'Patient consents to treatment and walks through to a recorded, evidence-backed consent.';
+            ? 'On the data-use screen, the patient turns OFF the necessary care data-use. Watch the calm branch: re-explain, or capture the objection and bring in a clinician.'
+            : 'Patient acknowledges the necessary care notice, opts into the secondary uses they choose, and walks through to a recorded, evidence-backed consent.';
         }
         reset();
       });
@@ -3804,6 +3805,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
     <div class="s16-head">
       <h2 class="h1 mt-4 balance">Authorizing a <span class="gradient-text">research study.</span></h2>
       <p class="lead mt-4">One study, four actors, one authorization loop &mdash; investigator, ethics office, patient, and the engine. Every act is enforced and every act is logged. Watch what happens when the DPO says no.</p>
+      <p class="lead mt-3 balance" style="font-size:.96rem;opacity:.85;">Crucially, the patient's authorization is an <strong>explicit, time-bound grant</strong> &mdash; taken while they're in the care relationship and scoped to <strong>this study's purpose, data set, and window</strong>. Nothing is touched beyond what they agreed, or after it expires.</p>
     </div>
 
     <!-- step strip -->
