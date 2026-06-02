@@ -1361,7 +1361,7 @@
       <span class="s6-sumico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.3a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
       <p class="s6-tagline balance">Every entity. <b>Same four breakages.</b> <em>The permission was given &mdash; nothing executed it.</em></p>
     </div>
-    <p class="balance" data-reveal="up" data-delay="120" style="max-width:72ch;margin:18px auto 0;text-align:center;font-size:.9rem;line-height:1.6;color:inherit;opacity:.72;">The DPDP Rules are now final &mdash; notified Nov 2025, with hospitals required to comply by <b>~May 2027</b> and penalties up to <b>&#8377;250 crore</b>. The clock is running on closing these gaps.</p>
+    <p class="balance" data-reveal="up" data-delay="120" style="max-width:72ch;margin:18px auto 0;text-align:center;font-size:.9rem;line-height:1.6;color:inherit;opacity:.72;">The DPDP Rules are now final &mdash; notified Nov 2025, with hospitals required to comply by <b>~May 2027</b> and penalties up to <b>&#8377;250 crore</b>. India also gives no GDPR-style &lsquo;legitimate interest&rsquo; shortcut, so for anything beyond your care, consent isn&rsquo;t optional. The clock is running on closing these gaps.</p>
   </div>
 
   <script>
@@ -2574,7 +2574,7 @@
 <div data-reveal="right">
 <span class="eyebrow">MODULE 01</span>
 <div class="flex items-center mt-4" style="gap:14px;flex-wrap:wrap"><h2 class="h1">Consent Lifecycle</h2></div>
-<p class="lead mt-4 balance">Capture <strong>purpose-based</strong> consent in the patient's own language, signed and version-tracked &mdash; then keep every version in a queryable repository.</p>
+<p class="lead mt-4 balance">Capture <strong>purpose-based</strong> consent in the patient's own language, signed and version-tracked &mdash; then keep every version in a queryable repository. This is <strong>data-use</strong> consent: treating you runs on a legitimate-use notice, and the opt-ins are secondary uses like insurance, research and external sharing &mdash; each scoped to the visit.</p>
 <div class="s11-chips mt-6 stagger">
 <span class="s11-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Purpose-based consent</span>
 <span class="s11-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Multi-language</span>
@@ -2602,13 +2602,13 @@
 <div class="s11-list">
 <div class="s11-row">
 <span class="s11-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5C2 10.6 3.5 12.5 5 14l7 7z"/></svg></span>
-<div class="s11-meta"><div class="t s11-l-t0">Treatment<span class="s11-req">REQUIRED</span></div><div class="d s11-l-d0">Use my records to provide care</div></div>
+<div class="s11-meta"><div class="t s11-l-t0">Care (necessary)<span class="s11-req">NOTICE</span></div><div class="d s11-l-d0">Using your data to treat you &mdash; a legitimate use, shown for transparency</div></div>
 <button type="button" class="s11-sw" role="switch" aria-checked="true" aria-label="Treatment consent"></button>
 </div>
 <div class="s11-row">
 <span class="s11-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l7 3"/></svg></span>
-<div class="s11-meta"><div class="t s11-l-t1">Diagnostics sharing</div><div class="d s11-l-d1">Share lab &amp; imaging with my care team</div></div>
-<button type="button" class="s11-sw" role="switch" aria-checked="true" aria-label="Diagnostics sharing consent"></button>
+<div class="s11-meta"><div class="t s11-l-t1">Insurance / TPA claim</div><div class="d s11-l-d1">Share the records needed to settle my cashless claim</div></div>
+<button type="button" class="s11-sw" role="switch" aria-checked="false" aria-label="Insurance / TPA claim consent"></button>
 </div>
 <div class="s11-row">
 <span class="s11-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4l-5 9a3 3 0 0 0 3 4h10a3 3 0 0 0 3-4l-5-9V3"/><path d="M8 3h8"/></svg></span>
@@ -3216,7 +3216,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
           <div class="s15-realrow"><span class="s15-realdot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span><span>If the patient says no to something required, care isn't silently blocked — the refusal is captured and routed to a clinician.</span></div>
         </div>
 
-        <p class="s15-gloss"><b>ABHA</b> = Ayushman Bharat Health Account, India's national health ID. <b>Consent purpose</b> = the specific reason data is used (e.g. treatment vs. research). Under the DPDP Act, each purpose needs its own clear yes.</p>
+        <p class="s15-gloss"><b>ABHA</b> = Ayushman Bharat Health Account, India's national health ID. <b>Consent purpose</b> = a specific <em>data</em> use you opt into (e.g. sharing with your insurer, or research). Treating you is a legitimate use shown as notice &mdash; not a toggle. Under DPDP, each secondary purpose needs its own clear yes.</p>
 
         <div class="s15-scenario">
           <p class="s15-scenlabel">Walk the flow as</p>
