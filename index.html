@@ -3311,10 +3311,10 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
                     </div>
                     <div class="s15-purpose">
                       <div class="s15-pmeta">
-                        <div class="s15-pname">Diagnostics sharing <span class="s15-popt">Optional</span></div>
-                        <div class="s15-pdesc">Share lab and scan results with linked specialists.</div>
+                        <div class="s15-pname">Insurance / TPA claim <span class="s15-popt">Optional</span></div>
+                        <div class="s15-pdesc">Share the records needed to settle my cashless claim.</div>
                       </div>
-                      <button class="s15-toggle is-on" data-s15-purpose="diagnostics" role="switch" aria-checked="true" aria-label="Diagnostics sharing consent"><span></span></button>
+                      <button class="s15-toggle" data-s15-purpose="diagnostics" role="switch" aria-checked="false" aria-label="Insurance / TPA claim consent"><span></span></button>
                     </div>
                     <div class="s15-purpose">
                       <div class="s15-pmeta">
@@ -3358,7 +3358,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
                       </div>
                       <div class="s15-noticecard" style="margin-top:14px;">
                         <div class="s15-noticeitem" style="padding:11px 14px;"><span class="s15-noticeico ok"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/></svg></span><div><div class="s15-noticet">Care (necessary)</div><div class="s15-noticed" id="s15-sumtreatment">Noted</div></div></div>
-                        <div class="s15-noticeitem" style="padding:11px 14px;"><span class="s15-noticeico" id="s15-icodiag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/></svg></span><div><div class="s15-noticet">Diagnostics sharing</div><div class="s15-noticed" id="s15-sumdiag">Allowed</div></div></div>
+                        <div class="s15-noticeitem" style="padding:11px 14px;"><span class="s15-noticeico" id="s15-icodiag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/></svg></span><div><div class="s15-noticet">Insurance / TPA claim</div><div class="s15-noticed" id="s15-sumdiag">Declined</div></div></div>
                         <div class="s15-noticeitem" style="padding:11px 14px;"><span class="s15-noticeico" id="s15-icoresearch" style="background:rgba(138,149,173,.16);color:var(--ink-faint);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 12h12"/></svg></span><div><div class="s15-noticet">Research</div><div class="s15-noticed" id="s15-sumresearch">Declined</div></div></div>
                       </div>
                     </div>
@@ -3642,7 +3642,7 @@ var btn=s.querySelector('#s11-sign');if(btn){btn.addEventListener('click',functi
       var tt=root.querySelector('[data-s15-purpose="treatment"]');
       var dd=root.querySelector('[data-s15-purpose="diagnostics"]');
       var rr=root.querySelector('[data-s15-purpose="research"]');
-      [ [tt,true], [dd,true], [rr,false] ].forEach(function(pair){
+      [ [tt,true], [dd,false], [rr,false] ].forEach(function(pair){
         var el=pair[0]; if(!el) return;
         el.classList.toggle('is-on', pair[1]);
         el.setAttribute('aria-checked', pair[1]?'true':'false');
