@@ -1324,22 +1324,22 @@
 
     <!-- TABS -->
     <div class="s6-tabs" role="tablist" aria-label="Entity type" data-reveal="up" data-delay="160">
-      <button class="s6-tab" role="tab" id="s6-tab-research"    aria-selected="true"  aria-controls="s6-panel-research"    data-target="research"><span class="s6-tdot"></span>Research</button>
-      <button class="s6-tab" role="tab" id="s6-tab-hospital"    aria-selected="false" aria-controls="s6-panel-hospital"    data-target="hospital" tabindex="-1"><span class="s6-tdot"></span>Hospital</button>
+      <button class="s6-tab" role="tab" id="s6-tab-hospital"    aria-selected="true"  aria-controls="s6-panel-hospital"    data-target="hospital"><span class="s6-tdot"></span>Hospital</button>
+      <button class="s6-tab" role="tab" id="s6-tab-research"    aria-selected="false" aria-controls="s6-panel-research"    data-target="research" tabindex="-1"><span class="s6-tdot"></span>Research</button>
       <button class="s6-tab" role="tab" id="s6-tab-diagnostics" aria-selected="false" aria-controls="s6-panel-diagnostics" data-target="diagnostics" tabindex="-1"><span class="s6-tdot"></span>Diagnostics</button>
       <button class="s6-tab" role="tab" id="s6-tab-pharma"      aria-selected="false" aria-controls="s6-panel-pharma"      data-target="pharma" tabindex="-1"><span class="s6-tdot"></span>Pharma</button>
     </div>
 
     <div class="s6-meta" aria-live="polite">
-      <span class="s6-entity" id="s6-entity">Research lab</span>
-      <span class="s6-scenario" id="s6-scenario">Scenario: a patient enrols in a clinical study.</span>
+      <span class="s6-entity" id="s6-entity">Hospital</span>
+      <span class="s6-scenario" id="s6-scenario">Scenario: a patient gives data consent at admission.</span>
     </div>
 
     <div class="s6-panels">
 
       <!-- ============ RESEARCH ============ -->
-      <div class="s6-panel is-active" id="s6-panel-research" role="tabpanel" aria-labelledby="s6-tab-research">
-        <div class="s6-flow" aria-label="Research study enrolment: paper consent, email scan, Excel tracker, auditor chase">
+      <div class="s6-panel" id="s6-panel-research" role="tabpanel" aria-labelledby="s6-tab-research">
+        <div class="s6-flow" aria-label="Research data-consent: paper form, email scan, Excel tracker, auditor chase">
           <div class="s6-step">
             <div class="s6-card">
               <div class="s6-bar"><span>consent_v?.pdf</span><span class="s6-dotrow"><i></i><i></i></span></div>
@@ -1347,7 +1347,7 @@
                 <span class="s6-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><text x="7.5" y="17.5" font-size="4.6" font-family="monospace" fill="currentColor" stroke="none">PDF</text></svg></span>
                 <span class="s6-num">01 &middot; Paper consent</span>
                 <h3>Paper consent signed</h3>
-                <p>Coordinator prints the study consent. Patient signs &mdash; labelled &ldquo;v6&rdquo; in pen.</p>
+                <p>Coordinator prints the research data-consent form. Patient signs &mdash; labelled &ldquo;v6&rdquo; in pen.</p>
               </div>
             </div>
             <div class="s6-breaks"><span class="s6-break is-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>Version unknown</span></div>
@@ -1396,8 +1396,8 @@
       </div>
 
       <!-- ============ HOSPITAL ============ -->
-      <div class="s6-panel" id="s6-panel-hospital" role="tabpanel" aria-labelledby="s6-tab-hospital">
-        <div class="s6-flow" aria-label="Hospital admission consent: paper form, scanned folders, dept systems, can't show scope">
+      <div class="s6-panel is-active" id="s6-panel-hospital" role="tabpanel" aria-labelledby="s6-tab-hospital">
+        <div class="s6-flow" aria-label="Hospital data-consent at admission: paper form, scanned folders, dept systems, can't show scope">
           <div class="s6-step">
             <div class="s6-card">
               <div class="s6-bar"><span>admission_form.pdf</span><span class="s6-dotrow"><i></i><i></i></span></div>
@@ -1405,7 +1405,7 @@
                 <span class="s6-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><text x="7.5" y="17.5" font-size="4.6" font-family="monospace" fill="currentColor" stroke="none">PDF</text></svg></span>
                 <span class="s6-num">01 &middot; Front desk</span>
                 <h3>Paper form at admission</h3>
-                <p>Patient signs a treatment-consent form at the front desk on arrival.</p>
+                <p>Patient signs a data-consent form at the front desk on arrival.</p>
               </div>
             </div>
             <div class="s6-breaks"><span class="s6-break is-danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Form lost on transfer</span></div>
@@ -1590,8 +1590,8 @@
     var entityEl = root.querySelector('#s6-entity');
     var scenarioEl = root.querySelector('#s6-scenario');
     var META = {
-      research:    { entity: 'Research lab',        scenario: 'Scenario: a patient enrols in a clinical study.' },
-      hospital:    { entity: 'Hospital',            scenario: 'Scenario: a patient is admitted for treatment.' },
+      research:    { entity: 'Research lab',        scenario: 'Scenario: a patient agrees to share data for a research study.' },
+      hospital:    { entity: 'Hospital',            scenario: 'Scenario: a patient gives data consent at admission.' },
       diagnostics: { entity: 'Diagnostics lab',     scenario: 'Scenario: a patient agrees to share a sample &amp; results.' },
       pharma:      { entity: 'Pharma program',      scenario: 'Scenario: a patient opts into a marketing program.' }
     };
